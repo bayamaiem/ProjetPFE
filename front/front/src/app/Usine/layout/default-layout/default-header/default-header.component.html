@@ -1,0 +1,157 @@
+<!--<c-header class="mb-4 d-print-none" position="sticky">-->
+<ng-container>
+  <c-container [fluid]="true" class="border-bottom px-4">
+    <button
+      [cSidebarToggle]="sidebarId"
+      cHeaderToggler
+      class="btn"
+      toggle="visible"
+      style="margin-inline-start: -14px"
+    >
+      <svg cIcon name="cilMenu" size="lg"></svg>
+    </button>
+    <c-header-nav class="d-none d-md-flex">
+   <!--   <c-dropdown variant="nav-item">
+        <a [routerLink] cDropdownToggle cNavLink>Mouvement Des Conteneurs</a>
+        <ul cDropdownMenu>
+          <li>-->
+            <a
+              cNavLink
+              routerLink="Usine/waste_movement"
+              routerLinkActive="active"
+              >Mouvement Des Conteneurs</a
+            >
+        <!-- </li>
+        </ul>
+      </c-dropdown>--> 
+
+    <!--<c-dropdown variant="nav-item">
+        <a [routerLink] cDropdownToggle cNavLink>Gérer Les Conteneurs</a>
+        <ul cDropdownMenu>-->  
+          <!--  <li>
+            <a cNavLink routerLink="create-conteneur" routerLinkActive="active"
+              >Ajouter Conteneur de dechets</a
+            >
+          </li>-->
+        
+            <a
+              cNavLink
+              routerLink="/Usine/liste-conteneur"
+              routerLinkActive="active"
+              >Gérer Les Conteneurs</a
+            >
+         
+    
+     <!--<c-dropdown variant="nav-item">
+        <a [routerLink] cDropdownToggle cNavLink>Gérer Les Dépots De Déchets</a>
+        <ul cDropdownMenu>
+          <li>--> 
+            <a
+              cNavLink
+              routerLink="/Usine/liste-depots"
+              routerLinkActive="active"
+              >Gérer Les Dépots De Déchets</a
+            >
+         <!--</li>
+        </ul>
+      </c-dropdown>--> 
+
+
+     <!--<c-dropdown variant="nav-item">
+        <a [routerLink] cDropdownToggle cNavLink>Gérer codes</a>
+        <ul cDropdownMenu>
+          <li>--> 
+            <a
+              cNavLink
+              routerLink="/Usine/Gerer-codes"
+              routerLinkActive="active"
+              >Gérer codes</a
+            >
+        <!--  </li>
+        </ul>
+      </c-dropdown>-->
+    </c-header-nav>
+
+    <c-header-nav class="d-none d-md-flex ms-auto">
+      <a
+        cNavLink
+        routerLink="Usine/views_usine/notifications"
+        routerLinkActive="active"
+      >
+        <svg cIcon class="my-1" name="cilBell" size="lg"></svg>
+      </a>
+      <a cNavLink>
+        <svg cIcon class="my-1" name="cilList" size="lg"></svg>
+      </a>
+      <a cNavLink>
+        <svg cIcon class="my-1" name="cilEnvelopeOpen" size="lg"></svg>
+      </a>
+    </c-header-nav>
+
+    <c-header-nav class="ms-auto ms-md-0">
+      <div class="nav-item py-1">
+        <div class="vr h-100 mx-2 text-body text-opacity-75"></div>
+      </div>
+      <ng-container *ngTemplateOutlet="themeDropdown" />
+      <div class="nav-item py-1">
+        <div class="vr h-100 mx-2 text-body text-opacity-75"></div>
+      </div>
+    </c-header-nav>
+
+    <c-header-nav class="mx-0">
+      <ng-container *ngTemplateOutlet="userDropdown" />
+    </c-header-nav>
+  </c-container>
+  <c-container [fluid]="true" class="px-4">
+    <c-breadcrumb-router />
+  </c-container>
+</ng-container>
+<!--</c-header>-->
+
+<ng-template #userDropdown>
+  <c-dropdown
+    [popperOptions]="{ placement: 'bottom-start' }"
+    variant="nav-item"
+  >
+    <button [caret]="false" cDropdownToggle class="py-0 pe-0">
+      <c-avatar
+        shape="rounded-1"
+        [size]="'md'"
+        src="./assets/images/avatars/8.jpg"
+        status="success"
+        textColor="primary"
+      />
+    </button>
+    <ul cDropdownMenu class="pt-0 w-auto">
+      <li>
+        <h6
+          cDropdownHeader
+          class="bg-body-secondary text-body-secondary fw-semibold py-2"
+        >
+          Paramètres
+        </h6>
+      </li>
+      <li></li>
+
+      <li>
+        <a
+          cNavLink
+          routerLink="Usine/views_usine/settings"
+          routerLinkActive="active"
+        >
+          <svg cIcon class="me-2" name="cilSettings"></svg>
+          Modifier Profile
+        </a>
+      </li>
+
+      <li>
+        <a cDropdownItem (click)="logout()">
+          <svg cIcon class="me-2" name="cilAccountLogout"></svg>
+          Déconnecter
+        </a>
+      </li>
+    </ul>
+  </c-dropdown>
+</ng-template>
+
+<ng-template #themeDropdown> </ng-template>

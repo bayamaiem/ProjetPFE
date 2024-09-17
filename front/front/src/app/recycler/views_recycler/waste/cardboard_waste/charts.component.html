@@ -1,0 +1,122 @@
+<c-col class="d-md-flex justify-content-md-end">
+  <c-card class="mb-4">
+    <ng-container *ngTemplateOutlet="withPopover" />
+  </c-card>
+</c-col>
+
+<ng-template #withPopover>
+  <c-modal alignment="center" id="updateModal">
+    <c-modal-body>
+      <div class="form-group">
+        <label for="updateInputField1">code :</label>
+        <input type="text" class="form-control" id="updateInputField1" />
+      </div>
+      <div class="form-group">
+        <label for="updateInputField2">depot:</label>
+        <input type="text" class="form-control" id="updateInputField2" />
+      </div>
+      <div class="form-group">
+        <label for="updateInputField3">release date:</label>
+        <input type="text" class="form-control" id="updateInputField3" />
+      </div>
+    </c-modal-body>
+    <c-modal-footer>
+      <button [cModalToggle]="'updateModal'" cButton color="secondary">
+        Fermer
+      </button>
+      <button cButton color="primary">Mise à jour</button>
+    </c-modal-footer>
+  </c-modal>
+  <!-- Ajoutez ce code au même endroit où vous avez les autres modals -->
+  <c-modal alignment="center" id="transformModal">
+    <c-modal-body>
+      <!-- Champs pour la transformation -->
+
+      <div class="form-group">
+        <label for="transformInputField2">Nouveau dépôt:</label>
+        <input type="text" class="form-control" id="transformInputField2" />
+      </div>
+      <div class="form-group">
+        <label for="transformInputField3">date de réalisation:</label>
+        <input type="text" class="form-control" id="transformInputField3" />
+      </div>
+    </c-modal-body>
+    <c-modal-footer>
+      <button [cModalToggle]="'transformModal'" cButton color="secondary">
+        Annuler
+      </button>
+      <button cButton color="primary" (click)="transformEntry()">
+        Transformer
+      </button>
+    </c-modal-footer>
+  </c-modal>
+
+  <c-modal alignment="center" id="deleteModal">
+    <c-modal-body>
+      <p>Etes-vous sûr de vouloir supprimer cette entrée ??</p>
+    </c-modal-body>
+    <c-modal-footer>
+      <button [cModalToggle]="'deleteModal'" cButton color="secondary">
+        Annuler
+      </button>
+      <button cButton color="danger" (click)="deleteEntry()">Supprimer</button>
+    </c-modal-footer>
+  </c-modal>
+</ng-template>
+
+<c-row ngPreserveWhitespaces>
+  <table cTable>
+    <thead>
+      <tr>
+        <th scope="col">code</th>
+        <th scope="col">fournisseur</th>
+        <th scope="col">date de réalisation</th>
+        <th
+          scope="col"
+          class="d-grid gap-2 d-md-flex justify-content-md-center"
+        >
+          Action
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td scope="row">104</td>
+        <td scope="row">diva</td>
+        <td>02/12/2023</td>
+        <td>
+          <div
+            class="d-grid gap-2 d-md-flex justify-content-md-center"
+            style="margin-top: 10px"
+          >
+            <button
+              [cModalToggle]="'transformModal'"
+              cButton
+              color="warning"
+              style="margin-left: -5px"
+            >
+              Transformer
+            </button>
+            <button
+              [cModalToggle]="'updateModal'"
+              cButton
+              style="margin-left: -5px"
+            >
+              modifier
+            </button>
+            <button
+              [cModalToggle]="'deleteModal'"
+              cButton
+              color="danger"
+              style="margin-left: -5px"
+            >
+              Supprimer
+            </button>
+            <!-- Bouton pour ouvrir le modal de transformation -->
+          </div>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+  <router-outlet />
+</c-row>

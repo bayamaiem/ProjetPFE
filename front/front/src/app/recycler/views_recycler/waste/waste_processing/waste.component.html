@@ -1,0 +1,74 @@
+
+<ng-template #stockerConteneurModal let-modal>
+  <div class="form-group" style="margin-bottom: 40px">
+    <div class="modal-body">
+      <form [formGroup]="form">
+        <div class="form-group">
+          <label for="depot">Dépôt</label>
+          <select formControlName="depot_id" class="form-control" id="depot" name="depot">
+            <option *ngFor="let depot of depots" [value]="depot.id">
+              {{ depot.nom }}
+            </option>
+          </select>
+          
+          
+        <label for="coderecycleur">  code :</label><br>
+        <select
+        formControlName="coderecycleur" class="form-control" id="coderecycleur" name="coderecycleur"
+      >
+        <option *ngFor="let Code of Codes" [ngValue]="Code.id">
+          {{ Code.code }}
+        </option>
+      </select>
+         
+       
+        </div>
+      </form>
+    </div>
+  </div>
+</ng-template>
+<c-row ngPreserveWhitespaces class="mt-4">
+  <table cTable>
+    <thead>
+      <tr>
+        <th scope="col">ancien code</th>
+        <th scope="col">ancien depot</th>
+        <th scope="col">code</th>
+        <th scope="col"> depot</th>
+     <!--<th scope="col">date de réalisation</th>-->   
+        <th scope="col">Action</th>
+      </tr>
+    </thead>
+    <tbody>
+      <ng-container *ngFor="let item of transformedWaste; trackBy: trackByIndex">
+        <tr>
+          <td scope="row">{{ item.
+conteneur_code}}</td>
+          <td scope="row">{{ item.container.depot.nom }}{{item.container.depot.lieu}}</td>
+
+          <td scope="row"> {{getCodeByRecyclerId( item.container.coderecycleur )}}</td>
+        
+
+            <td scope="row">{{ item.depotName }}{{item.depotLieu}}</td>
+            <!-- <td>{{ item.formatted_updated_at }}</td>-->
+          <td>
+            <div
+              class="d-grid gap-2 d-md-flex justify-content-md-center"
+              style="margin-top: 10px"
+            >
+              <button
+                cButton
+                color="warning"
+                style="margin-left: -5px"
+                (click)="openStockerConteneurModal(item)"
+                [disabled]="item.container.depotContTransformer !== null">
+                Stocker
+              </button>
+            </div>
+          </td>
+        </tr>
+      </ng-container>
+    </tbody>
+  </table>
+  <router-outlet></router-outlet>
+</c-row>

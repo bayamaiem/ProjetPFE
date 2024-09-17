@@ -1,0 +1,97 @@
+<!--sidebar-->
+<c-sidebar
+  #sidebar1="cSidebar"
+  class="d-print-none sidebar sidebar-fixed border-end"
+  colorScheme="dark"
+  id="sidebar1"
+  visible
+>
+  <c-sidebar-header
+    class="border-bottom d-flex justify-content-center align-items-center"
+  >
+    <c-sidebar-brand [routerLink]="[]">
+      <!-- Full Logo for Large Sidebar -->
+      <svg
+        class="sidebar-brand-full"
+        height="64"
+        width="128"
+        title="Diva Green Logo"
+        viewBox="0 0 155 103"
+      >
+        <text
+          x="64"
+          y="42"
+          font-size="24"
+          text-anchor="middle"
+          fill="green"
+          font-family="Arial, sans-serif"
+        >
+          Gestion Dechets
+        </text>
+      </svg>
+      <!-- Narrow Logo for Collapsed Sidebar -->
+      <svg
+        class="sidebar-brand-narrow"
+        height="64"
+        width="64"
+        title="Diva Green Logo"
+        viewBox="0 0 64 64"
+      >
+        <text
+          x="32"
+          y="42"
+          font-size="18"
+          text-anchor="middle"
+          fill="green"
+          font-family="Arial, sans-serif"
+        >
+          DG
+        </text>
+      </svg>
+    </c-sidebar-brand>
+  </c-sidebar-header>
+
+  <ng-scrollbar
+    #scrollbar="ngScrollbar"
+    (updated)="onScrollbarUpdate2(scrollbar.state)"
+    class="overflow"
+    pointerEventsMethod="scrollbar"
+    visibility="hover"
+  >
+    <c-sidebar-nav
+      #overflow
+      [navItems]="navItems"
+      dropdownMode="close"
+      compact
+    />
+  </ng-scrollbar>
+  @if (!sidebar1.narrow) {
+  <c-sidebar-footer
+    cSidebarToggle="sidebar1"
+    class="border-top d-none d-lg-flex"
+    toggle="unfoldable"
+    style="cursor: pointer"
+  >
+    <button cSidebarToggler></button>
+  </c-sidebar-footer>
+  }
+</c-sidebar>
+
+<!--main-->
+<div class="wrapper d-flex flex-column min-vh-100">
+  <!--app-header-->
+  <app-default-header
+    [cShadowOnScroll]="'sm'"
+    class="mb-4 d-print-none header header-sticky p-0 shadow-sm"
+    position="sticky"
+    sidebarId="sidebar1"
+  />
+  <!--app-body-->
+  <div class="body flex-grow-1">
+    <c-container breakpoint="lg" class="h-auto px-4">
+      <router-outlet />
+    </c-container>
+  </div>
+  <!--app footer-->
+  <app-default-footer3 />
+</div>

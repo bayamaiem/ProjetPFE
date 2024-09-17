@@ -1,0 +1,21 @@
+<div class="container">
+  <h2>Modifier un Code</h2>
+
+  <form   class="p-fluid">
+    <div class="form-group">
+      <label for="code">Code</label>
+      <input
+        type="text"
+        [(ngModel)]="code.code"
+        class="form-control"
+        name="code"
+      />
+    </div>
+
+    <div class="mb-3">
+      <button type="button" (click)="updateCode()" pButton class="btn btn-primary float-end">
+        Modifier
+      </button>
+    </div>
+  </form>
+</div>

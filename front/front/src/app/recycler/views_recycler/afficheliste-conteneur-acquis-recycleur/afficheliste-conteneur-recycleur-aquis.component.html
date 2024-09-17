@@ -1,0 +1,114 @@
+<c-row ngPreserveWhitespaces class="mt-4">
+  <table cTable  *ngIf="groupedMovements && groupedMovements.length > 0">
+    <thead>
+      <tr>
+        <th scope="col">
+          Code
+          <input type="text" class="form-control" [(ngModel)]="filters.conteneur_code" (input)="filterMovements()">
+        </th>
+        <th scope="col">
+          Type
+          <input type="text" class="form-control" [(ngModel)]="filters.type" (input)="filterMovements()">
+        </th>
+       
+        <th scope="col">
+          Collecteur
+          <input type="text" class="form-control" [(ngModel)]="filters.collecteur" (input)="filterMovements()">
+        </th>
+        
+        <th scope="col" class="center">
+          Depot
+          <input type="text" class="form-control" [(ngModel)]="filters.depot" (input)="filterMovements()">
+        </th>
+        <th scope="col" class="center">
+         Action
+        </th>
+      </tr>
+    </thead>
+
+<!-- Table of Grouped Movements -->
+<ng-template #stockerConteneurModal let-modal>
+  <div class="form-group" style="margin-bottom: 30px">
+    <div class="modal-body">
+      <form [formGroup]="form">
+        <div class="form-group">
+          <label for="depot">Dépôt</label>
+          <select formControlName="depot_id" class="form-control" id="depot" name="depot">
+            <option *ngFor="let depot of depots" [value]="depot.id">
+              {{ depot.nom }}
+            </option>
+          </select>
+          
+          <label for="prixcollecteur">Prix:</label><br>
+          <input formControlName="prixcollecteur" class="form-control" id="prixcollecteur" name="prixcollecteur">
+        </div>
+      </form>
+    </div>
+  </div>
+</ng-template>
+
+   <!--<thead>
+      <tr>
+        <th scope="col">Code</th>
+        <th scope="col">Type</th>
+        <th scope="col">Fournisseur</th>
+        <th scope="col">Depot</th>
+        <th scope="col">Action</th>
+      </tr>
+    </thead>--> 
+    <tbody>
+      <tr *ngFor="let movement of filteredMouvements">
+        <td class="col-sm">{{ movement.conteneur_code }}</td>
+        <td class="col-sm">{{ movement.conteneur_type }}</td>
+        <td class="col-sm">Le collecteur {{ movement.fournisseur2.firstName }} {{ movement.fournisseur2.lastName }} 
+        <!--{{ movement.fournisseur2.username }} --> 
+           <br>située à {{ movement.fournisseur2.address }}</td>
+        <td class="col-sm" style="margin-left: -1px">{{ movement.depot.lieu }} {{ movement.depot.nom }}</td>
+      <!--<td class="col-sm justify-content-md-center" style="margin-left: -10px">{{ movement.count }}</td>-->  
+        <td class="col-sm">
+          <div class="d-grid gap-2 d-md-flex justify-content-md-center" style="margin-top: 10px">
+
+            <button cButton color="warning" style="margin-left: -1px"   class="col-sm justify-content-md-center "  (click)="openStockerConteneurModal(movement)"
+            [disabled]="movement.estStoker === 1">
+
+
+            Stocker
+            </button>
+              <button
+                cButton
+                color="warning"
+                style="margin-left: -5px"
+                (click)="openTransformModal(movement.id_conteneur)"
+                [disabled]="movement.is_transformed === 1">
+              
+                Transformer
+              </button>
+          </div>
+        </td>
+      </tr>
+      
+    </tbody>
+  </table>
+  <div *ngIf="groupedMovements.length === 0">
+    <p>Aucun Dechets</p>
+  </div>
+</c-row>
+<!-- Pagination Controls -->
+<c-pagination aria-label="Page navigation example">
+  <!-- Previous Button -->
+  <!-- Previous Button -->
+<li cPageItem [class.disabled]="currentPage === 1">
+  <a cPageLink (click)="onPageChange(currentPage - 1)" [attr.aria-disabled]="currentPage === 1 ? 'true' : null">Previous</a>
+</li>
+
+<!-- Page Numbers -->
+<li *ngFor="let page of totalPagesArray" cPageItem [class.active]="currentPage === page">
+  <a cPageLink (click)="onPageChange(page)" [attr.aria-current]="currentPage === page ? 'page' : null">{{ currentPage }}</a>
+</li>
+
+<!-- Next Button -->
+<li cPageItem [class.disabled]="currentPage === totalPages">
+  <a cPageLink (click)="onPageChange(currentPage + 1)" [attr.aria-disabled]="currentPage === totalPages ? 'true' : null">Next</a>
+</li>
+
+</c-pagination>

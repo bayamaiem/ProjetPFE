@@ -1,0 +1,57 @@
+<c-row>
+  <c-col xs>
+    <c-card class="mb-4">
+      <c-card-body>
+        <table
+          [hover]="true"
+          [responsive]="true"
+          [striped]="true"
+          align="middle"
+          cTable
+          class="mb-0 border"
+        >
+          <thead class="text-nowrap text-truncate">
+            <tr>
+              <th class="bg-body-tertiary">Nom D'utilisateurs</th>
+              <th class="bg-body-tertiary text-center">Nom</th>
+              <th class="bg-body-tertiary">Prenom</th>
+              <th class="bg-body-tertiary text-center">Email</th>
+              <th class="bg-body-tertiary">Numéro téléphone:</th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (user of recyclerUsers; track user) {
+            <tr>
+              <td>
+                <div>
+                  <a
+                    routerLink="recycler/views_recycler/users"
+                    routerLinkActive="active"
+                  ></a
+                  >{{ user.username }}
+                </div>
+              </td>
+              <td class="text-center">
+                {{ user.firstName }}
+              </td>
+              <td>
+                <div class="d-flex justify-content-between">
+                  {{ user.lastName }}
+                </div>
+              </td>
+              <td class="text-center">
+                {{ user.email }}
+              </td>
+              <td>
+                <div class="text-center" class="me-md-2">
+                  {{ user.phone_number}}
+                </div>
+              </td>
+            </tr>
+            }
+          </tbody>
+        </table>
+      </c-card-body>
+    </c-card>
+  </c-col>
+</c-row>

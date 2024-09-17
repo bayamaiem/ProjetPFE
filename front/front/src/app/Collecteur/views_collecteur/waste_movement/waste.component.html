@@ -1,0 +1,92 @@
+<c-row ngPreserveWhitespaces class="mt-4">
+  <table cTable>
+    <thead>
+      <tr>
+        <th scope="col">
+          Code
+          <input 
+            type="text" 
+            class="form-control" 
+            [(ngModel)]="filters.conteneur_code" 
+            (ngModelChange)="applyFilters()" 
+            list="codeList">
+          <datalist id="codeList">
+            <option *ngFor="let code of uniqueCodes" [value]="code"></option>
+          </datalist>
+        </th>
+        
+        <th scope="col">
+          Type
+          <input type="text" class="form-control" list="dechetTypesList" [(ngModel)]="filters.type" (ngModelChange)="applyFilters()">
+          <datalist id="dechetTypesList">
+            <option *ngFor="let type of dechetTypes" [value]="type">{{ type }}</option>
+          </datalist>
+        </th>
+        
+        <th scope="col">
+          responsable
+          <input type="text" class="form-control" [(ngModel)]="filters.destinataire" (ngModelChange)="applyFilters()">
+        </th>
+        <th scope="col">
+          Date
+          <input 
+            type="text" 
+            class="form-control" 
+            [(ngModel)]="filters.dateDeSortie" 
+            (ngModelChange)="applyFilters()" 
+            list="dateList">
+          <datalist id="dateList">
+            <option *ngFor="let date of uniqueDates" [value]="date"></option>
+          </datalist>
+        </th>
+        
+        
+        <th scope="col" class="center">
+          Nombre de conteneur
+          <input type="text" class="form-control" [(ngModel)]="filters.nombreDeConteneur" (ngModelChange)="applyFilters()">
+        </th>
+        <th scope="col" class="center">
+          Type de mouvement
+          <input 
+            type="text" 
+            class="form-control" 
+            [(ngModel)]="filters.movementType" 
+            (ngModelChange)="applyFilters()" 
+            list="movementTypesList">
+          <datalist id="movementTypesList">
+            <option value="Sortie"></option>
+            <option value="Entrée"></option>
+          </datalist>
+        </th>
+        
+        
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let item of filteredMouvements">
+        <th scope="row">{{ item.data.
+          conteneur_code
+          }}</th>
+        <td>{{ item.data.conteneur_type }}</td>
+        <td>
+          <ng-container *ngIf="item.data.movement.IDdemandeurrecycleur === null; else recycleurTemplate">
+            le fournisseur est l'usine  {{ item.data.movement.fournisseur.firstName }} {{ item.data.movement.fournisseur.lastName }} située à {{ item.data.movement.fournisseur.address }}
+          </ng-container>
+          <ng-template #recycleurTemplate>
+            le recycleur {{ item.data.movement.demandeurrecycleur.firstName }} {{ item.data.movement.demandeurrecycleur.lastName }} située à {{ item.data.movement.demandeurrecycleur.address }}
+          </ng-template>
+        </td>
+                <td>en {{ item.data.movement.date }} </td>
+        <td>{{ item.count }}</td>
+        <ng-container *ngIf="item.data.movement.IDdemandeurrecycleur === null; else entreeTemplate">
+          <td><span style="color: green;">Entrée</span></td>
+        </ng-container>
+        <ng-template #entreeTemplate>
+          <td><span style="color: red;">Sortie</span></td>
+        </ng-template>
+        
+        
+      </tr>
+    </tbody>
+  </table>
+</c-row>

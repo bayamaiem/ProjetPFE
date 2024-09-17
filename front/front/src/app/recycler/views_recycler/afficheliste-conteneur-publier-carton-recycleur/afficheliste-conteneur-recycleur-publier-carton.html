@@ -1,0 +1,31 @@
+<div>
+  <table cTable>
+    <thead>
+      <tr>
+        <th scope="col">Code</th>
+        <th scope="col">Prix</th>
+        <th scope="col">collecteur</th>
+        <th scope="col">Depot</th>
+        <th scope="col">Type</th>
+        <th scope="col">Action</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let item of conteneurs">
+        <td>{{ item.conteneur.code_model.code }}</td>
+       <td>{{ item.conteneur.prix }}</td>
+        <td>{{ item.fournisseur2.username }}</td>
+        <td>{{  item.conteneur.depot.nom }} {{  item.conteneur.depot.lieu }}</td>
+        <td>{{  item.conteneur.dechet.type }}</td>
+        <td>
+          <button cButton color="danger" style="margin-left: -5px" 
+          [disabled]=" item.isProcessing" 
+          (click)="openDemandeModal( item,  item.id)">
+    {{  item.isProcessing ? ' Demande En cours' : 'Passer Demande' }}
+  </button>
+  
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>

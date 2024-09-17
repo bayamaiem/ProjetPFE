@@ -1,0 +1,21 @@
+/* To learn more about this file see: https://angular.io/config/tsconfig. */
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "outDir": "./out-tsc/spec",
+    "types": [
+      "jasmine",
+      "@angular/localize"
+    ],
+    "paths": {
+      "@docs-components/*": ["./src/components/*"]
+    }
+  },
+  "files": [
+    "src/test.ts",
+  ],
+  "include": [
+    "src/**/*.spec.ts",
+    "src/**/*.d.ts"
+, "src/app/recycler/views_recycler/customer_list_contact/modals.component.scss.ts", "src/app/Usine/views_usine/create-depot-usine/create-depot-usine.component.spec.ts"  ]
+}

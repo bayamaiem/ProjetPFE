@@ -1,0 +1,41 @@
+<div class="container">
+  <div class="mb-3">
+    <button
+      cNavLink
+      routerLink="/Usine/liste-depots"
+      routerLinkActive="active"
+      class="btn btn-primary float-end"
+    >
+      Retour
+    </button>
+  </div>
+
+  <h2>Modifier un dépôt</h2>
+
+  <form class="p-fluid">
+    <div class="form-group">
+      <label for="nom">Nom</label>
+      <input
+        type="text"
+        [(ngModel)]="depot.nom"
+        class="form-control"
+        name="nom"
+      />
+    </div>
+    <div class="form-group">
+      <label for="local">local</label>
+      <input
+        type="text"
+        [(ngModel)]="depot.lieu"
+        class="form-control"
+        name="local"
+      />
+    </div>
+
+    <div class="mb-3">
+      <button type="submit" (click)=" updateDepot() " pButton class="btn btn-primary float-end">
+        Enregistrer
+      </button>
+    </div>
+  </form>
+</div>

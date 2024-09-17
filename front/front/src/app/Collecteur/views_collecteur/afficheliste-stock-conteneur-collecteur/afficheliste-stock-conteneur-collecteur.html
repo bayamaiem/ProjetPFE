@@ -1,0 +1,146 @@
+<c-row ngPreserveWhitespaces class="mt-4">
+  <table cTable>
+    <thead>
+      <tr>
+        <th scope="col">
+          Code
+          <input 
+          type="text" 
+          class="form-control" 
+          [(ngModel)]="filters.conteneur_code" 
+          (ngModelChange)="applyFilters()" 
+          list="codeList">
+        
+        <datalist id="codeList">
+          <option *ngFor="let code of uniqueCodes" [value]="code"></option>
+        </datalist>
+        
+        </th>
+        
+        <th scope="col">
+          Type
+          <input type="text" class="form-control" list="dechetTypesList" [(ngModel)]="filters.type" (ngModelChange)="applyFilters()">
+          <datalist id="dechetTypesList">
+            <option *ngFor="let type of dechetTypes" [value]="type">{{ type }}</option>
+          </datalist>
+        </th>
+        
+        <th scope="col">
+          Fournisseur
+          <input type="text" class="form-control" [(ngModel)]="filters.destinataire" (ngModelChange)="applyFilters()">
+        </th>
+        <th scope="col">
+          Depot
+          <input 
+            type="text" 
+            class="form-control" 
+            [(ngModel)]="filters.depot" 
+            (ngModelChange)="applyFilters()" 
+            list="dateList">
+        </th>
+        
+        
+        <th scope="col" class="center">
+          Ancien prix
+         
+          <input  type ="text" class="form-control" 
+          [(ngModel)]="filters.conteneurPrix" 
+          (ngModelChange)="applyFilters()"
+          list="Aprix">
+          <datalist id="Aprix">
+          <option *ngFor="let prix of uniqueConteneurPrix" [value]="prix">{{ prix }}</option>
+        
+        </datalist>
+        </th>
+        
+        <th scope="col" class="center">
+          Nouvelle Prix
+          <input class="form-control" type="text"
+          [(ngModel)]="filters.prixcollecteur"
+          (ngModelChange)="applyFilters()" list="Nprix">
+                  <datalist id="Nprix">
+            <option *ngFor="let prix of uniquePrixCollecteur" [value]="prix">
+              {{ prix }}
+            </option>
+          </datalist>
+        </th>
+        
+        <th >Action</th>
+        
+      </tr>
+    </thead>
+
+<!-- Table of Grouped Movements -->
+<ng-template #stockerConteneurModal let-modal>
+  <div class="form-group" style="margin-bottom: 40px">
+    <div class="modal-body">
+      <form [formGroup]="form">
+        <div class="form-group">
+          <label for="depot">Dépôt</label>
+          <select formControlName="depot_id" class="form-control" id="depot" name="depot">
+            <option *ngFor="let depot of depots" [value]="depot.id">
+              {{ depot.nom }}
+            </option>
+          </select>
+          
+          <label for="prixcollecteur">Prix:</label><br>
+          <input formControlName="prixcollecteur" class="form-control" id="prixcollecteur" name="prixcollecteur">
+        </div>
+      </form>
+    </div>
+  </div>
+</ng-template>
+
+ 
+    <tbody>
+      <tr *ngFor="let movement of filteredMouvements ">
+        <td>{{ movement.conteneur_code}}</td>
+        <td>{{ movement.conteneur_type }}</td>
+        <td>  {{ movement.fournisseurName || 'Nom inconnu' }}    {{ movement.fournisseurlastName || '' }}     située à {{ movement.fournisseuraddress || 'Adresse inconnue' }}
+        </td>
+       <!--<td>{{ movement.date }} {{ movement.hour }}</td>
+        <td>{{ movement.count }}</td>-->
+
+        <td>{{ movement.depot ? movement.depot.nom : 'Depot non défini' }}à {{ movement.depot ? movement.depot.lieu :''}}</td> <!-- Valeur par défaut -->
+
+      <!-- <td>{{ movement.conteneurPrix }}</td>--> 
+<td>{{ movement.
+  conteneurPrix
+  
+ }}</td>
+        <td>{{ movement.prixcollecteur }}</td>
+
+
+        <td>
+            <div class="d-grid gap-2 d-md-flex justify-content-md-center" style="margin-top: 10px">
+              <button
+              cButton
+              color="warning"
+              style="margin-left: -5px"
+              (click)="PublierConteneurMouvement(movement
+                )"
+              [disabled]=" movement.is_published === 1"
+
+            >
+
+              Publier
+              </button>
+            </div>
+              <div class="d-grid gap-2 d-md-flex justify-content-md-center" style="margin-top: 10px">
+                <button cButton color="warning" style="margin-left: -5px" (click)="openStockerConteneurModal(movement)" [disabled]="movement.estStoker === 1">
+                  StocKer
+                </button>
+              </div>
+         
+            
+          
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <div *ngIf="groupedMovements.length === 0">
+      <p>Aucun Dechets</p>
+    </div>
+  </c-row>
+  <router-outlet></router-outlet>
+  

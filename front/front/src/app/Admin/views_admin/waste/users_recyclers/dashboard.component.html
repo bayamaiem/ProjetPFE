@@ -1,0 +1,75 @@
+<c-row>
+  <c-col xs>
+    <c-card class="mb-4">
+      <c-card-body>
+        <table
+          [hover]="true"
+          [responsive]="true"
+          [striped]="true"
+          align="middle"
+          cTable
+          class="mb-0 border"
+        >
+          <thead class="text-nowrap text-truncate">
+            <tr>
+              <th class="bg-body-tertiary">Nom D'utilisateurs</th>
+              <th class="bg-body-tertiary text-center">Nom</th>
+              <th class="bg-body-tertiary">Prenom</th>
+              <th class="bg-body-tertiary text-center">Email</th>
+              <th class="bg-body-tertiary">Role</th>
+              <th class="bg-body-tertiary">Créé à</th>
+              <th class="bg-body-tertiary">Bloquer</th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (user of usersRole; track user) {
+            <tr>
+              <td>
+                <div>{{ user.username }}</div>
+              </td>
+              <td class="text-center">
+                {{ user.firstName }}
+              </td>
+              <td>
+                <div class="d-flex justify-content-between">
+                  {{ user.lastName }}
+                </div>
+              </td>
+              <td class="text-center">
+                {{ user.email }}
+              </td>
+              <td>
+                <div class="small text-body-secondary">
+                  {{ user.role }}
+                </div>
+              </td>
+              <td>
+                <div class="small text-body-secondary">
+                  {{ user.certificat }}
+                </div>
+              </td>
+              <td>
+                <div class="text-center" class="me-md-2">
+                  {{ user.created_at }}
+                </div>
+              </td>
+              <td>
+                <button
+                  cButton
+                  [ngClass]="{
+                    'btn-primary': !user.active,
+                    'btn-danger': user.active
+                  }"
+                  (click)="changeUserActivation(user.id, user.active)"
+                >
+                  {{ user.active ? "Désactiver" : "Activer" }}
+                </button>
+              </td>
+            </tr>
+            }
+          </tbody>
+        </table>
+      </c-card-body>
+    </c-card>
+  </c-col>
+</c-row>

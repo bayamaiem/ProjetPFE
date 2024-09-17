@@ -1,0 +1,153 @@
+<!--<c-header class="mb-4 d-print-none" position="sticky">-->
+<ng-container>
+  <c-container [fluid]="true" class="border-bottom px-4">
+    <button
+      [cSidebarToggle]="sidebarId"
+      cHeaderToggler
+      class="btn"
+      toggle="visible"
+      style="margin-inline-start: -14px"
+    >
+      <svg cIcon name="cilMenu" size="lg"></svg>
+    </button>
+    <c-nav>
+      <c-nav-item> </c-nav-item>
+
+     
+         
+       
+
+      
+        <!--  <li>
+            <a
+              cNavLink
+              routerLink="recycleur/liste-conteneur-receycleur"
+              routerLinkActive="active"
+            >
+            Stock Des Conteneurs </a
+            >
+          </li>--> 
+          <li>
+            <a
+              cNavLink
+              routerLink="recycleur/liste-conteneur-acquis"
+              routerLinkActive="active"
+            >
+            Stock Des Conteneurs<br> De dechets </a
+            >
+          </li>
+     
+
+    <!-- <c-dropdown variant="nav-item">
+        <a [routerLink] cDropdownToggle cNavLink
+          >Conteneurs De Déchets Transformés</a
+        >
+        <ul cDropdownMenu>--> 
+          <li>
+            <a
+              cNavLink
+              routerLink="recycler/views_recycler/waste/waste_processing"
+              routerLinkActive="active"
+              >Conteneurs De Déchets<br> Transformés
+            </a>
+          </li>
+          <li>
+            <a
+              cNavLink
+              routerLink="recycleur/liste-depots-recycleur"
+              routerLinkActive="active"
+              >Gérer les depots<br> de déchets</a
+            >
+          </li>
+
+          <li>
+            <a
+              cNavLink
+              routerLink="/recycleur/waste_movement"
+              routerLinkActive="active"
+              >Mouvement Des Conteneurs</a
+            >
+          </li>
+
+          <li>
+            <a
+              cNavLink
+              routerLink="/recycleur/Gerer-codes"
+              routerLinkActive="active"
+              >Gérer codes</a
+            >
+          </li>
+    <!--   </ul>
+      </c-dropdown>-->
+
+      <c-header-nav class="d-none d-md-flex ms-auto">
+        <a
+          cNavLink
+          routerLink="recycler/views_recycler/notifications"
+          routerLinkActive="active"
+        >
+          <svg cIcon class="my-1" name="cilBell" size="lg"></svg>
+        </a>
+      <!--<a cNavLink>
+          <svg cIcon class="my-1" name="cilList" size="lg"></svg>
+        </a>
+        <a cNavLink>
+          <svg cIcon class="my-1" name="cilEnvelopeOpen" size="lg"></svg>
+        </a>-->  
+      </c-header-nav>
+    </c-nav>
+
+    <c-header-nav class="mx-0">
+      <ng-container *ngTemplateOutlet="userDropdown" />
+    </c-header-nav>
+  </c-container>
+  <c-container [fluid]="true" class="px-2">
+    <c-breadcrumb-router />
+  </c-container>
+</ng-container>
+<!--</c-header>-->
+
+<ng-template #userDropdown>
+  <c-dropdown
+    [popperOptions]="{ placement: 'bottom-start' }"
+    variant="nav-item"
+  >
+    <button [caret]="false" cDropdownToggle class="py-0 pe-0">
+      <c-avatar
+        shape="rounded-1"
+        [size]="'md'"
+        src="./assets/images/avatars/8.jpg"
+        status="success"
+        textColor="primary"
+      />
+    </button>
+    <ul cDropdownMenu class="pt-0 w-auto">
+      <li>
+        <h6
+          cDropdownHeader
+          class="bg-body-secondary text-body-secondary fw-semibold py-2"
+        >
+          Paramètre
+        </h6>
+      </li>
+
+      <a
+        cDropdownItem
+        routerLink="recycler/views_recycler/settings"
+        routerLinkActive="active"
+      >
+        <svg cIcon class="me-2" name="cilSettings"></svg>
+        Modifier Profile
+      </a>
+
+      <li>
+        <a cDropdownItem (click)="logout()">
+          <svg cIcon class="me-2" name="cilAccountLogout"></svg>
+          Déconnecter
+        </a>
+      </li>
+    </ul>
+  </c-dropdown>
+</ng-template>
+
+<ng-template #themeDropdown> </ng-template>

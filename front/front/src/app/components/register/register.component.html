@@ -1,0 +1,242 @@
+<section>
+  <div
+    class="alert"
+    *ngIf="alert"
+    class="alert alert-success alert-dismissible face show"
+    role="alert"
+  >
+    <strong>Succès!</strong> Votre compte a été créé.
+  </div>
+
+  <div class="signup-page">
+    <div class="form">
+      <div class="signup">
+        <div class="signup-header">
+          <div class="signup-header">
+            <h2>Inscription</h2>
+          </div>
+        </div>
+      </div>
+      <hr />
+      <form class="signup-form" [formGroup]="signup">
+        <div class="select">
+          <select
+            formControlName="role"
+            name="role"
+            id="format"
+            (change)="onRoleChange($event)"
+          >
+            <option value="" disabled selected hidden>Vous êtes un</option>
+            <option *ngFor="let role of roles" [value]="role.value">
+              {{ role.label }}
+            </option>
+          </select>
+        </div>
+
+        <hr />
+
+        <input
+          type="text"
+          name="username"
+          id="username"
+          placeholder="Votre nom d'utilisateur"
+          formControlName="username"
+          required
+        />
+        <div
+          *ngIf="f['username'].touched && f['username'].invalid"
+          class="alert-danger"
+        >
+          <div *ngIf="f['username'].errors && f['username'].errors['required']">
+            Nom d'utilisateur est requis.
+          </div>
+          <div
+            *ngIf="f['username'].errors && f['username'].errors['minlength']"
+          >
+            Le Nom d'utilisateur doit comporter 3 caractères.
+          </div>
+        </div>
+        <div *ngIf="signup.controls['role'].value !== 'Usine'">
+          <input
+            type="text"
+            name="firstName"
+            id="firstName"
+            placeholder="Nom"
+            formControlName="firstName"
+            required
+          />
+          <div
+            *ngIf="f['firstName'].touched && f['firstName'].invalid"
+            class="alert-danger"
+          >
+            <div
+              *ngIf="f['firstName'].errors && f['firstName'].errors['required']"
+            >
+              Nom est requis.
+            </div>
+            <div
+              *ngIf="
+                f['firstName'].errors && f['firstName'].errors['minlength']
+              "
+            >
+              Le nom doit comporter 3 caractères.
+            </div>
+          </div>
+        </div>
+        <div *ngIf="signup.controls['role'].value !== 'Usine'">
+          <input
+            type="text"
+            name="lastName"
+            id="lastName"
+            placeholder="Prénom"
+            formControlName="lastName"
+            required
+          />
+          <div
+            *ngIf="f['lastName'].touched && f['lastName'].invalid"
+            class="alert-danger"
+          >
+            <div
+              *ngIf="f['lastName'].errors && f['lastName'].errors['required']"
+            >
+              Prénom est requis.
+            </div>
+            <div
+              *ngIf="f['lastName'].errors && f['lastName'].errors['minlength']"
+            >
+              Le prénom doit comporter 3 caractères.
+            </div>
+          </div>
+          <div *ngIf="signup.controls['role'].value === 'Usine'">
+            <input
+              type="text"
+              name="Type_dactivite"
+              id="Type_dactivite"
+              placeholder="Type_dactivite"
+              formControlName="Type_dactivite"
+              required
+            />
+            <div
+              *ngIf="f['Type_dactivite'].touched && f['Type_dactivite'].invalid"
+              class="alert-danger"
+            >
+              <div
+                *ngIf="
+                  f['Type_dactivite'].errors &&
+                  f['Type_dactivite'].errors['required']
+                "
+              >
+                Prénom est requis.
+              </div>
+              <div
+                *ngIf="
+                  f['Type_dactivite'].errors &&
+                  f['Type_dactivite'].errors['Type_dactivite']
+                "
+              >
+                Le prénom doit comporter 5 caractères.
+              </div>
+            </div>
+          </div>
+        </div>
+        <input
+          type="number"
+          name="phone_number"
+          id="phone_number"
+          formControlName="phone_number"
+          placeholder="Votre numero de telephone"
+        />
+
+        <input
+          type="email"
+          name="name"
+          id="name"
+          placeholder="Email"
+          formControlName="email"
+          required
+        />
+        <div
+          *ngIf="f['email'].touched && f['email'].invalid"
+          class="alert-danger"
+        >
+          <div *ngIf="f['email'].errors && f['email'].errors['required']">
+            L' e-mail est requis.
+          </div>
+          <div *ngIf="f['email'].errors && f['email'].errors['email']">
+            Entrez une adresse email valide.
+          </div>
+        </div>
+        <div *ngIf="signup.controls['role'].value === 'recycleur'">
+          <input
+            type="text"
+            name="certificat"
+            id="certificat"
+            placeholder="Votre certificat"
+            formControlName="certificat"
+          />
+          <div
+            *ngIf="f['certificat'].touched && f['certificat'].invalid"
+            class="alert-danger"
+          >
+            <div
+              *ngIf="
+                f['certificat'].errors && f['certificat'].errors['required']
+              "
+            >
+              Le Certificat est requis.
+            </div>
+          </div>
+        </div>
+        <input
+          type="text"
+          name="address"
+          id="address"
+          placeholder="Votre address"
+          formControlName="address"
+        />
+        <input
+          type="text"
+          name="activite"
+          id="activite"
+          placeholder="Votre activite"
+          formControlName="activite"
+        />
+        <input
+          type="password"
+          name="name"
+          id="name"
+          placeholder="Password"
+          formControlName="password"
+          required
+        />
+        <div
+          *ngIf="f['password'].touched && f['password'].invalid"
+          class="alert-danger"
+        >
+          <div *ngIf="f['password'].errors && f['password'].errors['required']">
+            Minimum 6 caractères.
+          </div>
+          <div
+            *ngIf="f['password'].errors && f['password'].errors['minlength']"
+          >
+            Minimum 6 caractères.
+          </div>
+        </div>
+        <input
+          type="password"
+          name="name"
+          id="name"
+          placeholder="Confirmer votre mot de passe"
+          formControlName="password_confirmation"
+          required
+        />
+        <button type="submit" (click)="onSubmit()" [disabled]="signup.invalid">
+          Crée
+        </button>
+        <p class="message">
+          <span>Deja un compte?</span> <a routerLink="/login">Connecter</a>
+        </p>
+      </form>
+    </div>
+  </div>
+</section>

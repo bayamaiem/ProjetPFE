@@ -1,0 +1,46 @@
+:host {
+  .legend {
+    small {
+      font-size: x-small;
+    }
+  }
+}
+:host {
+  .legend {
+    small {
+      font-size: x-small;
+    }
+  }
+}
+.notification-container {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  width: 300px;
+  z-index: 1000;
+}
+
+.notification {
+  background-color: #4267B2; /* Facebook blue */
+  color: white;
+  padding: 10px 20px;
+  margin-bottom: 10px;
+  border-radius: 5px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.notification-content {
+  flex-grow: 1;
+}
+
+.close-btn {
+  background: none;
+  border: none;
+  color: white;
+  font-size: 20px;
+  cursor: pointer;
+}
+

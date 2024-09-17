@@ -1,0 +1,32 @@
+<c-card>
+  <c-row class="g-0">
+    <c-card-body cCol>
+      <h5 cCardTitle>Profile</h5>
+      <div>
+        <h6>Nom: {{ user?.firstName }} {{ user?.lastName }}</h6>
+        <h6>Email: {{ user?.email }}</h6>
+        <h6>Numéro téléphone: {{ user?.phone_number }}</h6>
+        <h6>Adresse: {{ user?.address }}</h6>
+        <h6>Activité: {{ user?.activite }}</h6>
+        <h6>Certificat: {{ user?.certificat }}</h6>
+      </div>
+    </c-card-body>
+  </c-row>
+</c-card>
+<c-row class="mt-4">
+  <c-col md="12" xl="3" *ngFor="let type of wasteSum | keyvalue">
+    <c-widget-stat-b
+      [title]="getStringValue(type.key)"
+      class="mb-4"
+      [value]="getStringValue(type.value)"
+    >
+      <a
+        cNavLink
+        [routerLink]="['collecteur/liste-container', type.key]"
+        routerLinkActive="active"
+        >Détailles</a
+      >
+      <br /><br /><br />
+    </c-widget-stat-b>
+  </c-col>
+</c-row>

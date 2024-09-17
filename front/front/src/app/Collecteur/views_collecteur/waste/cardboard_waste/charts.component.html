@@ -1,0 +1,159 @@
+<c-col class=" d-md-flex justify-content-md-end">
+  <c-card class="mb-4">
+    <ng-container *ngTemplateOutlet="withPopover" />
+  </c-card>
+</c-col>
+
+<ng-template #withPopover>
+  <button [cModalToggle]="'addModal'" cButton>Add</button>
+
+  <c-modal alignment="center" id="addModal">
+    <c-modal-header>
+      <h5 cModalTitle>Add Modal Title</h5>
+      <button [cModalToggle]="'addModal'" cButtonClose></button>
+    </c-modal-header>
+    <c-modal-body>
+      <!-- Add modal content -->
+      <div class="form-group">
+        <label for="addInputField1">code :</label>
+        <input type="text" class="form-control" id="addInputField1">
+      </div>
+      <div class="form-group">
+        <label for="addInputField2">depot:</label>
+        <input type="text" class="form-control" id="addInputField2">
+      </div>
+      <div class="form-group">
+        <label for="addInputField3">release date:</label>
+        <input type="text" class="form-control" id="addInputField3">
+      </div>
+    </c-modal-body>
+    <c-modal-footer>
+      <button [cModalToggle]="'addModal'" cButton color="secondary">Close</button>
+      <button cButton color="primary">Add</button>
+    </c-modal-footer>
+  </c-modal>
+
+
+  <c-modal alignment="center" id="exitModal">
+    <c-modal-header>
+      <h5 cModalTitle>Exit Modal Title</h5>
+      <button [cModalToggle]="'exitModal'" cButtonClose></button>
+    </c-modal-header>
+    <c-modal-body>
+      <!-- Exit modal content -->
+      <div class="form-group">
+        <label for="exitInputField1">code:</label>
+        <input type="text" class="form-control" id="exitInputField1">
+      </div>
+      <div class="form-group">
+        <label for="exitInputField2">Type:</label>
+        <input type="text" class="form-control" id="exitInputField2">
+      </div>
+      <div class="form-group">
+        <label for="exitInputField3">receiver:</label>
+        <input type="text" class="form-control" id="exitInputField3">
+      </div>
+      <div class="form-group">
+        <label for="exitInputField4">release date:</label>
+        <input type="text" class="form-control" id="exitInputField4">
+      </div>
+      <div class="form-group">
+        <label for="exitInputField5">Number of container:</label>
+        <input type="text" class="form-control" id="exitInputField5">
+      </div>
+    </c-modal-body>
+    <c-modal-footer>
+      <button [cModalToggle]="'exitModal'" cButton color="secondary">Close</button>
+      <button cButton color="primary">Exit_waste</button>
+    </c-modal-footer>
+  </c-modal>
+  <c-modal alignment="center" id="updateModal">
+    <c-modal-header>
+      <h5 cModalTitle>Update Modal Title</h5>
+      <button [cModalToggle]="'updateModal'" cButtonClose></button>
+    </c-modal-header>
+    <c-modal-body>
+      <!-- Update modal content -->
+      <div class="form-group">
+        <label for="updateInputField1">code :</label>
+        <input type="text" class="form-control" id="updateInputField1">
+      </div>
+      <div class="form-group">
+        <label for="updateInputField2">depot:</label>
+        <input type="text" class="form-control" id="updateInputField2">
+      </div>
+      <div class="form-group">
+        <label for="updateInputField3">release date:</label>
+        <input type="text" class="form-control" id="updateInputField3">
+      </div>
+    </c-modal-body>
+    <c-modal-footer>
+      <button [cModalToggle]="'updateModal'" cButton color="secondary">Close</button>
+      <button cButton color="primary">Update</button>
+    </c-modal-footer>
+  </c-modal>
+
+<c-modal alignment="center" id="hideModal">
+  <c-modal-header>
+    <h5 cModalTitle>hide Modal Title</h5>
+    <button [cModalToggle]="'hideModal'" cButtonClose></button>
+  </c-modal-header>
+  <c-modal-body>
+    <!-- Confirmation message -->
+    <p>Are you sure you want to hide this entry?</p>
+  </c-modal-body>
+  <c-modal-footer>
+    <button [cModalToggle]="'hideModal'" cButton color="secondary">Cancel</button>
+    <button cButton color="black" (click)="hideeEntry()">hide</button>
+  </c-modal-footer>
+</c-modal>
+
+  <!-- Ajoutez ce code au même endroit où vous avez les autres modals -->
+<c-modal alignment="center" id="deleteModal">
+  <c-modal-header>
+    <h5 cModalTitle>Delete Modal Title</h5>
+    <button [cModalToggle]="'deleteModal'" cButtonClose></button>
+  </c-modal-header>
+  <c-modal-body>
+    <!-- Confirmation message -->
+    <p>Are you sure you want to delete this entry?</p>
+  </c-modal-body>
+  <c-modal-footer>
+    <button [cModalToggle]="'deleteModal'" cButton color="secondary">Cancel</button>
+    <button cButton color="danger" (click)="deleteEntry()">Delete</button>
+  </c-modal-footer>
+</c-modal>
+
+</ng-template>
+
+<c-row ngPreserveWhitespaces>
+  <table cTable>
+    <thead>
+      <tr>
+        <th scope="col">code</th>
+        <th scope="col">depot</th>
+        <th scope="col">release date</th>
+        <th scope="col" class="d-grid gap-2 d-md-flex justify-content-md-center">Action</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td scope="row">104</td>
+        <td scope="row">E104</td>
+        <td>02/12/2023</td>
+        <td>
+          <div class="d-grid gap-2 d-md-flex justify-content-md-center" style="margin-top: 10px;">
+            <button [cModalToggle]="'exitModal'" cButton style="margin-left: -5px;">Exit waste</button>
+            <button [cModalToggle]="'hideModal'" cButton color="black" style="margin-left: -5px;">hide</button>
+            <button [cModalToggle]="'updateModal'" cButton style="margin-left: -5px;">Update</button>
+            <button [cModalToggle]="'deleteModal'" cButton color="danger" style="margin-left: -5px;">Delete</button>
+            <!-- Bouton pour ouvrir le modal de transformation -->
+          </div>
+        </td>
+        
+        
+      </tr>
+    </tbody>
+  </table>
+  <router-outlet />
+</c-row>

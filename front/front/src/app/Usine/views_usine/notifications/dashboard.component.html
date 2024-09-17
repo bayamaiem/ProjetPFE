@@ -1,0 +1,56 @@
+<div class="notification-container">
+  <ng-container *ngFor="let notification of notifications; let i = index">
+    <div class="notification">
+      <div class="notification-content">{{ notification }}</div>
+      
+      <a href="#" class="btn btn-link">View Details</a>
+    </div>
+  </ng-container>
+</div>
+<c-row>
+  <c-col xs>
+    <c-card class="mb-4">
+      <c-card-body>
+        <table
+          [hover]="true"
+          [responsive]="true"
+          [striped]="true"
+          align="middle"
+          cTable
+          class="mb-0 border"
+        >
+          <thead class="text-nowrap text-truncate">
+          <tr>
+            <th class="bg-body-tertiary text-center ">
+              
+            </th>
+            <th class="bg-body-tertiary">Tous les notifications</th>
+
+        
+
+          </tr>
+          </thead>
+          <tbody>
+            @for (user of users; track user.name; let i = $index) {
+              <tr>
+                <td class="text-center">
+                  <c-avatar [size]="'md'" src="{{ user.avatar }}" status="{{ user.status }}" />
+                </td>
+                <td>
+                  <div><a  cNavLink routerLink="Usine/views_usine/users_details" routerLinkActive="active">{{ user.name }} {{ user.description }}</a> </div>
+                  
+                </td>
+               
+               
+               
+                
+                
+               
+              </tr>
+            }
+          </tbody>
+        </table>
+      </c-card-body>
+    </c-card>
+  </c-col>
+</c-row>

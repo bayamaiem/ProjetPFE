@@ -1,0 +1,22 @@
+<h2>Ajouter un depot</h2>
+
+  <form [formGroup]="Codeform" (ngSubmit)="checkAndSaveCode()" class="p-fluid">
+    <div class="form-group">
+      <label for="nom">Code</label>
+      <input
+        type="text"
+        formControlName="code"
+        class="form-control"
+        id="code"
+        placeholder="Entrez le code de votre Conteneur"
+      />
+     
+    </div>
+
+    <div class="mb-3">
+      <button type="submit" pButton class="btn btn-primary float-end">
+        Enregistrer
+      </button>
+    </div>
+  </form>
+

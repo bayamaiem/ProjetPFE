@@ -1,0 +1,41 @@
+<div class="container">
+  <div class="mb-3">
+    <button
+      cNavLink
+      routerLink="/recycleur/liste-depots-recycleur"
+      routerLinkActive="active"
+      type="submit"
+      class="btn btn-primary float-end"
+    >
+      back
+    </button>
+  </div>
+  <h2>Ajouter un depot</h2>
+
+  <form [formGroup]="depotform" (ngSubmit)="saveDepot()" class="p-fluid">
+    <div class="form-group">
+      <label for="nom">Nom</label>
+      <input
+        type="text"
+        formControlName="nom"
+        class="form-control"
+        id="nom"
+        placeholder="Entrez le nom du depot"
+      />
+      <label for="nom">local</label>
+      <input
+        type="text"
+        formControlName="lieu"
+        class="form-control"
+        id="lieu"
+        placeholder="Entrez le lieu du depot"
+      />
+    </div>
+
+    <div class="mb-3">
+      <button type="submit" pButton class="btn btn-primary float-end">
+        Enregistrer
+      </button>
+    </div>
+  </form>
+</div>

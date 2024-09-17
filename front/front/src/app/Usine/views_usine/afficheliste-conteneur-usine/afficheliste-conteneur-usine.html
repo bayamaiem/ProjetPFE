@@ -1,0 +1,76 @@
+<div>
+  <div class="back-button">
+    <button
+      cNavLink
+      routerLink="/create-conteneur"
+      routerLinkActive="active"
+      type="submit"
+      class="btn btn-primary float-end"
+    >
+      Ajouter Conteneur
+    </button>
+  </div>
+
+  <table cTable>
+    <thead>
+      <tr>
+        <th scope="col">Code</th>
+        <th scope="col">Prix</th>
+        <th scope="col">Usine</th>
+        <th scope="col">Depot</th>
+        <th scope="col">Type</th>
+        <th scope="col">Action</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let item of conteneurs">
+        <td>{{ item.conteneur_code }}</td>
+        <td>{{ item.conteneur.prix }}</td>
+        <td>{{ item.user_name }}</td>
+        <td>{{ item.depot_name }}</td>
+        <td>{{ item.dechet_name }}</td>
+
+        <td>
+          <div
+            class="d-grid gap-2 d-md-flex justify-content-md-center"
+            style="margin-top: 10px"
+          >
+          <button
+          cButton
+          color="warning"
+          style="margin-left: -5px"
+          [routerLink]="['/update-container', item.conteneur.id]"
+          [disabled]="item.conteneur.is_published === 1"
+
+        >
+          Modifier
+        </button>
+  
+        <!-- Supprimer button -->
+        <button
+          cButton
+          color="danger"
+          style="margin-left: -5px"
+          (click)="openDeleteModal(item.conteneur.id)"
+          [disabled]="item.conteneur.is_published === 1"
+        >
+          Supprimer
+        </button>
+
+            <button
+  cButton
+  color="primary"
+  style="margin-left: -5px"
+  (click)="publishConteneur(item.conteneur)"
+  [disabled]="item.conteneur.is_published === 1"
+
+>
+  Publier
+</button>
+
+          </div>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>

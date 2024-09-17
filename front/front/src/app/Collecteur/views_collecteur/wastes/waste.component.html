@@ -1,0 +1,11 @@
+<c-row class="mt-4">
+  <c-col md="12" xl="3" *ngFor="let type of wasteSum | keyvalue">
+    <c-widget-stat-b
+      [title]="getStringValue(type.key)"
+      class="mb-4"
+      [value]="getStringValue(type.value)"
+    >
+      <br /><br /><br />
+    </c-widget-stat-b>
+  </c-col>
+</c-row>

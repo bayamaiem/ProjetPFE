@@ -1,0 +1,64 @@
+<c-row>
+  <c-col xs>
+    <c-card class="mb-4">
+      <c-card-body>
+        <div class="mb-3">
+          <input
+            type="text"
+            class="form-control"
+            placeholder="Rechercher une entreprise"
+            [formControl]="searchControl"
+          />
+        </div>
+        <table
+          [hover]="true"
+          [responsive]="true"
+          [striped]="true"
+          align="middle"
+          cTable
+          class="mb-0 border"
+        >
+          <thead class="text-nowrap text-truncate">
+            <tr>
+              <th class="bg-body-tertiary">Nom D'usine</th>
+              <th class="bg-body-tertiary text-center">Nom du responsable d'usine</th>
+              <th class="bg-body-tertiary">Prenom du responsable d'usine</th>
+              <th class="bg-body-tertiary text-center">Email</th>
+              <th class="bg-body-tertiary text-center">Numéro téléphone:</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let user of filteredUsinesUsers; trackBy: trackById">
+              <td>
+                <div>
+                  <a
+                    cNavLink
+                    [routerLink]="['Collecteur/views_collecteur/users_details', user.id]"
+                    routerLinkActive="active"
+                    >{{ user.username }}</a
+                  >
+                </div>
+              </td>
+              <td class="text-center">
+                {{ user.firstName }}
+              </td>
+              <td>
+                <div class="d-flex justify-content-between">
+                  {{ user.lastName }}
+                </div>
+              </td>
+              <td class="text-center">
+                {{ user.email }}
+              </td>
+              <td class="text-center">
+                <div>
+                  {{ user.phone_number }}
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </c-card-body>
+    </c-card>
+  </c-col>
+</c-row>

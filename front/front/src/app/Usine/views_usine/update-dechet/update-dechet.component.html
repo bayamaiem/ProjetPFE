@@ -1,0 +1,18 @@
+<div class="container">
+  <div class="mb-3">
+    <button cNavLink routerLink="/liste-dechets" routerLinkActive="active" class="btn btn-primary float-end">Retour</button>
+  </div>
+
+  <h2>Modifier un déchet</h2>
+
+  <form (ngSubmit)="updateDechets()" class="p-fluid">
+    <div class="form-group">
+      <label for="type">Type</label>
+      <input type="text" [(ngModel)]="dechet.type" class="form-control" name="type">
+    </div>
+
+    <div class="mb-3">
+      <button type="submit" class="btn btn-primary float-end">Enregistrer</button>
+    </div>
+  </form>
+</div>

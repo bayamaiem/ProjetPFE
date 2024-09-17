@@ -1,0 +1,53 @@
+<c-row>
+  <c-col xs>
+    <c-card class="mb-4">
+      <c-card-body>
+        <table
+          [hover]="true"
+          [responsive]="true"
+          [striped]="true"
+          align="middle"
+          cTable
+          class="mb-0 border"
+        >
+          <thead class="text-nowrap text-truncate">
+          <tr>
+            <th class="bg-body-tertiary text-center ">
+              <svg cIcon name="cilPeople"></svg>
+            </th>
+            <th class="bg-body-tertiary">User</th>
+             <th class="bg-body-tertiary text-center">details user</th>
+        
+
+          </tr>
+          </thead>
+          <tbody>
+            @for (user of users; track user.name; let i = $index) {
+              <tr>
+                <td class="text-center">
+                  <c-avatar [size]="'md'" src="{{ user.avatar }}" status="{{ user.status }}" />
+                </td>
+                <td>
+                  <div>{{ user.name }}</div>
+                  
+                </td>
+               
+               
+               
+                <td class="text-center">
+                  <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                    <td>
+                      details
+                    </td>
+                  </div>         
+                </td>
+                
+               
+              </tr>
+            }
+          </tbody>
+        </table>
+      </c-card-body>
+    </c-card>
+  </c-col>
+</c-row>

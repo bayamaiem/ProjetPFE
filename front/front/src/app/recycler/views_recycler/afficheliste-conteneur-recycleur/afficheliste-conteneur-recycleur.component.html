@@ -1,0 +1,68 @@
+<!-- Filter Form 
+<div class="filter-container mt-4">
+<form [formGroup]="filterForm" (ngSubmit)="filterMovements2()">
+    <div class="row">
+      <div class="col-md-2">
+        <label for="code">Code</label>
+        <input formControlName="code" class="form-control" id="code" placeholder="Code">
+      </div>
+      <div class="col-md-2">
+        <label for="conteneur_type">Type</label>
+        <input formControlName="conteneur_type" class="form-control" id="conteneur_type" placeholder="Type">
+      </div>
+      <div class="col-md-2">
+        <label for="date">Date</label>
+        <input formControlName="date" type="date" class="form-control" id="date">
+      </div>
+      
+      <div class="col-md-2">
+        <button type="submit" class="btn btn-primary mt-4">Filter</button>
+      </div>
+    </div>
+  </form>
+</div>
+
+
+<div>
+  <c-row ngPreserveWhitespaces class="mt-4">
+    <table cTable *ngIf="groupedMovements && groupedMovements.length > 0">
+      <thead>
+        <tr>
+          <th scope="col">Code</th>
+          <th scope="col">Type</th>
+          <th scope="col">Depot</th>
+          <th scope="col">Date </th>
+          <th scope="col">Nombre de Conteneurs</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let item of groupedMovements">
+          <td>{{ item.conteneur_code }}</td>
+          <td>{{ item.conteneur_type }}</td>
+          <td>{{ item.depot.nom}} a {{item.depot.lieu}} </td> 
+          <td>{{ item.formatted_updated_at }}</td>
+          <td>{{ item.count }}</td>
+          <td>
+            <div class="d-grid gap-2 d-md-flex justify-content-md-center" style="margin-top: 10px">
+              <button
+                cButton
+                color="warning"
+                style="margin-left: -5px"
+                (click)="openTransformModal(item.id_conteneur)"
+              >
+                Transformer
+              </button>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <div *ngIf="groupedMovements.length === 0">
+      <p>Aucun Dechets</p>
+    </div>
+  </c-row>
+  <router-outlet></router-outlet>
+
+</div>
+-->

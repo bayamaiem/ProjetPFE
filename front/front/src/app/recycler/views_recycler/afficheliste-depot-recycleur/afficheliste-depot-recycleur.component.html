@@ -1,0 +1,61 @@
+<div>
+  <div class="back-button">
+    <button
+      cNavLink
+      routerLink="/add-depot-recycleur"
+      routerLinkActive="active"
+      type="submit"
+      class="btn btn-primary float-end"
+    >
+      Ajouter Un Dépôt
+    </button>
+  </div>
+
+  <table cTable>
+    <thead>
+      <tr>
+        <th scope="col">Nom</th>
+        <th scope="col">lieu</th>
+        <th class="d-grid gap-2 d-md-flex justify-content-md-center">Action</th>      
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let item of depots">
+        <td>{{ item.nom }}</td>
+        <td>{{ item.lieu }}</td>
+
+        <td>
+          <div
+            class="d-grid gap-2 d-md-flex justify-content-md-center"
+            style="margin-top: 10px"
+          >
+            <a
+              routerLink="/recycler/depots/{{ item.id }}/edit"
+              routerLinkActive="active"
+              class="btn btn-warning"
+              >modifier</a
+            >
+
+            
+            <a
+            type="button"
+            (click)="deleteDepot($event, item.id)"
+            class="btn btn-danger"
+            [ngClass]="{ 'disabled': disabledDepots[item.id] }"
+            [attr.aria-disabled]="disabledDepots[item.id] ? true : null"
+            
+          >
+            Supprimer
+          </a> 
+ <!--        <a
+              type="button"
+              (click)="deleteDepot($event, item.id)"
+              class="btn btn-danger"
+              >supprimer</a
+            >-->   
+          </div>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>

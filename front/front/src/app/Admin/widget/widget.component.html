@@ -1,0 +1,57 @@
+
+<c-row>
+    <c-col md="12" xl="6">
+      <c-widget-stat-a
+        class="mb-4"
+        color="primary"
+        [title]="'Widget Title'"
+      >
+        <ng-template cTemplateId="widgetValueTemplate" ngPreserveWhitespaces>
+          $9000
+          <span class="fs-6 fw-normal">
+      </span>
+        </ng-template>
+        <ng-template cTemplateId="widgetActionTemplate">
+          <c-dropdown alignment="end" variant="btn-group">
+            <button [caret]="false" cButton cDropdownToggle class="p-0" color="transparent">
+            </button>
+            <div cDropdownMenu>
+              <a [routerLink]="[]" cDropdownItem>Action One</a>
+              <a [routerLink]="[]" cDropdownItem>Action Two</a>
+              <a [routerLink]="[]" cDropdownItem>Action Three</a>
+            </div>
+          </c-dropdown>
+        </ng-template>
+        <ng-template cTemplateId="widgetChartTemplate">
+        </ng-template>
+      </c-widget-stat-a>
+    </c-col>
+  
+  
+    <c-col md="12" xl="6">
+      <c-widget-stat-a
+        class="mb-4"
+        color="primary"
+        [title]="'Widget Title'"
+      >
+        <ng-template cTemplateId="widgetValueTemplate" ngPreserveWhitespaces>
+          $9000
+          <span class="fs-6 fw-normal">
+      </span>
+        </ng-template>
+        <ng-template cTemplateId="widgetActionTemplate">
+          <c-dropdown alignment="end" variant="btn-group">
+            <button [caret]="false" cButton cDropdownToggle class="p-0" color="transparent">
+            </button>
+            <div cDropdownMenu>
+              <a [routerLink]="[]" cDropdownItem>Action One</a>
+              <a [routerLink]="[]" cDropdownItem>Action Two</a>
+              <a [routerLink]="[]" cDropdownItem>Action Three</a>
+            </div>
+          </c-dropdown>
+        </ng-template>
+        <ng-template cTemplateId="widgetChartTemplate">
+        </ng-template>
+      </c-widget-stat-a>
+    </c-col>
+  </c-row>

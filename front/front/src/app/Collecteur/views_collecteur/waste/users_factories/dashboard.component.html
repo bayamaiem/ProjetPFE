@@ -1,0 +1,101 @@
+<c-row>
+  <c-col xs>
+    <c-card class="mb-4">
+      <c-card-body>
+        <table
+          [hover]="true"
+          [responsive]="true"
+          [striped]="true"
+          align="middle"
+          cTable
+          class="mb-0 border"
+        >
+          <thead class="text-nowrap text-truncate">
+          <tr>
+            <th class="bg-body-tertiary text-center ">
+              <svg cIcon name="cilPeople"></svg>
+            </th>
+            <th class="bg-body-tertiary">User</th>
+            <th class="bg-body-tertiary text-center">Region</th>
+            <th class="bg-body-tertiary">Activity</th>
+            <th class="bg-body-tertiary">details user</th>
+            <th class="bg-body-tertiary text-center">contact</th>
+          </tr>
+          </thead>
+          <tbody>
+            @for (user of users; track user.name; let i = $index) {
+              <tr>
+                <td class="text-center">
+                  <c-avatar [size]="'md'" src="{{ user.avatar }}" status="{{ user.status }}" />
+                </td>
+                <td>
+                  <div>{{ user.name }}</div>
+                  <div class="small text-body-secondary text-nowrap">
+                  <span>
+                    {{ user.state }} | Registered: {{ user.registered }}
+                  </span>
+                  </div>
+                </td>
+                <td class="text-center">
+                  <svg
+                    cIcon
+                    id="{{ user.country + user.name }}"
+                    name="cif{{ user.country }}"
+                    size="xl"
+                    title="{{ user.country }}"
+                  ></svg>
+                </td>
+                
+             
+                <td>
+                  <div class="small text-body-secondary">Last login</div>
+                  <div class="fw-semibold text-nowrap">{{ user.activity }}</div>
+                </td>
+                <td>
+                  
+                  <button cButton routerLink="../../../../Collecteur/views_collecteur/users_details" routerLinkActive="active">
+                    details
+                  </button>               
+                 </td>
+                <td>
+                  <c-col class=" d-md-flex justify-content-md-center">
+                    <c-card>
+                          <ng-container *ngTemplateOutlet="withPopover" />
+                    </c-card>
+                  </c-col>
+                  <ng-template #withPopover>
+                    <button [cModalToggle]="withPopoverModal.id" cButton >contact</button>
+                    <c-modal #withPopoverModal alignment="center" id="withPopoverModal">
+                      <c-modal-header>
+                        <h5 cModalTitle>Modal title</h5>
+                        <button [cModalToggle]="withPopoverModal.id" cButtonClose></button>
+                      </c-modal-header>
+                      <c-modal-body>
+                        <div class="form-group">
+                          <label for="inputField1">Input Field 1:</label>
+                          <input type="text" class="form-control" id="inputField1" >
+                        </div>
+                        <div class="form-group">
+                          <label for="inputField2">Input Field 2:</label>
+                          <input type="text" class="form-control" id="inputField2" >
+                        </div>
+                        <!-- Add more input fields as needed -->
+                        
+                      </c-modal-body>
+                      <c-modal-footer>
+                        <button [cModalToggle]="withPopoverModal.id" cButton color="secondary">
+                          Close
+                        </button>
+                        <button cButton color="primary">Understood</button>
+                      </c-modal-footer>
+                    </c-modal>
+                  </ng-template>                
+                </td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </c-card-body>
+    </c-card>
+  </c-col>
+</c-row>

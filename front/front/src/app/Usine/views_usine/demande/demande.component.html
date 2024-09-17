@@ -1,0 +1,49 @@
+<c-row >
+  <c-col xs>
+    <c-card class="mb-4">
+      <c-card-body>
+        <table
+          [hover]="true"
+          [responsive]="true"
+          [striped]="true"
+          align="middle"
+          cTable
+          class="mb-0 border"
+        >
+          <thead class="text-nowrap text-truncate">
+            <tr>
+              <th class="bg-body-tertiary text-center">Date</th>
+              <th class="bg-body-tertiary text-center">Collecteur</th>
+              <th class="bg-body-tertiary text-center">Information du conteneur</th>
+
+              <th class="bg-body-tertiary text-center">Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let demande of demandes ">
+              <td class="text-center">{{ demande.demande.date }}</td>
+              <td class="text-center" > <a cNavLink
+                [routerLink]="['Usine/views_usine/users_details/'
+                ,demande.demande.user_id ]"
+                routerLinkActive="active">{{ demande.user_name }}</a></td>     
+                <td class="text-center">le conteneur {{ demande. demande.conteneur?.code }}
+                  de dechets   {{ demande.demande.conteneur?.dechet.type}}  dans le depot {{ demande.demande.conteneur?.depot.nom}} qui situé a  {{ demande.demande.conteneur?.depot.lieu}}   </td>       
+                  <td class="text-center">
+                <button
+                  cButton
+                  [ngClass]="{
+                    'btn-danger': demande.demande.etat,
+                    'btn-primary': !demande.demande.etat
+                  }"
+                  (click)="openStatusModal(demande.demande.id, demande.demande.etat, demande.demande.conteneur_id ,demande.user_name)"
+                >
+                  {{ demande.demande.etat ? "Accepter la demande " : "Accepter la demande" }}
+                </button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </c-card-body>
+    </c-card>
+  </c-col>
+</c-row>
