@@ -36,7 +36,8 @@ class MovementController extends Controller
             // Récupérer le type de conteneur basé sur le modèle Dechet
             $conteneurType = $movement->conteneur->dechet->type ?? null;
             $conteneurCode = $movement->conteneur->codeModel->code ?? null;
-    
+            $poids = $movement->conteneur->poids ?? null;
+
             return [
                 'movement' => $movement,
                 'conteneur_type' => $conteneurType,
@@ -45,6 +46,7 @@ class MovementController extends Controller
                 'collecteur_lastName' => $movement->fournisseur2->lastName,
                 'collecteur_phone_number' => $movement->fournisseur2->phone_number,
                 'conteneur_code' => $conteneurCode,
+                'poids'=> $poids,
 
 
 
@@ -77,6 +79,7 @@ class MovementController extends Controller
         // Récupérer le type de conteneur basé sur le modèle Dechet
         $conteneurType = $movement->conteneur->dechet->type ?? null;
         $conteneurCode = $movement->conteneur->codeModel->code ?? null;
+        $poids = $movement->conteneur->poids ?? null;
 
 
         return [
@@ -84,7 +87,7 @@ class MovementController extends Controller
             'conteneur_type' => $conteneurType,
             'recycleur_username' => $movement->demandeurrecycleur->username,
             'conteneur_code' => $conteneurCode,
-
+             'poids' =>$poids,
             
         ];
     });
@@ -116,13 +119,14 @@ public function getAllCollecteurMouvement(Request $request)
         $conteneurCode = $movement->conteneur->codeModel->code ?? null;
         $recycleurUsername = $movement->demandeurrecycleur ? $movement->demandeurrecycleur->username : 'N/A';
 
+        $poids = $movement->conteneur->poids ?? null;
 
         return [
             'movement' => $movement,
             'conteneur_type' => $conteneurType,
             'recycleur_username' =>  $recycleurUsername,
             'conteneur_code' => $conteneurCode,
-
+            'poids'=> $poids,
             
         ];
     });
@@ -234,6 +238,7 @@ public function getAllCollecteurMouvement(Request $request)
         $prixcollecteur=$movement->prixcollecteur?? null;
         $estStoker=$movement->estStoker?? null;
         $is_published=$movement->is_published?? null;
+        $poids = $movement->conteneur->poids ?? null;
 
         // Inclure les informations du fournisseur (demandeur)
         $fournisseurName = $movement->fournisseur->firstName
@@ -249,6 +254,7 @@ public function getAllCollecteurMouvement(Request $request)
             'movement' => $movement,
             'conteneur_code' => $conteneurCode,
             'conteneurPrix'=>$conteneurPrix,
+            'poids'=>$poids,
             'conteneur_type' => $conteneurType,
             'fournisseurName' => $fournisseurName,
             'fournisseurlastName' => $fournisseurlastName,
@@ -256,6 +262,7 @@ public function getAllCollecteurMouvement(Request $request)
                  'prixcollecteur'=>$prixcollecteur,
                  'estStoker'=>$estStoker,
                  'is_published'=>$is_published,
+                 
                  'id'=>$id,
             'depot' => $depot ? [
                 'id' => $depot->id,
@@ -329,6 +336,7 @@ public function getMovementsByDemandeurstocker()
             $conteneurType = $movement->conteneur->dechet->type ?? null;
             $conteneurCode = $movement->conteneur->codeModel->code ?? null;
             $is_transformed = $movement->conteneur->is_transformed ?? null;
+            $poids = $movement->conteneur->poids ?? null;
 
             // Récupérer le nom du fournisseur (identifié par IDdemandeur dans la table users)
             $fournisseurName = $movement->fournisseur->name ?? null;
@@ -340,6 +348,7 @@ public function getMovementsByDemandeurstocker()
                 'fournisseur_name' => $fournisseurName,
                 'conteneur_code' => $conteneurCode,
                   'is_transformed'=>$is_transformed,
+                  'poids' =>  $poids,
                 'depot' => $depot ? [
                 'id' => $depot->id,
                 'nom' => $depot->nom,
@@ -385,6 +394,8 @@ public function getMovementsByDemandeurstocker()
 
         // Récupérer le dépôt (si lié correctement)
         $depot = $movement->depot;
+        $poids = $movement->conteneur->poids ?? null;
+
 
         return [
             'movement' => $movement,
@@ -398,6 +409,7 @@ public function getMovementsByDemandeurstocker()
             'adressusine'=>$addressusine,
             'hourcollecteur'=>$hourcollecteur,
             'datecollecteur'=>$datecollecteur,
+            'poids'=>  $poids,
             'date'=>$date,
             'hour'=>$hour,
             'depot' => $depot ? [

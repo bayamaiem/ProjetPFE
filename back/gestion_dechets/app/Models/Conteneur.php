@@ -14,6 +14,8 @@ class Conteneur extends Model
         'user_id',
         'depot_id',
         'dechet_id',
+        'poids',
+        
     ];
 
     public function user()

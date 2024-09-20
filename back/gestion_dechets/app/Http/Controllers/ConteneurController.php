@@ -69,6 +69,8 @@ class ConteneurController extends Controller
             ->get();
             $publishedContainers = $publishedContainers->map(function ($conteneur) {
                 $conteneurCode = $conteneur->codeModel->code ?? null;
+                $poids= $conteneur->poids?? null;
+
         
                 return [
                     'conteneur' => $conteneur,
@@ -76,6 +78,7 @@ class ConteneurController extends Controller
                     'depot_name' => $conteneur->depot->nom,
                     'dechet_name' => $conteneur->dechet->type,
                     'conteneur_code' => $conteneurCode,
+                    'poids'=>$poids,
                 ];
             });
     
@@ -287,13 +290,19 @@ public function addMovement2(Request $request, $conteneurID)
 
 
     
-    public function store(Request $request)
-    {
-        $conteneur = new Conteneur($request->all());
-        $conteneur->save();
-
-        return response()->json($conteneur, 201);
+public function store(Request $request)
+{
+    // Vérifier si le poids est présent dans la requête
+    if (!$request->has('poids')) {
+        return response()->json(['error' => 'Le champ poids est manquant'], 400);
     }
+
+    $conteneur = new Conteneur($request->all());
+    $conteneur->save();
+
+    return response()->json($conteneur, 201);
+}
+
 
 
     public function show($id)
@@ -572,6 +581,8 @@ public function estdemandercollecteur($id){
             
             $depotName = $container->depot2 ? $container->depot2->nom : null;  // Ensure depot relationship is correct
             $depotLieu = $container->depot2 ? $container->depot2->lieu : null;
+          
+
            
             return [
                 'container' => $container,
