@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 use App\Mail\UserActivated;
 use App\Models\User;
 use App\Models\PasswordRest; // Assurez-vous que le nom du modèle est correct
+use Illuminate\Database\Eloquent\Model;
 
 use App\Http\Requests\UserRequest;
 use Illuminate\Support\Facades\Hash;
@@ -101,7 +102,15 @@ public function resetPasswordLoad(Request $request)
     }
 }
 
-    
+
+public function showUserCounts()
+{
+    $counts = User::countUsersByRole();
+    return response()->json($counts);
+}
+
+
+
     
 public function resetPassword(Request $request)
 {

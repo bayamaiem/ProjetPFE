@@ -68,6 +68,10 @@ export class ConteneurService {
     return this.http.get(`${AUTH_API}/conteneurs/sums/admin`);
   }
 
+  getUserCounts(): Observable<{ [key: string]: number }> {
+    return this.http.get<{ [key: string]: number }>(`${AUTH_API}/user-counts`);
+  }
+
   getTypeSumscollecteur(): Observable<any> {
     return this.http.get(`${AUTH_API}/getTypeSumscollecteur/sums`);
   }

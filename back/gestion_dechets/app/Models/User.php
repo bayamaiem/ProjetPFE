@@ -87,4 +87,19 @@ public function codes()
     return $this->hasMany(Code::class);
 }
    
+
+public static function countUsersByRole()
+{
+    $roles = ['usine', 'collecteur', 'recycleur'];
+
+    $counts = [];
+
+    foreach ($roles as $role) {
+        $counts[$role] = self::where('role', $role)->count();
+    }
+
+    return $counts;
+}
+
+
 }

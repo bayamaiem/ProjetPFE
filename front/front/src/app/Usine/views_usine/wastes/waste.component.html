@@ -9,3 +9,14 @@
     </c-widget-stat-b>
   </c-col>
 </c-row>
+<c-card class="my-16 chart-container">
+    <c-chart
+      [data]="data"
+      type="doughnut"
+      class="small-chart"
+    />
+  </c-card>
+  <c-card>
+    <c-chart [data]="dataMovementdate" class="small-chart" type="bar"></c-chart>
+  </c-card>
+  

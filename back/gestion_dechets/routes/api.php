@@ -58,8 +58,13 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/checkDepotCollecteur',[DepotController::class,'checkDepotCollecteur']);
     Route::post('/checkDepotrecycleur',[DepotController::class,'checkDepotrecycleur']);
     Route::post('/checkDepotConteneurTransformerrecycleur', [DepotController::class, 'checkDepotConteneurTransformerrecycleur']);
-
-
+    Route::get('/user-counts', [UserController::class, 'showUserCounts']);
+    Route::get('/getMovementSumsdate',[ConteneurController::class , 'getMovementSumsdate']);
+    Route::get('/getMovementSumscollecteur',[ConteneurController::class ,'getMovementSumscollecteur']);
+     Route::get('/filterMovements',[ConteneurController::class ,'filterMovements']);
+     Route::get('/filterMovementscollecteurvente',[ConteneurController::class ,'filterMovementscollecteurvente']);
+     Route::get('/filterMovementscollecteursortie',[ConteneurController::class ,'filterMovementscollecteursortie']);
+     Route::get('/filterMovementsrecycleurachat',[ConteneurController::class ,'filterMovementsrecycleurachat']);
 
 
     Route::post('/checkCodeinContainerTransformer',[CodeController::class,'checkCodeinContainerTransformer']);

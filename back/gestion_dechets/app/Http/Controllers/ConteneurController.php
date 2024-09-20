@@ -570,9 +570,9 @@ public function estdemandercollecteur($id){
         $containersWithDepotDetails = $transformedContainers->map(function($container) {
             $conteneurCode = $container->codeModel->code ?? null;  // Make sure this matches your relationship
             
-            $depotName = $container->depot ? $container->depot->nom : null;  // Ensure depot relationship is correct
-            $depotLieu = $container->depot ? $container->depot->lieu : null;
-    
+            $depotName = $container->depot2 ? $container->depot2->nom : null;  // Ensure depot relationship is correct
+            $depotLieu = $container->depot2 ? $container->depot2->lieu : null;
+           
             return [
                 'container' => $container,
                 'depotName' => $depotName,
@@ -627,24 +627,263 @@ public function estdemandercollecteur($id){
         return response()->json($response);
     }
     
-    public function getTypeSumsAdmin()
-    {
-        $counts = DB::table('conteneurs')
-            ->join('dechets', 'conteneurs.dechet_id', '=', 'dechets.id')
-            ->select('dechets.type', DB::raw('COUNT(*) as total'))
-            ->groupBy('dechets.type')
-            ->get();
 
+   
+    
+    public function getMovementSumsdate(Request $request)
+    {
+        // Récupérer l'utilisateur authentifié
+        $idusine = auth()->user()->id; // Assure-toi de récupérer l'ID correct de l'utilisateur
+    
+        if (!$idusine) {
+            return response()->json(['message' => 'User not authenticated'], 401);
+        }
+    
+        // Vérifier si la date est passée en paramètre
+        if (!$request->has('date')) {
+            return response()->json(['message' => 'Date is required'], 400);
+        }
+    
+        // Requête pour compter les mouvements par IDfournisseur et date, avec conteneur_id unique
+        $counts = DB::table('movements')
+            ->where('date', '=', $request->date)
+            ->where('IDfournisseur', $idusine) // Filtrer par l'ID de l'usine (IDfournisseur)
+            ->select('date', DB::raw('COUNT(DISTINCT conteneur_id) as total')) // Utilisation de COUNT(DISTINCT conteneur_id)
+            ->groupBy('date')
+            ->get();
+    
+        // Vérifier si aucun résultat n'a été trouvé
         if ($counts->isEmpty()) {
             return response()->json(['message' => 'No data found'], 404);
         }
+    
+        // Formater la réponse
         $response = [];
         foreach ($counts as $count) {
-            $response[$count->type] = $count->total;
+            $response[$count->date] = $count->total;
         }
-
+    
+        // Retourner la réponse sous format JSON
         return response()->json($response);
     }
+    
+
+
+    
+    public function getMovementSumscollecteur(Request $request)
+    {
+        // Récupérer le nom du collecteur depuis la requête
+        $collecteurNom = $request->input('username');
+    
+        // Vérifier si le nom du collecteur est fourni
+        if (!$collecteurNom) {
+            return response()->json(['message' => 'Collecteur name is required'], 400);
+        }
+    
+        // Trouver l'utilisateur correspondant au nom du collecteur
+        $collecteur = DB::table('users')->where('username', $collecteurNom)->first();
+    
+        // Vérifier si le collecteur existe
+        if (!$collecteur) {
+            return response()->json(['message' => 'Collecteur not found'], 404);
+        }
+    
+        // Compter les mouvements par collecteur (IDdemandeur) avec des conteneur_id distincts
+        $counts = DB::table('movements')
+            ->where('IDdemandeur', $collecteur->id) // Filtrer par l'ID du collecteur (IDdemandeur)
+            ->select(DB::raw('COUNT(DISTINCT conteneur_id) as total')) // Utiliser COUNT(DISTINCT conteneur_id)
+            ->first();
+    
+        // Vérifier si aucun mouvement n'a été trouvé
+        if (!$counts || $counts->total == 0) {
+            return response()->json(['message' => 'No movements found for this collecteur'], 404);
+        }
+    
+        // Retourner le nombre de mouvements sous format JSON
+        return response()->json(['collecteur' => $collecteurNom, 'totalMovements' => $counts->total]);
+    }
+    
+    public function filterMovements(Request $request)
+    {
+        // Initialiser la requête
+        $query = DB::table('movements')
+                    ->where('IDfournisseur', auth()->user()->id); // Filtrer par l'utilisateur authentifié
+    
+        // Filtrer par date si elle est fournie
+        if ($request->has('date')) {
+            $query->where('date', '=', $request->date);
+        }
+    
+        // Filtrer par nom de collecteur si fourni
+        if ($request->has('collecteur')) {
+            // On joint la table 'users' pour filtrer par username
+            $query->whereIn('IDdemandeur', function($subquery) use ($request) {
+                $subquery->select('id')
+                          ->from('users')
+                          ->where('username', 'like', '%' . $request->collecteur . '%');
+            });
+        }
+    
+        // Exécuter la requête pour obtenir des mouvements uniques par conteneur_id
+        $counts = $query->select('date', DB::raw('COUNT(DISTINCT conteneur_id) as total')) // Utilisation de DISTINCT
+                        ->groupBy('date')
+                        ->get();
+    
+        // Vérifier si aucun résultat n'a été trouvé
+        if ($counts->isEmpty()) {
+            return response()->json(['message' => 'No data found'], 404);
+        }
+    
+        // Format de réponse
+        $response = [
+            'labels' => $counts->pluck('date'),
+            'data' => $counts->pluck('total')
+        ];
+    
+        return response()->json($response);
+    }
+    
+    public function filterMovementscollecteurvente(Request $request)
+    {
+        // Initialiser la requête
+        $query = DB::table('movements')
+                    ->where('IDdemandeur', auth()->user()->id) // Filtrer par l'utilisateur authentifié
+                    ->whereNull('IDdemandeurrecycleur'); // Ajouter une condition pour IDdemandeurrecycleur étant null
+    
+        // Filtrer par date si elle est fournie
+        if ($request->has('date')) {
+            $query->where('date', '=', $request->date);
+        }
+    
+        // Filtrer par nom de collecteur si fourni
+        if ($request->has('collecteur')) {
+            // On joint la table 'users' pour filtrer par username
+            $query->whereIn('IDdemandeur', function($subquery) use ($request) {
+                $subquery->select('id')
+                          ->from('users')
+                          ->where('username', 'like', '%' . $request->collecteur . '%');
+            });
+        }
+    
+        // Exécuter la requête pour obtenir des mouvements uniques par conteneur_id
+        $counts = $query->select('date', DB::raw('COUNT(DISTINCT conteneur_id) as total')) // Utilisation de DISTINCT
+                        ->groupBy('date')
+                        ->get();
+    
+        // Vérifier si aucun résultat n'a été trouvé
+        if ($counts->isEmpty()) {
+            return response()->json(['message' => 'No data found'], 404);
+        }
+    
+        // Format de réponse
+        $response = [
+            'labels' => $counts->pluck('date'),
+            'data' => $counts->pluck('total')
+        ];
+    
+        return response()->json($response);
+    }
+    
+    public function filterMovementscollecteursortie(Request $request)
+    {
+        // Initialiser la requête
+        $query = DB::table('movements')
+                    ->where('IDdemandeur', auth()->user()->id)// Filtrer par l'utilisateur authentifié
+                    ->whereNotNull('IDdemandeurrecycleur'); // Ajouter une condition pour IDdemandeurrecycleur étant null
+
+        // Filtrer par date si elle est fournie
+        if ($request->has('date')) {
+            $query->where('date', '=', $request->date);
+        }
+    
+        // Filtrer par nom de collecteur si fourni
+        if ($request->has('collecteur')) {
+            // On joint la table 'users' pour filtrer par username
+            $query->whereIn('IDdemandeur', function($subquery) use ($request) {
+                $subquery->select('id')
+                          ->from('users')
+                          ->where('username', 'like', '%' . $request->collecteur . '%');
+            });
+        }
+    
+        // Exécuter la requête pour obtenir des mouvements uniques par conteneur_id
+        $counts = $query->select('date', DB::raw('COUNT(DISTINCT conteneur_id) as total')) // Utilisation de DISTINCT
+                        ->groupBy('date')
+                        ->get();
+    
+        // Vérifier si aucun résultat n'a été trouvé
+        if ($counts->isEmpty()) {
+            return response()->json(['message' => 'No data found'], 404);
+        }
+    
+        // Format de réponse
+        $response = [
+            'labels' => $counts->pluck('date'),
+            'data' => $counts->pluck('total')
+        ];
+    
+        return response()->json($response);
+    }
+
+    public function filterMovementsrecycleurachat(Request $request)
+    {
+        // Initialiser la requête
+        $query = DB::table('movements')
+                    ->where('IDdemandeurrecycleur', auth()->user()->id);// Filtrer par l'utilisateur authentifié
+
+        // Filtrer par date si elle est fournie
+        if ($request->has('date')) {
+            $query->where('date', '=', $request->date);
+        }
+    
+        // Filtrer par nom de collecteur si fourni
+        if ($request->has('collecteur')) {
+            // On joint la table 'users' pour filtrer par username
+            $query->whereIn('IDdemandeur', function($subquery) use ($request) {
+                $subquery->select('id')
+                          ->from('users')
+                          ->where('username', 'like', '%' . $request->collecteur . '%');
+            });
+        }
+    
+        // Exécuter la requête pour obtenir des mouvements uniques par conteneur_id
+        $counts = $query->select('date', DB::raw('COUNT(DISTINCT conteneur_id) as total')) // Utilisation de DISTINCT
+                        ->groupBy('date')
+                        ->get();
+    
+        // Vérifier si aucun résultat n'a été trouvé
+        if ($counts->isEmpty()) {
+            return response()->json(['message' => 'No data found'], 404);
+        }
+    
+        // Format de réponse
+        $response = [
+            'labels' => $counts->pluck('date'),
+            'data' => $counts->pluck('total')
+        ];
+    
+        return response()->json($response);
+    }
+    
+    public function getTypeSumsAdmin()
+{
+    // Fetch counts of waste by type
+    $counts = DB::table('conteneurs')
+        ->join('dechets', 'conteneurs.dechet_id', '=', 'dechets.id')
+        ->select('dechets.type', DB::raw('COUNT(*) as total'))
+        ->groupBy('dechets.type')
+        ->get();
+
+    // Check if no data is found
+    if ($counts->isEmpty()) {
+        return response()->json(['message' => 'No data found'], 404);
+    }
+
+    // Prepare the response in key-value format
+    $response = $counts->pluck('total', 'type')->toArray();
+
+    return response()->json($response);
+}
 
     public function getTypeSumsusinebyID(Request $request,$id)
     {

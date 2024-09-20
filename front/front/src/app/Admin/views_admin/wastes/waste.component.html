@@ -1,6 +1,4 @@
-
-<c-row class="mt-4">
-
+<c-row class="mt-16">
   <c-col md="12" xl="3" *ngFor="let type of wasteSum | keyvalue">
     <c-widget-stat-b
       [title]="getStringValue(type.key)"
@@ -11,3 +9,20 @@
     </c-widget-stat-b>
   </c-col>
 </c-row>
+
+<!-- Pie Chart -->
+<!-- Card container to center the chart -->
+<c-card class="my-16 chart-container">
+  <c-chart
+    [data]="data"
+    type="doughnut"
+    class="small-chart"
+  />
+</c-card>
+<c-card class="my-16 chart-container">
+  <c-chart
+    [data]="userChartData"
+    type="polarArea"
+    class="small-chart"
+  />
+</c-card>
