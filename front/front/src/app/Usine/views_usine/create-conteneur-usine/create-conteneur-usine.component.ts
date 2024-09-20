@@ -64,7 +64,7 @@ export class CreateConteneurUsineComponent {
     this.conteneurForm = this.fb.group({
       code: [''],
       prix: ['', Validators.required],
-      Poids: ['', Validators.required],
+      poids: ['', Validators.required],
       dechet_id: [''],
       depot_id: [''],
     });

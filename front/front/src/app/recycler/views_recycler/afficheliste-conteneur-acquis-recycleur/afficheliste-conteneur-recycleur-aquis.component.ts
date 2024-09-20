@@ -112,12 +112,14 @@ export class AffichelisteConteneurRecycleurAcquisComponent implements OnInit {
     usine: string;
     collecteur: string;
    depot:string;
+   poids:string;
   } = {
     conteneur_code: '',
     type: '',
     usine: '',
     collecteur: '',
-  depot:'',
+  depot:'', 
+  poids:'',
   };
   getMovementsByDemandeur: {
     demandeurName: string;
@@ -191,6 +193,7 @@ export class AffichelisteConteneurRecycleurAcquisComponent implements OnInit {
         if (response && response.movements) {
           // Assign response data to component properties
           this.movements = response.movements;
+          this.filteredMouvements =this.movements;
           this.currentPage = response.current_page;
           this.totalItems = response.total_items;
           this.totalPages = response.total_pages;
@@ -198,7 +201,8 @@ export class AffichelisteConteneurRecycleurAcquisComponent implements OnInit {
   
           // Debugging: log the movements to the console
           console.log('Movements:', this.movements);
-  
+          console.log('filtred Movements:', this.filteredMouvements);
+
           // Group and count movements based on certain criteria
           this.groupAndCountMovements();
         } else {
@@ -232,6 +236,7 @@ export class AffichelisteConteneurRecycleurAcquisComponent implements OnInit {
         depotId: number;
         estStoker: number; 
         is_transformed:number;
+        poids:number;
 conteneur_code:string;// Store the stocking status
       }
     } = {};
@@ -255,6 +260,7 @@ conteneur_code:string;// Store the stocking status
           place: item.movement.place,
           date: item.movement.date,
           hour: item.movement.hour,
+          poids:item.poids,
           count: 0,
           fournisseur2: item.movement.fournisseur2, // Assign fournisseur2
           fournisseur_name: item.movement.fournisseur.username,
@@ -295,6 +301,10 @@ conteneur_code:string;// Store the stocking status
       // Filter by collecteur (fournisseur2)
       const matchesCollecteur = !this.filters.collecteur || (
         (group.fournisseur2?.firstName + ' ' + group.fournisseur2?.lastName).toLowerCase().includes(this.filters.collecteur.toLowerCase())
+      );
+
+      const matchesPoids = !this.filters.poids || (
+        (group.poids + ' ' + group.poids).toLowerCase().includes(this.filters.collecteur.toLowerCase())
       );
       
       return matchesCode && matchesType && matchesDepot && matchesCollecteur;

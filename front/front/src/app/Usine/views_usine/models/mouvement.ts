@@ -49,6 +49,7 @@ export interface Movement {
   updated_at: string;
   fournisseur: Fournisseur;
   depot:Depot;
+  poids:string;
 }
 
 export interface MovementWrapper {
@@ -58,7 +59,7 @@ demandeurrecycleur: any;
   conteneur_code:string;
   IDdemandeur:number;
   IDfournisseur:number;
-
+  poids:number;
 
 }
 
@@ -82,7 +83,7 @@ export interface GroupedMovement {
   fournisseuraddress:string;
   fournisseurName:string;
   fournisseurlastName:string;
-  
+  poids:number;
   conteneur_code: string;
   fournisseur: Fournisseur;
   depot: Depot;

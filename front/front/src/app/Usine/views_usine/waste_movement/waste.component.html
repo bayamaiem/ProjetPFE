@@ -18,6 +18,10 @@
           Date de sortie
           <input type="text" class="form-control" [(ngModel)]="filters.dateDeSortie" (ngModelChange)="applyFilters()">
         </th>
+        <th scope="col">
+          Poids(kg)
+          <input type="text" class="form-control" [(ngModel)]="filters.poids" (ngModelChange)="applyFilters()">
+        </th>
         <th scope="col" class="center">
           Nombre de conteneur
           <input type="text" class="form-control" [(ngModel)]="filters.nombreDeConteneur" (ngModelChange)="applyFilters()">
@@ -30,6 +34,8 @@
         <td>{{ item.data.conteneur_type }}</td>
         <td>le Collecteur {{ item.data.movement.fournisseur2.firstName }} {{ item.data.movement.fournisseur2.lastName }} située à {{ item.data.movement.fournisseur2.address }}</td>
         <td>en {{ item.data.movement.date }} </td>
+        <td>{{ item.data.poids }} kg </td>
+
         <td>{{ item.count }}</td>
       </tr>
     </tbody>

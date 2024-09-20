@@ -30,6 +30,11 @@
           Nombre de conteneur
           <input type="text" class="form-control" [(ngModel)]="filters.nombreDeConteneur" (input)="filterMovements()">
         </th>
+        <th scope="col" class="center">
+          Poids(kg)
+          <input type="text" class="form-control" [(ngModel)]="filters.poids" (input)="filterMovements()">
+        </th>
+        
       </tr>
     </thead>
 
@@ -44,6 +49,8 @@
         }} à  {{item.hourcollecteur}}</td>
         <td> en {{item.date}} à  {{item.hour}}</td>
         <td>{{item.count}}</td>
+        <td>{{item.poids}} kg </td>
+
       </tr>
     </tbody>
   </table>

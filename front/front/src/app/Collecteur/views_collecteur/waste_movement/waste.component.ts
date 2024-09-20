@@ -46,6 +46,7 @@ export class WasteComponent {
     destinataire: '',
     dateDeSortie: '',
     nombreDeConteneur: '',
+    poids:'',
     movementType:  ''  // Add this line
 
   };
@@ -128,12 +129,17 @@ export class WasteComponent {
         (this.filters.movementType === 'Sortie' && item.data.movement.IDdemandeurrecycleur !== null) ||
         (this.filters.movementType === 'Entrée' && item.data.movement.IDdemandeurrecycleur === null);
   
+        const isMatchingPoids = !this.filters.poids || 
+    (item.data.poids && item.data.poids.toString().includes(this.filters.poids));
+
+  
       // Return true if all criteria match
       return isMatchingCode &&
         isMatchingType &&
         isMatchingDestinataire &&
         isMatchingDateDeSortie &&
         isMatchingNombreDeConteneur &&
+        isMatchingPoids&&
         isMatchingMovementType;
     });
   }

@@ -192,6 +192,7 @@ filterForm: FormGroup;
         count: number; 
         fournisseur: Fournisseur; 
         depot: Depot; 
+        poids:number;
         depotId: number; 
         id_conteneur: number; 
         prixcollecteur: number; 
@@ -232,6 +233,8 @@ filterForm: FormGroup;
           datecollecteur: item.datecollecteur,
           depotId: item.movement.newdepot ?? null,
           count: 0,
+          poids:item.poids,
+
           adressusine: item.adressusine,
           conteneurPrix: item.movement.conteneurPrix,
           fournisseur: item.movement.fournisseur,
@@ -266,6 +269,7 @@ filterForm: FormGroup;
         fournisseuraddress: grouped[key].fournisseuraddress,
         fournisseurName: grouped[key].fournisseurName,
         fournisseurlastName: grouped[key].fournisseurlastName,
+        poids:grouped[key].poids,
         date: grouped[key].date,
         hour: grouped[key].hour,
         count: grouped[key].count,

@@ -120,6 +120,7 @@ adressusine: any;
 usine_name: any;
 lastNameCollecteur: any;
 conteneur_type: any;
+poids:number;
 conteneur_code: any; count: number; data: MovementWrapper[] 
 }[] = [];
   movements: any[] = [];
@@ -135,7 +136,8 @@ conteneur_code: any; count: number; data: MovementWrapper[]
     collecteur: '',
     dateEntree: '',
     dateAcquisition: '',
-    nombreDeConteneur: ''
+    nombreDeConteneur: '',
+    poids:'',
   };
   constructor(private mouvementService: MouvementService ,private conteneurdechetsaquisService: ConteneurdechetsaquisService,
   ) {}
@@ -152,9 +154,11 @@ conteneur_code: any; count: number; data: MovementWrapper[]
         if (response && response.movements) {
           // Assign response data to component properties
           this.movements = response.movements;
+          this.filteredMouvements = this.movements;
           this.groupAndCountMovements();
           console.log('Grouped Movements:', this.movements);
-         
+          console.log('filtred Movements:',   this.filteredMouvements);
+
           // Initialize filteredMouvements or other necessary processing
         } else {
           console.error('Unexpected response format:', response);
@@ -173,7 +177,7 @@ conteneur_code: any; count: number; data: MovementWrapper[]
       fournisseur: Fournisseur; depot: Depot; depotId: number; id_conteneur: number;
       prixcollecteur: number; usine_name: string; firstNameCollecteur: string; lastNameCollecteur: string;
       datecollecteur: string; conteneur_code: string; conteneurPrix: any; data: MovementWrapper[]; 
-      addresscollecteur: string; hourcollecteur: string; adressusine:string;
+      addresscollecteur: string; hourcollecteur: string; adressusine:string;poids:number;
     } } = {};
   
     this.movements.forEach(item => {
@@ -197,12 +201,14 @@ conteneur_code: any; count: number; data: MovementWrapper[]
           datecollecteur: item.datecollecteur,
           hour: item.hour,
           date: item.date,
+          poids:item.poids,
           conteneur_type: item.conteneur_type,
           conteneur_code: item.conteneur_code,
           place: item.movement.place,
           depotId: item.movement.newdepot ?? null,
           conteneurPrix: item.conteneurPrix,
           count: 0,
+     
           fournisseur: item.movement.fournisseur,
           depot: item.movement.depot,
         };
@@ -235,8 +241,10 @@ conteneur_code: any; count: number; data: MovementWrapper[]
       const matchesDateEntree = !this.filters.dateEntree || group.datecollecteur === this.filters.dateEntree;
       const matchesDateAcquisition = !this.filters.dateAcquisition || group.date === this.filters.dateAcquisition;
       const matchesNombreDeConteneur = !this.filters.nombreDeConteneur || group.count === +this.filters.nombreDeConteneur;
+      const isMatchingPoids = !this.filters.poids ||
+      (group.poids&& group.poids.toString().includes(this.filters.poids));
 
-      return matchesCode && matchesType && matchesUsine && matchesCollecteur && matchesDateEntree && matchesDateAcquisition && matchesNombreDeConteneur;
+      return matchesCode && matchesType  &&isMatchingPoids&& matchesUsine && matchesCollecteur && matchesDateEntree && matchesDateAcquisition && matchesNombreDeConteneur;
     });
     
     console.log('Filtered Movements:', this.filteredMouvements);

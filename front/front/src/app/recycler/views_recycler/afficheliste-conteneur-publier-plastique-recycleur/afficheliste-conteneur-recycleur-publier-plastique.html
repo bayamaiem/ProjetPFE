@@ -7,6 +7,8 @@
         <th scope="col">collecteur</th>
         <th scope="col">Depot</th>
         <th scope="col">Type</th>
+        <th scope="col">Poids(kg)</th>
+
         <th scope="col">Action</th>
       </tr>
     </thead>
@@ -18,6 +20,8 @@
         <td>{{ item.fournisseur2.username }}</td>
         <td>{{  item.conteneur.depot.nom }} {{  item.conteneur.depot.lieu }}</td>
         <td>{{  item.conteneur.dechet.type }}</td>
+        <td>{{  item.conteneur.poids }} kg </td>
+
         <td>
           <button cButton color="danger" style="margin-left: -5px" 
           [disabled]=" item.isProcessing" 

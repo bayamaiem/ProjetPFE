@@ -39,12 +39,22 @@
             <option *ngFor="let date of uniqueDates" [value]="date"></option>
           </datalist>
         </th>
-        
+       
         
         <th scope="col" class="center">
           Nombre de conteneur
           <input type="text" class="form-control" [(ngModel)]="filters.nombreDeConteneur" (ngModelChange)="applyFilters()">
         </th>
+
+        <th scope="col" class="center">
+          Poids (kg)
+          
+           <input  type ="text" class="form-control" 
+           [(ngModel)]="filters.poids" 
+           (ngModelChange)="applyFilters()"
+           list="poids">
+          
+         </th>
         <th scope="col" class="center">
           Type de mouvement
           <input 
@@ -78,6 +88,7 @@
         </td>
                 <td>en {{ item.data.movement.date }} </td>
         <td>{{ item.count }}</td>
+        <td>{{ item.data.poids}}</td>
         <ng-container *ngIf="item.data.movement.IDdemandeurrecycleur === null; else entreeTemplate">
           <td><span style="color: green;">Entrée</span></td>
         </ng-container>

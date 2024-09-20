@@ -52,6 +52,16 @@
         
         </datalist>
         </th>
+
+        <th scope="col" class="center">
+         Poids (kg)
+         
+          <input  type ="text" class="form-control" 
+          [(ngModel)]="filters.poids" 
+          (ngModelChange)="applyFilters()"
+          list="poids">
+         
+        </th>
         
         <th scope="col" class="center">
           Nouvelle Prix
@@ -108,6 +118,12 @@
   conteneurPrix
   
  }}</td>
+
+       <!-- <td>{{ movement.conteneurPrix }}</td>--> 
+<td>{{ movement.
+  poids
+  
+ }}(kg)</td>
         <td>{{ movement.prixcollecteur }}</td>
 
 

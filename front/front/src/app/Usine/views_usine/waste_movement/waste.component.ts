@@ -8,7 +8,6 @@ import { NgTemplateOutlet } from '@angular/common';
 import { IconDirective } from '@coreui/icons-angular';
 import { RouterLink, RouterOutlet } from '@angular/router';
 import { WidgetComponent } from '../../widget/widget.component';
-import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 
 @Component({
@@ -44,7 +43,8 @@ export class WasteComponent implements OnInit {
     type: '',
     destinataire: '',
     dateDeSortie: '',
-    nombreDeConteneur: ''
+    nombreDeConteneur: '',
+    poids:''
   };
 
   constructor(private mouvementService: MouvementService) {}
@@ -73,7 +73,9 @@ export class WasteComponent implements OnInit {
           (`en ${item.data.movement.date} à ${item.data.movement.hour}`)
           .toLowerCase()
           .includes(this.filters.dateDeSortie.toLowerCase())) &&
-        (!this.filters.nombreDeConteneur || item.count.toString().includes(this.filters.nombreDeConteneur))
+        (!this.filters.nombreDeConteneur || item.count.toString().includes(this.filters.nombreDeConteneur))&&
+        (!this.filters.poids || item.data.poids.toString().includes(this.filters.poids))
+
       );
     });
   }

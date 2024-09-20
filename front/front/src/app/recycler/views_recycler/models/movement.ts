@@ -123,6 +123,7 @@ export interface GroupedMovement {
   addresscollecteur: string;
   hourcollecteur: string;
   adressusine: string;
+  poids:number;
 }
 
 export interface GroupedMovement2 {
@@ -133,6 +134,7 @@ export interface GroupedMovement2 {
   place: string;
   date: string;
   hour: string;
+  poids:number;
   is_transformed:number;
 conteneur_code:string;
   movement:Movement;

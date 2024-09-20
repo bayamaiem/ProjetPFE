@@ -137,7 +137,8 @@ export class AffichelisteStockConteneurCollecteurComponent {
     destinataire: '',
     depot: '',
     conteneurPrix: '',
-    prixcollecteur:  ''  // Add this line
+    prixcollecteur:  '',
+    poids:''  // Add this line
 
   };
   uniqueConteneurPrix: string[] = []; // Liste des prix uniques
@@ -308,7 +309,7 @@ export class AffichelisteStockConteneurCollecteurComponent {
       estStoker: any; is_published: any; movement: any[]; code: string; id: number;
       conteneur_type: string; place: string; date: string; hour: string; count: number;
       fournisseur: Fournisseur; depot: Depot; depotId: number; id_conteneur: number;
-      prixcollecteur: number;fournisseurName:string; fournisseurlastName:string;fournisseuraddress:string; conteneur_code: string; conteneurPrix:any;data: MovementWrapper[];
+      prixcollecteur: number;fournisseurName:string;poids:number; fournisseurlastName:string;fournisseuraddress:string; conteneur_code: string; conteneurPrix:any;data: MovementWrapper[];
     } } = {};
   
     this.movements.forEach(item => {
@@ -326,7 +327,7 @@ export class AffichelisteStockConteneurCollecteurComponent {
           fournisseurlastName:item.fournisseurlastName,
           fournisseuraddress:item.fournisseuraddress,
           fournisseurName:item.fournisseurName,
-
+          poids:item.poids,
           estStoker: item.movement.estStoker,
           id_conteneur: item.movement.conteneur.id,
           conteneur_type: item.conteneur_type,
@@ -376,6 +377,7 @@ export class AffichelisteStockConteneurCollecteurComponent {
         estStoker: grouped[key].estStoker,
         conteneur_type: grouped[key].conteneur_type,
         place: grouped[key].place,
+        poids:grouped[key].poids,
         date: grouped[key].date,
         hour: grouped[key].hour,
         count: grouped[key].count,
@@ -468,7 +470,7 @@ export class AffichelisteStockConteneurCollecteurComponent {
       estStoker: any; is_published: any; movement: any[]; code: string; id: number;
       conteneur_type: string; place: string; date: string; hour: string; count: number;
       fournisseur: Fournisseur; depot: Depot; depotId: number; id_conteneur: number;
-      prixcollecteur: number; conteneur_code: string; conteneurPrix:any; fournisseurName:string; fournisseurlastName:string;fournisseuraddress:string; data: MovementWrapper[]; // Change here to include data property
+      prixcollecteur: number; poids:number ;conteneur_code: string; conteneurPrix:any; fournisseurName:string; fournisseurlastName:string;fournisseuraddress:string; data: MovementWrapper[]; // Change here to include data property
 
     } } = {};
   
@@ -492,7 +494,7 @@ export class AffichelisteStockConteneurCollecteurComponent {
           fournisseurlastName:item.fournisseurlastName,
           fournisseuraddress:item.fournisseuraddress,
           fournisseurName:item.fournisseurName,
-
+          poids:item.poids,
           depotId: item.movement.newdepot ?? null,
           conteneurPrix: item.conteneurPrix, // Ajout de conteneurPrix ici
 
@@ -528,6 +530,7 @@ export class AffichelisteStockConteneurCollecteurComponent {
          fournisseurName:grouped[key].fournisseurName,
          fournisseurlastName:grouped[key]. fournisseurlastName,
         id_conteneur: grouped[key].id_conteneur,
+        poids:grouped[key].poids,
         movement: grouped[key].movement,
         is_published: grouped[key].is_published, // Ensure the correct is_published value
         conteneur_code: grouped[key].conteneur_code,
@@ -625,6 +628,9 @@ export class AffichelisteStockConteneurCollecteurComponent {
       const matchesConteneurPrix = this.filters.conteneurPrix
         ? movement.conteneurPrix === Number(this.filters.conteneurPrix) // Convert filter to number
         : true;
+        const matchespoids = this.filters.poids
+        ? movement.poids === Number(this.filters.poids) // Convert filter to number
+        : true;
   
       const matchesPrixCollecteur = this.filters.prixcollecteur
         ? movement.prixcollecteur === Number(this.filters.prixcollecteur) // Convert filter to number
@@ -636,7 +642,8 @@ export class AffichelisteStockConteneurCollecteurComponent {
         matchesFournisseur &&
         matchesDepot &&
         matchesConteneurPrix &&
-        matchesPrixCollecteur
+        matchesPrixCollecteur&&
+        matchespoids
       );
     });
 

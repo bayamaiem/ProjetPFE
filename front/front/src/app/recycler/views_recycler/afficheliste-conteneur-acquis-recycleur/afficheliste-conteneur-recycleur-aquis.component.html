@@ -20,6 +20,11 @@
           Depot
           <input type="text" class="form-control" [(ngModel)]="filters.depot" (input)="filterMovements()">
         </th>
+
+        <th scope="col" class="center">
+          Poids(kg)
+          <input type="text" class="form-control" [(ngModel)]="filters.poids" (input)="filterMovements()">
+        </th>
         <th scope="col" class="center">
          Action
         </th>
@@ -64,6 +69,8 @@
         <!--{{ movement.fournisseur2.username }} --> 
            <br>située à {{ movement.fournisseur2.address }}</td>
         <td class="col-sm" style="margin-left: -1px">{{ movement.depot.lieu }} {{ movement.depot.nom }}</td>
+        <td class="col-sm"> {{ movement.poids}}kg </td>
+
       <!--<td class="col-sm justify-content-md-center" style="margin-left: -10px">{{ movement.count }}</td>-->  
         <td class="col-sm">
           <div class="d-grid gap-2 d-md-flex justify-content-md-center" style="margin-top: 10px">

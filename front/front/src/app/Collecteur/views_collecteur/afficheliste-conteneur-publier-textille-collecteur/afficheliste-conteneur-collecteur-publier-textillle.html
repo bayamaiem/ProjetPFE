@@ -3,10 +3,11 @@
     <thead>
       <tr>
         <th scope="col">Code</th>
-        <th scope="col">Prix</th>
+        <th scope="col">Prix(dt)</th>
         <th scope="col">Usine</th>
         <th scope="col">Depot</th>
         <th scope="col">Type</th>
+        <th scope="col">Poids(kg)</th>
         <th scope="col">Action</th>
       </tr>
     </thead>
@@ -21,6 +22,8 @@ user_name }}</td>
 .type
           
           }}</td>
+                  <td>{{ item.poids }}</td>
+
         <td>
         <button cButton color="danger" style="margin-left: -5px" 
         (click)="openDemandeModal( item,  item.conteneur.id)">

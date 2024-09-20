@@ -35,6 +35,7 @@
         <th scope="col">ancien depot</th>
         <th scope="col">code</th>
         <th scope="col"> depot</th>
+
      <!--<th scope="col">date de réalisation</th>-->   
         <th scope="col">Action</th>
       </tr>
@@ -48,8 +49,9 @@ conteneur_code}}</td>
 
           <td scope="row"> {{getCodeByRecyclerId( item.container.coderecycleur )}}</td>
         
+          <td scope="row">{{ item.depotName }}{{item.depotLieu}}</td>
 
-            <td scope="row">{{ item.depotName }}{{item.depotLieu}}</td>
+          <!--<td scope="row">{{ item.poids }}</td>-->  
             <!-- <td>{{ item.formatted_updated_at }}</td>-->
           <td>
             <div
