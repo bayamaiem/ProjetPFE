@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { PasswordResetService } from '../password-reset-service.service';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, Router,RouterLink  } from '@angular/router';
 import { BrowserModule } from '@angular/platform-browser';
 import { AuthService } from '../auth.service';
 import { CommonModule } from '@angular/common';
@@ -10,7 +10,7 @@ import { catchError, throwError } from 'rxjs';
 @Component({
   selector: 'app-reset-password',
   standalone: true,
-  imports:[
+  imports:[RouterLink ,
     ReactiveFormsModule,CommonModule,   FormsModule ],
   templateUrl: './reset-password.component.html',
   styleUrl: './reset-password.component.scss'
