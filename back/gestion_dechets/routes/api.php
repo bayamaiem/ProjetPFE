@@ -78,7 +78,9 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/conteneurs/{depotId}', [ConteneurController::class, 'getContainersByType']);
     Route::post('/check-email', [AuthController::class, 'checkEmail'])->withoutMiddleware(['auth:sanctum']);   
     Route::post('/check-password', [AuthController::class, 'checkPassword'])->withoutMiddleware(['auth:sanctum']);
-    
+    Route::post('/checkPhone_number', [AuthController::class, 'checkPhone_number'])->withoutMiddleware(['auth:sanctum']);
+    Route::post('/checkUsername', [AuthController::class, 'checkUsername'])->withoutMiddleware(['auth:sanctum']);
+
      Route::patch('/conteneur/{id}/transformation', [ConteneurController::class, 'TransformationConteneur']);
     Route::patch('/conteneur/publier/{id}', [ConteneurController::class, 'PublierConteneur']);
     Route::get('/conteneur/transformed', [ConteneurController::class, 'getTransformedConteneur']);

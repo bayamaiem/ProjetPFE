@@ -123,6 +123,28 @@ public function checkEmail(Request $request)
         }
     }
 
+    public function checkUsername(Request $request)
+    {
+        $username = $request->input('username');
+        
+        if (User::where('username', $username)->exists()) {
+            return response()->json(['exists' => true], 200);
+        } else {
+            return response()->json(['exists' => false]);
+        }
+    }
+
+    public function checkPhone_number(Request $request)
+    {
+        $phone_number = $request->input('phone_number');
+        
+        if (User::where('phone_number', $phone_number)->exists()) {
+            return response()->json(['exists' => true], 200);
+        } else {
+            return response()->json(['exists' => false]);
+        }
+    }
+
 
     public function checkPassword(Request $request)
     {

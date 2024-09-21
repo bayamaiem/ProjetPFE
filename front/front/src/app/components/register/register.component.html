@@ -36,26 +36,31 @@
         <hr />
 
         <input
-          type="text"
-          name="username"
-          id="username"
-          placeholder="Votre nom d'utilisateur"
-          formControlName="username"
-          required
-        />
-        <div
-          *ngIf="f['username'].touched && f['username'].invalid"
-          class="alert-danger"
-        >
-          <div *ngIf="f['username'].errors && f['username'].errors['required']">
-            Nom d'utilisateur est requis.
-          </div>
-          <div
-            *ngIf="f['username'].errors && f['username'].errors['minlength']"
-          >
-            Le Nom d'utilisateur doit comporter 3 caractères.
-          </div>
+        type="text"
+        name="username"
+        id="username"
+        placeholder="Votre nom d'utilisateur"
+        formControlName="username"
+        required
+      />
+      <div
+        *ngIf="f['username'].touched && f['username'].invalid"
+        class="alert-danger"
+      >
+        <div *ngIf="f['username'].errors && f['username'].errors['required']">
+          Nom d'utilisateur est requis.
         </div>
+        <div *ngIf="f['username'].errors && f['username'].errors['minlength']">
+          Le Nom d'utilisateur doit comporter 3 caractères.
+        </div>
+      </div>
+      <div *ngIf="usernameExists" class="alert alert-danger" role="alert">
+        Ce nom d'utilisateur est déjà utilisé, veuillez en choisir un autre.
+      </div>
+      
+      
+      
+    
         <div *ngIf="signup.controls['role'].value !== 'Usine'">
           <input
             type="text"
@@ -148,25 +153,27 @@
         />
 
         <input
-          type="email"
-          name="name"
-          id="name"
-          placeholder="Email"
-          formControlName="email"
-          required
-        />
-        <div
-          *ngIf="f['email'].touched && f['email'].invalid"
-          class="alert-danger"
-        >
-          <div *ngIf="f['email'].errors && f['email'].errors['required']">
-            L' e-mail est requis.
-          </div>
-          <div *ngIf="f['email'].errors && f['email'].errors['email']">
-            Entrez une adresse email valide.
-          </div>
+        type="email"
+        name="email"
+        id="email"
+        placeholder="Email"
+        formControlName="email"
+        required
+      />
+      <div *ngIf="f['email'].touched && f['email'].invalid" class="alert-danger">
+        <div *ngIf="f['email'].errors && f['email'].errors['required']">
+          L' e-mail est requis.
         </div>
-        <div *ngIf="signup.controls['role'].value === 'recycleur'">
+        <div *ngIf="f['email'].errors && f['email'].errors['email']">
+          Entrez une adresse email valide.
+        </div>
+      </div>
+      
+      <!-- Display alert message when emailExists is true -->
+      <div *ngIf="emailExists" class="alert alert-danger" role="alert">
+        {{ errorMessage }}
+      </div>
+             <div *ngIf="signup.controls['role'].value === 'recycleur'">
           <input
             type="text"
             name="certificat"
@@ -194,13 +201,31 @@
           placeholder="Votre address"
           formControlName="address"
         />
-        <input
+
+        <div *ngIf="signup.controls['role'].value === 'usine'">
+
+
+
+   <!---->     <input
           type="text"
-          name="activite"
-          id="activite"
+          name="Type_dactivite"
+          id="Type_dactivite"
           placeholder="Votre activite"
-          formControlName="activite"
+          formControlName="Type_dactivite"
         />
+        <div
+        *ngIf="f['Type_dactivite'].touched && f['Type_dactivite'].invalid"
+        class="alert-danger"
+      >
+        <div
+          *ngIf="
+            f['Type_dactivite'].errors && f['Type_dactivite'].errors['Type_dactivite']
+          "
+        >
+          Le type d'activité est requis.
+        </div>
+      </div>
+      </div>
         <input
           type="password"
           name="name"

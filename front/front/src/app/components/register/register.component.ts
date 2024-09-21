@@ -24,7 +24,8 @@ export class RegisterComponent {
   isLoggedIn = false;
   alert: any;
   roles: { label: string; value: string }[] = [];
-
+  emailExists: boolean = false; // Add this in your component class
+  usernameExists : boolean = false; 
   signup: FormGroup;
 
   constructor(
@@ -46,7 +47,7 @@ export class RegisterComponent {
       password: ['', [Validators.required]],
       certificat: ['', []],
       password_confirmation: [''],
-      activite: ['', [Validators.required]],
+      Type_dactivite: ['', [Validators.required]],
       address: ['', [Validators.required]],
       phone_number: ['', [Validators.required]],
     });
@@ -59,24 +60,61 @@ export class RegisterComponent {
   }
 
   onSubmit() {
-    console.log('test', this.signup.value);
-    this.authService.register(this.signup.value).subscribe({
-      next: (res: any) => {
-        console.log(res);
-        this.authService.saveToken(res.token);
-        this.authService.saveUser(res.user);
-        this.isSuccessfully = true;
-        this.alert = true;
-        this.isRegisterFailed = false;
-        this.router.navigate(['/login']);
-      },
-      error: (e: any) => {
-        console.log(e);
-        this.errorMessage = e.error.message;
-        this.isRegisterFailed = true;
-      },
+    console.log('Form Data:', this.signup.value); // Vérifier les données du formulaire
+
+    // Vérifier d'abord si l'email existe
+    this.authService.checkEmail(this.signup.value.email).subscribe({
+        next: (emailRes: any) => {
+            this.emailExists = emailRes.exists; // Set emailExists
+
+            // Now check for username existence
+            this.authService.checkUsername(this.signup.value.username).subscribe({
+                next: (usernameRes: any) => {
+                    this.usernameExists = usernameRes.exists; // Set usernameExists
+
+                    // Handle errors for both email and username
+                    if (this.emailExists || this.usernameExists) {
+                        this.errorMessage = this.emailExists 
+                            ? "Cette adresse e-mail est déjà utilisée." 
+                            : "Ce nom d'utilisateur est déjà utilisé, veuillez en choisir un autre.";
+                        console.log(this.errorMessage);
+                        return; // Stop further execution if either exists
+                    }
+
+                    // Proceed with registration if both checks are successful
+                    this.authService.register(this.signup.value).subscribe({
+                        next: (res: any) => {
+                            console.log(res);
+                            this.authService.saveToken(res.token);
+                            this.authService.saveUser(res.user);
+                            this.isSuccessfully = true;
+                            this.alert = true;
+                            this.isRegisterFailed = false;
+                            this.router.navigate(['/login']);
+                        },
+                        error: (e: any) => {
+                            console.log('Registration Error:', e);
+                            this.errorMessage = e.error.message || 'Registration failed';
+                            this.isRegisterFailed = true;
+                        },
+                    });
+                },
+                error: (e: any) => {
+                    console.log('Username Check Error:', e);
+                    this.errorMessage = e.error.message;
+                    this.isRegisterFailed = true;
+                }
+            });
+        },
+        error: (e: any) => {
+            console.log('Email Check Error:', e);
+            this.errorMessage = e.error.message;
+            this.isRegisterFailed = true;
+        }
     });
-  }
+}
+
+  
   onRoleChange(event: Event) {
     const selectedRole = (event.target as HTMLSelectElement).value;
     console.log('Role changed to:', selectedRole);
@@ -88,16 +126,13 @@ export class RegisterComponent {
     this.signup.get('certificat')?.updateValueAndValidity();
 
     if (selectedRole === Role.Usine) {
-      this.signup.get('firstName')?.clearValidators();
-      this.signup.get('lastName')?.clearValidators();
+     
       this.signup.get('Type_dactivite')?.setValidators([Validators.required]);
     } else {
-      this.signup.get('firstName')?.setValidators([Validators.required]);
-      this.signup.get('lastName')?.setValidators([Validators.required]);
+      
       this.signup.get('Type_dactivite')?.clearValidators();
     }
-    this.signup.get('firstName')?.updateValueAndValidity();
-    this.signup.get('lastName')?.updateValueAndValidity();
+    
     this.signup.get('Type_dactivite')?.updateValueAndValidity();
   }
   closeAlert() {

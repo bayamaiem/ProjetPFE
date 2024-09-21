@@ -32,6 +32,17 @@ checkPassword(email: any, password: any): Observable<any> {
   return this.http.post<any>('http://127.0.0.1:8001/api/check-password', { email, password });
 }
 
+
+
+checkUsername(username: any): Observable<any> {
+  return this.http.post<any>('http://127.0.0.1:8001/api/checkUsername', { username });
+}
+
+
+checkPhone_number(Phone_number: any): Observable<any> {
+  return this.http.post<any>('http://127.0.0.1:8001/api/checkPhone_number', { Phone_number });
+}
+
   register(body: any): Observable<any> {
     return this.http.post(AUTH_API + '/register', body);
   }
