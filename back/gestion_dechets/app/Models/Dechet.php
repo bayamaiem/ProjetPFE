@@ -12,7 +12,6 @@ class Dechet extends Model
     protected $fillable = [
         'type',
         'value',
-        'user_id',
         'user_role'
 
 
