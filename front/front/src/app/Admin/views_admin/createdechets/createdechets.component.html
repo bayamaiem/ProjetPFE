@@ -1,0 +1,18 @@
+<div class="mb-3">
+  <button
+    cNavLink
+    routerLink="/AfficherListedetypedechets"
+    routerLinkActive="active"
+    type="submit"
+    class="btn btn-primary float-end"
+  >
+    back
+  </button>
+</div>
+<form [formGroup]="dechetForm" (ngSubmit)="onSubmit()" class="dechet-form">
+  <div class="form-group">
+    <label for="type">Type:</label>
+    <input id="type" formControlName="type" class="form-control" />
+  </div>
+  <button type="submit" class="submit-button">Submit</button>
+</form>

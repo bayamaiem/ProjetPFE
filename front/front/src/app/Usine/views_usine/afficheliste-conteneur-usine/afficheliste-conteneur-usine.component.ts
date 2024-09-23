@@ -154,8 +154,9 @@ export class AffichelisteConteneurUsineComponent {
     console.log(conteneurId)
     this.modalService
       .openModal(
-        'Confirm Deletion',
-        'Are you sure you want to delete this container?'
+       /*'Confirmer la suppression',*/
+    'Êtes-vous sûr de vouloir supprimer ce conteneur ?'
+
       )
       .then(() => this.deleteConteneur(conteneurId))
       .catch(() => console.log('Deletion cancelled'));
@@ -196,7 +197,7 @@ export class AffichelisteConteneurUsineComponent {
       
         // Afficher le message de confirmation
         this.modalService
-          .openModal('Publication Réussie', `Le conteneur ${conteneur.code} a été publié avec succès.`)
+          .openModal(` Veuillez noter que, une fois publié, il n'est pas possible de modifier ou d'annuler cette publication.`)
           .then(() => {console.log('Publication confirmée')
             this.publishedConteneurs[conteneur.id] = true;
             this.savePublishedConteneursToStorage(); // Sauvegarder dans localStorage

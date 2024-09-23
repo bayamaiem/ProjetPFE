@@ -193,13 +193,14 @@ Route::get('/getPublishedConteneurByTypetotal/{dechetType}', [ConteneurControlle
         Route::get('/dechets', [DechetController::class, 'index']);
         Route::get('/conteneurs', [ConteneurController::class, 'index']);
         Route::get('/dechet/{id}', [DechetController::class, 'show']);
+        Route::post('/dechet', [DechetController::class, 'store']);
+        Route::delete('/dechet/{id}/delete', [DechetController::class, 'destroy']);
+        Route::put('/dechet/{id}/edit', [DechetController::class, 'update']);
+
 
     });
 
     Route::middleware(['multiplerolecheck:collecteur, usine'])->group(function () {
-        Route::post('/dechet', [DechetController::class, 'store']);
-        Route::put('/dechet/{id}/edit', [DechetController::class, 'update']);
-        Route::delete('/dechet/{id}/delete', [DechetController::class, 'destroy']);
     });
 
     // all roles routes

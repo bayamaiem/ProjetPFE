@@ -146,8 +146,8 @@ export class DemandeComponent implements OnInit {
     }
     this.modalService
       .openModal(
-        'Confirmer le changement',
-        'Êtes-vous sûr de vouloir modifier le statut de cette demande ?'
+        /*'Confirmer le changement',*/
+        'Êtes-vous sûr de vouloir accepter cette demande ?'
       )
       .then(() => this.changeDemandeStatus(id, etat, conteneurID, place))
       .catch(() => console.log('cancelled'));

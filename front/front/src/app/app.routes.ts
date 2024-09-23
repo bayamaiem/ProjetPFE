@@ -53,7 +53,30 @@ export const routes: Routes = [
         loadChildren: () =>
           import('./Admin/views_admin/waste/routes').then((m) => m.routes),
       },
+      {
+        path: 'Admin/views_admin/ajouterdechets',
+        loadComponent: () =>
+          import('./Admin/views_admin/createdechets/createdechets.component').then(
+            (m) => m.CreatedechetsComponent
+          ),
+      },
 
+      {
+        path: 'ajouterdechets',
+        loadComponent: () =>
+          import('./Admin/views_admin/createdechets/createdechets.component').then(
+            (m) => m.CreatedechetsComponent
+          ),
+      },
+
+      {
+        path: 'AfficherListedetypedechets',
+        loadComponent: () =>
+          import('./Admin/views_admin/affichedechets/affichedechets.component').then(
+            (m) => m.AffichedechetsComponent
+          ),
+      },
+      
       {
         path: 'Admin/views_admin/settings',
         loadChildren: () =>

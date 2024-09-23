@@ -14,20 +14,15 @@ class DechetController extends Controller
     public function index(Request $request)
     {
         $dechets = Dechet::all();
-        $firstNames = [];
-        foreach ($dechets as $dechet) {
-            $firstName = $dechet->user->firstName;
-            $firstNames[] = $firstName;
-        }
-        return response()->json(['dechets' => $dechets, 'user_first_names' => $firstNames]);
+       
+        return response()->json(['dechets' => $dechets]);
     }
     public function store(Request $request)
     {
         $user = $request->user();
 
         $dechet = new Dechet($request->all());
-        $dechet->user_id = $user->id;
-        $dechet->user_role = $user->role;
+        
         $dechet->save();
 
         return response()->json($dechet, 201);

@@ -1,0 +1,36 @@
+<div>
+    <div class="back-button">
+      <button
+        cNavLink
+        routerLink="/ajouterdechets"
+        routerLinkActive="active"
+        type="submit"
+        class="btn btn-primary float-end"
+      >
+        Ajouter Un Type de déchets
+      </button>
+    </div>
+  
+    <table cTable>
+      <thead>
+        <tr>
+          <th scope="col">Type</th>
+          <th class="d-grid gap-2 d-md-flex justify-content-md-center">Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let item of dechets">
+          <td>{{ item.type }}</td>
+          <td>
+            <div class="d-grid gap-2 d-md-flex justify-content-md-center" style="margin-top: 10px">
+                <a type="button" (click)="openEditModal(item)" class="btn btn-warning">Modifier</a>
+                <a type="button" (click)="deleteDechet(item.id)" class="btn btn-danger">Supprimer</a> 
+             
+            </div>
+          </td>
+        </tr>
+      </tbody>
+      
+    </table>
+  </div>
+  

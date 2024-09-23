@@ -8,11 +8,13 @@ import {
 import { UsersService } from '../../service/users.service';
 import { CommonModule } from '@angular/common';
 import { PasswordResetService } from '../../password-reset-service.service';
+import { RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-forget-password',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule],
+  imports: [CommonModule, ReactiveFormsModule ,
+    RouterModule ],
   templateUrl: './forget-password.component.html',
   styleUrl: './forget-password.component.scss',
 })
