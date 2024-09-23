@@ -29,6 +29,10 @@ import {
   DropdownToggleDirective,
   DropdownMenuDirective,
   DropdownItemDirective,
+  PaginationComponent,
+  PageItemDirective,
+  PageLinkDirective,
+  PaginationModule,
 } from '@coreui/angular';
 import { CommonModule, NgTemplateOutlet } from '@angular/common';
 import { IconDirective } from '@coreui/icons-angular';
@@ -85,6 +89,11 @@ import { ModalComponent } from 'src/app/components/modal/modal.component';
     DropdownMenuDirective,
     DropdownItemDirective,
     RouterLink,
+    PaginationComponent,
+    PageItemDirective,
+    PageLinkDirective,
+    PaginationModule,
+  
   ],
   templateUrl: './afficheliste-conteneur-usine.html',
   styleUrl: './afficheliste-conteneur-usine.scss',
@@ -98,14 +107,48 @@ export class AffichelisteConteneurUsineComponent {
   ) {}
 
   conteneurs: any;
+  currentPage: number = 1;
+  itemsPerPage: number = 10;
+  totalItems: number = 0;
+  totalPages: number = 0;  // Total number of pages
+  totalPagesArray: number[] = [];
+
   publishedConteneurs: { [key: number]: boolean } = {};
 
   ngOnInit() {
+    this. ListPagination(this.currentPage);
     this.ConteneursLists();
     this.loadPublishedConteneursFromStorage();
 
     
   }
+  ListPagination(page: number): void {
+    this.conteneurService.getConteneurs(page, this.itemsPerPage).subscribe((res: any) => {
+      console.log('Response from API:', res);
+
+      if (res && Array.isArray(res.conteneurs)) {
+        this.conteneurs = res.conteneurs;
+        this.totalItems = res.total_items || 0;
+        this.itemsPerPage = res.itemsPerPage || 10;
+        this.currentPage = res.current_page || 1;
+        this.totalPages = res.total_pages || 0;
+
+        // Update pagination array
+        this.totalPagesArray = Array.from({ length: this.totalPages }, (_, index) => index + 1);
+      } else {
+        console.error('Invalid response structure:', res);
+        this.conteneurs = [];
+        this.totalItems = 0;
+        this.totalPagesArray = [];
+      }
+    }, (error) => {
+      console.error('Error fetching conteneurs:', error);
+      this.conteneurs = [];
+      this.totalItems = 0;
+      this.totalPagesArray = [];
+    });
+  }  
+
 
   openDeleteModal(conteneurId: number): void {
     console.log(conteneurId)
@@ -185,5 +228,14 @@ export class AffichelisteConteneurUsineComponent {
         console.error('Error deleting conteneur', error);
       },
     });
+  }
+  onPageChange(page: number): void {
+    if (page > 0 && page <= this.totalPages) {
+      this.ListPagination(page);
+    }
+  }
+  
+  getTotalPagesArray(): number[] {
+    return Array.from({ length: this.totalPages }, (_, i) => i + 1);
   }
 }
