@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { Conteneur } from '../models/conteneur';
@@ -115,4 +115,6 @@ export class ConteneurService {
     return this.http.post<any>(`${AUTH_API}/Est_venduUsine/${id}`, {});
   }
   
+
+ 
 }

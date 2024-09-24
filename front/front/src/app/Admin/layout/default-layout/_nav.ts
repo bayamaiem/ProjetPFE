@@ -3,7 +3,7 @@ import { INavData } from '@coreui/angular';
 export const navItems: INavData[] = [
   {
     name: 'Dashboard',
-    url: 'Admin/views_admin/waste',
+    url: 'Admin/views_admin/waste/wastes',
   },
 
   {
