@@ -7,6 +7,8 @@ import {
 /*import { DepotService } from '../services/depot.service';*/
 import { Component } from '@angular/core';
 import { ChartjsComponent } from '@coreui/angular-chartjs';
+import { FormsModule } from '@angular/forms';
+
 import {
   RowComponent,
   ColComponent,
@@ -93,6 +95,7 @@ import { Depot } from 'src/app/Usine/views_usine/models/depot';
     DropdownMenuDirective,
     DropdownItemDirective,
     RouterLink,
+    FormsModule,
   ],
   templateUrl: './afficheliste-depot-collecteur.component.html',
   styleUrl: './afficheliste-depot-collecteur.component.scss',
@@ -103,11 +106,14 @@ export class AffichelisteDepotCollecteurComponent {
     private authService: AuthService
   ) {}
 
-  depots: any;
+  /*depots: any;*/
   userId?: Number;
   roleBasedDepot: any;
   roleee: string = '';
   disabledDepots: { [key: number]: boolean } = {}; // Object to track disabled state for each code
+  filteredDepots: Depot[] = [];
+  filterText: string = ''; // New property for filtering
+  depots: Depot[] = [];
 
   ngOnInit() {
     this.DePotLists();
@@ -124,6 +130,8 @@ export class AffichelisteDepotCollecteurComponent {
         console.log('rererere', depot.user.id);
         return depot.user.id === this.userId;
       });
+      this.filteredDepots = [...this.depots];
+
 
       // Check each depot to see if it exists in a container
       this.depots.forEach((depot: Depot) => {
@@ -159,5 +167,13 @@ export class AffichelisteDepotCollecteurComponent {
         alert(res.message);
       });
     }
+  }
+
+   // Filter the list of depots based on the filterText
+   applyFilter(): void {
+    this.filteredDepots = this.depots.filter(depot =>
+      depot.nom.toLowerCase().includes(this.filterText.toLowerCase()) ||
+      depot.lieu.toLowerCase().includes(this.filterText.toLowerCase())
+    );
   }
 }
