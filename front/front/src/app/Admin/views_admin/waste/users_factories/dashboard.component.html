@@ -55,8 +55,8 @@
                     'btn-primary': !user.active,
                     'btn-danger': user.active
                   }"
-                  (click)="changeUserActivation(user.id, user.active)"
-                >
+                  (click)="openDeleteModal(user.id, user.active)"
+                  >
                   {{ user.active ? "Désactiver" : "Activer" }}
                 </button>
               </td>

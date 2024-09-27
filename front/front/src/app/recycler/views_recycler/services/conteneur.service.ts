@@ -19,8 +19,12 @@ export class ConteneurService {
     );
   }
 
-  getConteneurs(): Observable<Conteneur[]> {
-    return this.http.get<Conteneur[]>(AUTH_API + '/conteneurs').pipe(
+  getConteneurs(page: number = 1, itemsPerPage: number = 10): Observable<Conteneur[]> {
+    const params = new HttpParams()
+      .set('page', page.toString())
+      .set('itemsPerPage', itemsPerPage.toString());
+  
+    return this.http.get<Conteneur[]>(AUTH_API + '/conteneurs',{params}).pipe(
       catchError((error) => {
         return throwError(error);
       })

@@ -54,6 +54,8 @@ export class WasteComponent {
   dechetTypes: string[] = [];
   uniqueDates: string[] = []; // Array to store unique dates
   uniqueCodes: string[] = [];
+  uniquePoids: string[] = [];
+  uniquecounts : string[] = [];
   constructor(
     private conteneurService: ConteneurService, private dechetsService:DechetsService
   ) {}
@@ -62,6 +64,7 @@ export class WasteComponent {
     this.getAllMouvements();
     this.DechetsLists();
     this.  computeUniqueDates();
+    this.computeUniquePoids();
   }
 
   getAllMouvements() {
@@ -71,6 +74,8 @@ export class WasteComponent {
       console.log(res);
       this.computeUniqueDates(); 
       this.computeUniqueCodes();// Initialize filteredMouvements with all data
+      this.computeUniquePoids() ;
+      this. computeUniqueNumber();
     });
   }
 
@@ -94,6 +99,29 @@ export class WasteComponent {
       this.uniqueDates = [];
     }
   }
+  computeUniquePoids() {
+    if (this.groupedMouvements && this.groupedMouvements.length > 0) {
+      // Extract unique weights from groupedMouvements
+      const poids = this.groupedMouvements.map(item => item.data.poids?.toString().trim());
+      this.uniquePoids = [...new Set(poids)]; // Remove duplicates
+      console.log(this.uniquePoids); // Debug: Check the unique weights
+    } else {
+      this.uniquePoids = [];
+    }
+  }
+
+  computeUniqueNumber() {
+    if (this.groupedMouvements && this.groupedMouvements.length > 0) {
+        // Extract unique counts from groupedMouvements
+        const counts = this.groupedMouvements.map(item => item.count?.toString().trim());
+        this.uniquecounts = [...new Set(counts)]; // Remove duplicates
+        console.log(this.uniquecounts); // Debug: Check the unique counts
+    } else {
+        this.uniquecounts = [];
+    }
+}
+
+  
   
 
   applyFilters() {

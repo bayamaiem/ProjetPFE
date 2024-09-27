@@ -29,4 +29,8 @@ export class DechetsService {
   updateDechet(dechetId: number,inputData: object): Observable<any> {
     return this.http.put(`${AUTH_API}/dechet/${dechetId}/edit`,inputData);
   }
+
+  checkTypeUsine(type: any): Observable<any> {
+    return this.http.post(`${AUTH_API}/checkTypeUsine`,{type});
+  }
 }

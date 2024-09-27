@@ -13,6 +13,7 @@ import { WidgetComponent } from 'src/app/Usine/widget/widget.component';
 import { DechetsService  } from '../services/dechets.service'; 
 import Swal from 'sweetalert2';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Dechet } from 'src/app/Usine/views_usine/models/dechet';
 
 @Component({
   selector: 'app-affichedechets',
@@ -69,6 +70,7 @@ export class AffichedechetsComponent {
   dechets: any[] = []; // Store the fetched data
   editDechetForm: FormGroup; // Form group for editing a dechet
   selectedDechetId: number | null = null; // To store the ID of the dechet being edited
+  disabledDechet: { [key: number]: boolean } = {};
   
   constructor(private dechetService: DechetsService , private fb: FormBuilder ) {
     this.editDechetForm = this.fb.group({
@@ -80,7 +82,7 @@ export class AffichedechetsComponent {
     this.fetchDechets();
   }
 
-  fetchDechets(): void {
+/*  fetchDechets(): void {
     this.dechetService.getTypeDechets().subscribe(response => {
       if (response && response.dechets) {
           this.dechets = response.dechets; 
@@ -88,7 +90,7 @@ export class AffichedechetsComponent {
       }
      
     });
-  }
+  }*/
 
   deleteDechet(dechetId: number) {
     Swal.fire({
@@ -169,5 +171,41 @@ export class AffichedechetsComponent {
       );
     }
   }
+
+
+  fetchDechets() {
+    this.dechetService.getTypeDechets().subscribe(response => {
+      if (response && response.dechets) {
+        this.dechets = response.dechets; 
+        console.log('Fetched dechets:', response.dechets);
+        
+        // Check each dechet to see if it exists in a container
+        this.dechets.forEach((dechet: Dechet) => {
+          this.checkIfDechetExistsInContainer(dechet);
+          console.log('Processing dechet:', dechet);
+        });
+      }
+    });
+  }
+  
+// Assuming disabledDechet is declared as: disabledDechet: { [key: number]: boolean } = {};
+checkIfDechetExistsInContainer(dechet: Dechet): void {
+  const type = dechet.type;
+  console.log(`Checking dechet type: ${type}`);
+  
+  this.dechetService.checkTypeUsine(type).subscribe(
+    (response: any) => {
+      console.log(`Response for dechet ${dechet.id}:`, response);
+      
+      // Update disabledDechet based on the response
+      this.disabledDechet[dechet.id] = response.exists; 
+    },
+    (error: any) => {
+      console.error('Erreur lors de la vérification du déchet dans un conteneur:', error);
+    }
+  );
+}
+
+ 
 }
 

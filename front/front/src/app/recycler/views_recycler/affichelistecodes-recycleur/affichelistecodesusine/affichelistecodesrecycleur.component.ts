@@ -64,7 +64,7 @@ export class AffichelistecodesrecycleurComponent {
   
 
   checkIfCodeExistsInContainer(code: any): void {
-    this.codeService.checkCodeinContainerTransformer({ code: code }).subscribe(
+    this.codeService.checkCodeinContainerTransformer({ coderecycleur: code }).subscribe(
       (response: any) => {
         console.log(`Checking code ${code}:`, response); // Debugging log
         if (response.exists) {

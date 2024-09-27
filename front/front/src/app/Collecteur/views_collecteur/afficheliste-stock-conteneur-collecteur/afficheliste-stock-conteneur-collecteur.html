@@ -1,5 +1,5 @@
 <c-row ngPreserveWhitespaces class="mt-4">
-  <table cTable>
+  <table cTable class="table table-striped table-bordered">
     <thead>
       <tr>
         <th scope="col">
@@ -36,7 +36,10 @@
             class="form-control" 
             [(ngModel)]="filters.depot" 
             (ngModelChange)="applyFilters()" 
-            list="dateList">
+            list="depotlist">
+           <datalist id="depotlist">
+            <option *ngFor="let depot of uniqueDepots" [value]="depot"></option>
+          </datalist>
         </th>
         
         
@@ -54,14 +57,17 @@
         </th>
 
         <th scope="col" class="center">
-         Poids (kg)
-         
-          <input  type ="text" class="form-control" 
-          [(ngModel)]="filters.poids" 
-          (ngModelChange)="applyFilters()"
-          list="poids">
-         
-        </th>
+          Poids (kg)
+          
+           <input  type ="text" class="form-control" 
+           [(ngModel)]="filters.poids" 
+           (ngModelChange)="applyFilters()"
+           list="poids">
+           <datalist id="poids">
+            <option *ngFor="let poids of uniquePoids" [value]="poids"></option>
+          </datalist>
+          
+         </th>
         
         <th scope="col" class="center">
           Nouvelle Prix

@@ -29,6 +29,7 @@ import {
   TextColorDirective,
 } from '@coreui/angular';
 import { RouterLink, RouterLinkActive } from '@angular/router';
+import { ModalService } from 'src/app/service/modal.service';
 
 import { ChartjsComponent } from '@coreui/angular-chartjs';
 import { IconDirective } from '@coreui/icons-angular';
@@ -187,7 +188,9 @@ export class DashboardComponent implements OnInit {
   });
   constructor(
     private usersService: UsersService,
-    private authService: AuthService
+    private authService: AuthService,
+    private modalService: ModalService
+
   ) {}
   token?: any;
   usersRole?: any;
@@ -199,10 +202,10 @@ export class DashboardComponent implements OnInit {
     this.initCharts();
     this.updateChartOnColorModeChange();
   }
-  changeUserActivation(id: Number, active: boolean) {
+ /* changeUserActivation(id: Number, active: boolean) {
     this.token = this.authService.getToken();
     this.usersService.changeUserStatus(id, active);
-  }
+  }*/
   initCharts(): void {
     this.mainChart = this.#chartsData.mainChart;
   }
@@ -230,6 +233,30 @@ export class DashboardComponent implements OnInit {
 
     this.#destroyRef.onDestroy(() => {
       unListen();
+    });
+  }
+  openDeleteModal(id: Number, active: boolean): void {
+    this.modalService
+      .openModal(
+        'Confirmer le changement',
+        'Etes-vous sûr de vouloir modifier le statut de cet utilisateur ?'
+      )
+      .then(() => this.changeUserActivation(id, active))
+      .catch(() => console.log('cancelled'));
+  }
+
+  
+  changeUserActivation(id: Number, active: boolean) {
+    active = !active;
+    console.log('status', active);
+    this.token = this.authService.getToken();
+    this.usersService.changeUserStatus(id, active).subscribe({
+      next: (response) => {
+        window.location.reload();
+      },
+      error: (error) => {
+        console.error('Error ', error);
+      },
     });
   }
 

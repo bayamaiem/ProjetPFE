@@ -39,7 +39,7 @@ export class WasteComponent implements OnInit {
 
   // Filters object to hold filter values
   filters = {
-    code: '',
+    conteneur_code: '',
     type: '',
     destinataire: '',
     dateDeSortie: '',
@@ -55,6 +55,7 @@ export class WasteComponent implements OnInit {
   getAllMouvements() {
     this.mouvementService.getGroupedMouvements().subscribe((res: any) => {
       this.groupedMouvements = res;
+      console.log(this.groupedMouvements);
       console.log(res);
       this.filteredMouvements = res; // Initialize filteredMouvements with all data
     });
@@ -63,7 +64,7 @@ export class WasteComponent implements OnInit {
   applyFilters() {
     this.filteredMouvements = this.groupedMouvements.filter(item => {
       return (
-        (!this.filters.code || item.data.movement.conteneur.code.toLowerCase().includes(this.filters.code.toLowerCase())) &&
+        (!this.filters.conteneur_code || item.data.conteneur_code.toLowerCase().includes(this.filters.conteneur_code.toLowerCase())) &&
         (!this.filters.type || (item.data.conteneur_type || 'Unknown Type').toLowerCase().includes(this.filters.type.toLowerCase())) &&
         (!this.filters.destinataire || 
           (`le Collecteur ${item.data.movement.fournisseur2.firstName} ${item.data.movement.fournisseur2.lastName} située à ${item.data.movement.fournisseur2.address}`)

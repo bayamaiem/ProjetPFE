@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { Conteneur } from '../models/conteneur';
@@ -21,14 +21,24 @@ export class ConteneurService {
   publishConteneur(id: number): Observable<any> {
     return this.http.patch<any>(`${AUTH_API}/conteneur/publier/${id}`, {});
   }
-  getConteneurs(): Observable<Conteneur[]> {
+  getConteneurs2(): Observable<Conteneur[]> {
     return this.http.get<Conteneur[]>(AUTH_API + '/conteneurs').pipe(
       catchError((error) => {
         return throwError(error);
       })
     );
   }
+  getConteneurs(page: number = 1, itemsPerPage: number = 10): Observable<Conteneur[]> {
+    const params = new HttpParams()
+    .set('page', page.toString())
+    .set('itemsPerPage', itemsPerPage.toString());
 
+    return this.http.get<Conteneur[]>(AUTH_API + '/conteneurs', { params }).pipe(
+      catchError((error) => {
+        return throwError(error);
+      })
+    );
+  }
   getConteneur(conteneurId: number): Observable<string> {
     const url = `${AUTH_API}/conteneur/${conteneurId}`;
     return this.http.get<string>(url).pipe(

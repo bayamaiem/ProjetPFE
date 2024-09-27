@@ -25,27 +25,30 @@ class CodeController extends Controller
     }
 
 
-
     public function checkCodeinContainer(Request $request)
     {
         $codeInput = $request->input('code');
-    
-        // Iterate through all Conteneurs
-        $conteneurs = Conteneur::all();
-    
+        
+        // Get the authenticated user's ID
+        $userId = auth()->id();
+        
+        // Retrieve only the Conteneurs that belong to the authenticated user
+        $conteneurs = Conteneur::where('user_id', $userId)->get();
+        
         foreach ($conteneurs as $conteneur) {
             // Retrieve the associated Code model
             $codeModel = $conteneur->codeModel;
-    
+            
             // Check if the code exists in the associated Code model
             if ($codeModel && $codeModel->code == $codeInput) {
                 return response()->json(['exists' => true], 200);
             }
         }
-    
+        
         // If no matching Code is found, return exists => false
         return response()->json(['exists' => false]);
     }
+    
 
     public function checkCodeinContainerTransformer(Request $request)
     {
@@ -53,12 +56,17 @@ class CodeController extends Controller
         $codeInput = $request->input('coderecycleur');
         \Log::info('Code input: ' . $codeInput);
     
+        // Récupérer l'ID de l'utilisateur authentifié
+        $userId = auth()->id();
+    
         // Utiliser une requête directe pour vérifier si le code existe dans les conteneurs transformés
+        // et si le code appartient à l'utilisateur authentifié via la relation coderecycleur
         $codeExists = Conteneur::where('is_transformed', true)
-                    ->whereHas('codeRecycleur', function ($query) use ($codeInput) {
-                        $query->where('code', $codeInput);
-                    })
-                    ->exists();
+                        ->whereHas('coderecycleur', function ($query) use ($codeInput, $userId) {
+                            $query->where('code', $codeInput)
+                                  ->where('user_id', $userId); // Vérifier que l'utilisateur est lié au code
+                        })
+                        ->exists();
     
         if ($codeExists) {
             \Log::info('Code trouvé: ' . $codeInput);
@@ -68,6 +76,8 @@ class CodeController extends Controller
             return response()->json(['exists' => false], 200);
         }
     }
+    
+
     
     
     

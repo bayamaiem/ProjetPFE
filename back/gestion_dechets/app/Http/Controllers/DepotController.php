@@ -165,7 +165,9 @@ class DepotController extends Controller
         return response()->json(['exists' => false]);
     }
 
-
+  
+   
+       
 
     public function getDepotNameById($id)
     {

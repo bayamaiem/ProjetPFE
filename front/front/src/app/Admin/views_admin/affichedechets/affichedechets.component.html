@@ -24,7 +24,9 @@
           <td>
             <div class="d-grid gap-2 d-md-flex justify-content-md-center" style="margin-top: 10px">
                 <a type="button" (click)="openEditModal(item)" class="btn btn-warning">Modifier</a>
-                <a type="button" (click)="deleteDechet(item.id)" class="btn btn-danger">Supprimer</a> 
+                <a type="button" (click)="deleteDechet(item.id)" class="btn btn-danger"
+                [ngClass]="{ 'disabled': disabledDechet[item.id] }"
+                [attr.aria-disabled]="disabledDechet[item.id] ? true : null">Supprimer</a> 
              
             </div>
           </td>

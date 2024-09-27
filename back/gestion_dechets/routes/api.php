@@ -68,6 +68,8 @@ Route::middleware('auth:sanctum')->group(function () {
 
 
     Route::post('/checkCodeinContainerTransformer',[CodeController::class,'checkCodeinContainerTransformer']);
+Route::post('/checkType',[DechetController::class,'checkType']);
+Route::post('/checkTypeUsine',[DechetController::class,'checkTypeUsine']);
 
     Route::get('/getTypeSumsusinebyID/sums/{id}', [ConteneurController::class, 'getTypeSumsusinebyID']);
     Route::get('/getTypeSumsTotal/sums', [ConteneurController::class, 'getTypeSumsTotal']);

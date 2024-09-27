@@ -55,13 +55,14 @@
               </td>
               <td>
                 <button
-                  cButton
-                  [ngClass]="{
-                    'btn-primary': !user.active,
-                    'btn-danger': user.active
-                  }"
-                  (click)="changeUserActivation(user.id, user.active)"
-                >
+                cButton
+                type="submit"
+                [ngClass]="{
+                  'btn-primary': !user.active,
+                  'btn-danger': user.active
+                }"
+                  (click)="openDeleteModal(user.id, user.active)"
+                  >
                   {{ user.active ? "Désactiver" : "Activer" }}
                 </button>
               </td>

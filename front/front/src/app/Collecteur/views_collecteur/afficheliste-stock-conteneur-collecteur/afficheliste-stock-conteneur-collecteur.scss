@@ -1,0 +1,130 @@
+// Define SCSS variables for easier theme customization
+$input-border-color: #ced4da;
+$input-focus-border-color: #007bff;
+$input-hover-border-color: #80bdff;
+$input-box-shadow: rgba(0, 0, 0, 0.1);
+$scrollbar-bg: #f1f1f1;
+$scrollbar-thumb-bg: #007bff;
+
+// Style the input fields
+input[type="text"] {
+  padding: 8px;
+  border-radius: 5px;
+  border: 1px solid $input-border-color;
+  box-shadow: 0 2px 5px $input-box-shadow;
+  transition: border-color 0.3s ease;
+
+  &:focus {
+    border-color: $input-focus-border-color;
+    outline: none;
+    box-shadow: 0 0 5px rgba(0, 123, 255, 0.25);
+  }
+
+  &:hover {
+    border-color: $input-hover-border-color;
+  }
+}
+
+// Enhance the appearance of datalist options
+datalist option {
+  font-size: 14px;
+  padding: 5px;
+}
+
+// Custom scrollbar styling for input datalist
+input[type="text"]::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+input[type="text"]::-webkit-scrollbar-thumb {
+  background-color: $scrollbar-thumb-bg;
+  border-radius: 10px;
+}
+
+input[type="text"]::-webkit-scrollbar-track {
+  background: $scrollbar-bg;
+}
+/* SCSS styles */
+datalist {
+    max-height: 150px; /* Ajustez selon la hauteur que vous souhaitez */
+    overflow-y: auto;
+  }
+  
+  input[type="text"]::-webkit-scrollbar {
+    width: 8px;
+  }
+  
+  input[type="text"]::-webkit-scrollbar-thumb {
+    background-color: #007bff; /* Changez la couleur selon vos préférences */
+    border-radius: 10px;
+  }
+  
+  input[type="text"]::-webkit-scrollbar-track {
+    background: #f1f1f1;
+  }
+
+
+  // Styles pour l'input et la liste de dépôts
+input[type="text"] {
+    position: relative; // Nécessaire pour positionner la liste correctement
+  }
+  
+  .depot-list {
+    max-height: 150px;
+    overflow-y: auto;
+    border: 1px solid $input-border-color;
+    border-radius: 5px;
+    background-color: white;
+    box-shadow: 0 2px 5px $input-box-shadow;
+    position: absolute; // Pour positionner la liste correctement
+    z-index: 1000; // Assurez-vous qu'elle soit au-dessus des autres éléments
+    list-style-type: none; // Supprimez les puces
+  
+    li {
+      padding: 8px;
+      cursor: pointer;
+  
+      &:hover {
+        background-color: $input-hover-border-color; // Changez la couleur de fond au survol
+      }
+    }
+  }
+  
+  .table {
+    width: 100%;
+    margin: 20px 0;
+    border-collapse: collapse;
+  }
+  
+  .table th, .table td {
+    padding: 12px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+  }
+  
+  .table th {
+    background-color: #f2f2f2;
+    color: #333;
+  }
+  
+  .table-striped tbody tr:nth-of-type(odd) {
+    background-color: #f9f9f9;
+  }
+  
+  .table-striped tbody tr:hover {
+    background-color: #e0e0e0;
+  }
+  
+  .text-success {
+    color: green;
+  }
+  
+  .text-danger {
+    color: red;
+  }
+  
+  .form-control {
+    margin-top: 5px;
+  }
+  

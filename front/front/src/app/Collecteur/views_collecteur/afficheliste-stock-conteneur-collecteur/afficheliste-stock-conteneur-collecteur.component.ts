@@ -147,6 +147,9 @@ export class AffichelisteStockConteneurCollecteurComponent {
   uniqueDates: string[] = []; // Array to store unique dates
   uniqueCodes: string[] = [];
   uniqueDepot:string[]=[];
+  uniquePoids: string[] = [];
+  uniqueDepots: string[] = [];
+
   constructor(
     private conteneurdechetsaquisService: ConteneurdechetsaquisService,
     private authService: AuthService,
@@ -177,7 +180,8 @@ export class AffichelisteStockConteneurCollecteurComponent {
     this.computeUniqueCodes();
     this.computeUniqueConteneurPrix();
    this. computeUniquePrixCollecteur();
-
+this.  computeUniquePoids();
+this.computeUniquedepot();
 
   }
 
@@ -296,6 +300,9 @@ export class AffichelisteStockConteneurCollecteurComponent {
         this.groupAndCountMovements();
         this.computeUniqueConteneurPrix();
         this. computeUniquePrixCollecteur();
+        this.  computeUniquePoids();
+        this.computeUniquedepot(); // Appeler la fonction ici
+
       } else {
         console.error('Unexpected response format:', response);
       }
@@ -650,5 +657,30 @@ export class AffichelisteStockConteneurCollecteurComponent {
     console.log(   'liste filteredMouvements ' ,this.filteredMouvements );
   }
   
+  computeUniquePoids() {
+    if (this.groupedMovements && this.groupedMovements.length > 0) {
+      // Extract unique weights from groupedMovements
+      const poids = this.groupedMovements.map(item => item.poids?.toString().trim());
+      this.uniquePoids = [...new Set(poids)]; // Remove duplicates
+      console.log(this.uniquePoids); // Debug: Check the unique weights
+    } else {
+      this.uniquePoids = [];
+    }
+  }
 
+  computeUniquedepot() {
+    if (this.groupedMovements && this.groupedMovements.length > 0) {
+      // Extract unique combinations of 'lieu' and 'nom' from groupedMovements
+      const depots = this.groupedMovements
+        .filter(item => item.depot && item.depot.nom && item.depot.lieu) // Assurer que les valeurs existent
+        .map(item => `${item.depot.nom.trim()} à ${item.depot.lieu.trim()}`); // Combiner 'nom' et 'lieu' en une seule chaîne
+  
+      this.uniqueDepots = [...new Set(depots)]; // Enlever les doublons
+      console.log(this.uniqueDepots); // Debug: Vérifier les dépôts uniques
+    } else {
+      this.uniqueDepots = [];
+    }
+  }
+  
+  
 }  
