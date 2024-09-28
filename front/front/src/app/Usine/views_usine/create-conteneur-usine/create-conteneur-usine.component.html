@@ -30,19 +30,14 @@
     (ngSubmit)="saveConteneur()"
     class="p-fluid"
   >
-    <div class="form-group">
-      <label for="code">Code</label>
-      <select
-        formControlName="code"
-        class="form-control"
-        id="code"
-        name="code"
-      >
-        <option *ngFor="let Code of Codes" [ngValue]="Code.id">
-          {{ Code.code }}
-        </option>
-      </select>
-    </div>
+  <div class="form-group">
+    <label for="code">Code</label>
+    <select formControlName="code" class="form-control" id="code" (change)="validateCode()">
+      <option *ngFor="let Code of Codes" [ngValue]="Code.id">
+        {{ Code.code }}
+      </option>
+    </select>
+  </div>
 
     <div class="form-group">
       <label for="prix">Prix(dt)</label>
@@ -57,12 +52,7 @@
 
     <div class="form-group">
       <label for="type">Type</label>
-      <select
-        formControlName="dechet_id"
-        class="form-control"
-        id="type"
-        name="type"
-      >
+      <select formControlName="dechet_id" class="form-control" id="type" (change)="validateCode()">
         <option *ngFor="let dechet of dechets" [ngValue]="dechet.id">
           {{ dechet.type }}
         </option>

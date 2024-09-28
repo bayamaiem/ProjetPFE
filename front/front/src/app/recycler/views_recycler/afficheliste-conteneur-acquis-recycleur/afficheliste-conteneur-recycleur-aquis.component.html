@@ -4,7 +4,11 @@
       <tr>
         <th scope="col">
           Code
-          <input type="text" class="form-control" [(ngModel)]="filters.conteneur_code" (input)="filterMovements()">
+          <input type="text" class="form-control" [(ngModel)]="filters.conteneur_code" (input)="filterMovements()"
+          list="codeList">
+          <datalist id="codeList">
+            <option *ngFor="let code of uniqueCodes" [value]="code"></option>
+          </datalist>
         </th>
         <th scope="col">
           Type

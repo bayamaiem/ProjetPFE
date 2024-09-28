@@ -17,10 +17,10 @@
         <th scope="col">Code</th>
         <th scope="col">Prix(dt)</th>
         <th scope="col">Poids(kg)</th>
-        <th scope="col">Usine</th>
+     <!-- <th scope="col">Usine</th>-->  
         <th scope="col">Depot</th>
         <th scope="col">Type</th>
-        <th scope="col">Action</th>
+        <th scope="col"  class="d-grid gap-2 d-md-flex justify-content-md-center">Action</th>
       </tr>
     </thead>
     <tbody>
@@ -28,8 +28,8 @@
         <td>{{ item.conteneur_code }}</td>
         <td>{{ item.conteneur.prix }}</td>
         <td>{{ item.conteneur.poids }} kg</td>
-        <td>{{ item.user_name }}</td>
-        <td>{{ item.depot_name }}</td>
+      <!--<td>{{ item.user_name }}</td>-->  
+        <td >{{ item.depot_name }} à{{ item.conteneur.depot.lieu}}</td>
         <td>{{ item.dechet_name }}</td>
 
         <td>

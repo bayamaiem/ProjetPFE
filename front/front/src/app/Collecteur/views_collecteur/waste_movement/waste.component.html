@@ -41,12 +41,6 @@
         </th>
        
         
-        <th scope="col" class="center">
-          Nombre de conteneur
-          <input type="text" class="form-control" [(ngModel)]="filters.nombreDeConteneur" (ngModelChange)="applyFilters()" list="count">
-          <datalist id="count">
-           <option *ngFor="let count of uniquecounts" [value]="count"></option>
-         </datalist>
 
         <th scope="col" class="center">
           Poids (kg)
@@ -60,6 +54,27 @@
           </datalist>
           
          </th>
+
+         <th scope="col" class="center">
+          prix
+         
+          <input  type ="text" class="form-control" 
+          [(ngModel)]="filters.conteneurPrix" 
+          (ngModelChange)="applyFilters()"
+          list="Aprix">
+          <datalist id="Aprix">
+          <option *ngFor="let prix of uniqueConteneurPrix" [value]="prix">{{ prix }}</option>
+        
+        </datalist>
+        </th>
+
+        <th scope="col" class="center">
+          Nombre de conteneur
+          <input type="text" class="form-control" [(ngModel)]="filters.nombreDeConteneur" (ngModelChange)="applyFilters()" list="count">
+          <datalist id="count">
+           <option *ngFor="let count of uniquecounts" [value]="count"></option>
+         </datalist>
+</th>
         <th scope="col" class="center">
           Type de mouvement
           <input 
@@ -92,8 +107,10 @@
           </ng-template>
         </td>
                 <td>en {{ item.data.movement.date }} </td>
-        <td>{{ item.count }}</td>
         <td>{{ item.data.poids}} (kg)</td>
+        <td>{{ item.data.movement.conteneur.prix}} (dt)</td>
+        <td>{{ item.count }}</td>
+
         <ng-container *ngIf="item.data.movement.IDdemandeurrecycleur === null; else entreeTemplate">
           <td><span class="text-success">Entrée</span></td>
         </ng-container>

@@ -142,6 +142,7 @@ export class AffichelisteConteneurRecycleurAcquisComponent implements OnInit {
   selectedMovement: any={};
   isProcessing: boolean = false;  // Pour contrôler l'état du bouton
   StockerConteneur: { [key: number]: boolean } = {};
+  uniqueCodes: string[] = [];
 
   filterForm: FormGroup;
   currentPage: number = 2;
@@ -435,5 +436,14 @@ conteneur_code:string;// Store the stocking status
       },
     });
   }
-  
+  computeUniqueCodes() {
+    if (this.groupedMovements && this.groupedMovements.length > 0) {
+      // Extract unique container codes from groupedMouvements
+      const codes = this.groupedMovements.map(item => item.conteneur_code);
+      this.uniqueCodes = [...new Set(codes)]; // Remove duplicates
+      console.log(this.uniqueCodes); // Debug: Check the unique codes
+    } else {
+      this.uniqueCodes = [];
+    }
+  }
 }  

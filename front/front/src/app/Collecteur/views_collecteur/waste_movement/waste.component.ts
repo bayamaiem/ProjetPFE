@@ -47,9 +47,12 @@ export class WasteComponent {
     dateDeSortie: '',
     nombreDeConteneur: '',
     poids:'',
-    movementType:  ''  // Add this line
+    movementType:  '' , // Add this line
+    conteneurPrix:''
 
   };
+  uniqueConteneurPrix: string[] = []; // Liste des prix uniques
+
   dechets: Dechet[] = [];
   dechetTypes: string[] = [];
   uniqueDates: string[] = []; // Array to store unique dates
@@ -63,8 +66,9 @@ export class WasteComponent {
   ngOnInit(): void {
     this.getAllMouvements();
     this.DechetsLists();
-    this.  computeUniqueDates();
+    this.computeUniqueDates();
     this.computeUniquePoids();
+    this.computeUniqueConteneurPrix();
   }
 
   getAllMouvements() {
@@ -76,6 +80,7 @@ export class WasteComponent {
       this.computeUniqueCodes();// Initialize filteredMouvements with all data
       this.computeUniquePoids() ;
       this. computeUniqueNumber();
+      this.computeUniqueConteneurPrix();
     });
   }
 
@@ -88,6 +93,29 @@ export class WasteComponent {
     } else {
       this.uniqueCodes = [];
     }
+  }
+  computeUniqueConteneurPrix(): void {
+    
+
+    const prixSet = new Set<string>();
+
+  
+  
+    this.groupedMouvements.forEach(item => {
+      console.log('Propriétés de l\'élément Prix:', item);
+      const conteneurPrix =item.data.movement.conteneur.prix
+      ?.toString().trim(); // Convertir en string et nettoyer les espaces
+      console.log('Conteneur Prix:', conteneurPrix);
+      console.log('Grouped Movements:', this.groupedMouvements);
+
+      if (conteneurPrix) {
+        prixSet.add(conteneurPrix);
+      }
+    });
+    
+  
+    this.uniqueConteneurPrix = Array.from(prixSet);
+    console.log('Prix de conteneurs uniques:', this.uniqueConteneurPrix);
   }
   computeUniqueDates() {
     if (this.groupedMouvements && this.groupedMouvements.length > 0) {
@@ -157,9 +185,10 @@ export class WasteComponent {
         (this.filters.movementType === 'Sortie' && item.data.movement.IDdemandeurrecycleur !== null) ||
         (this.filters.movementType === 'Entrée' && item.data.movement.IDdemandeurrecycleur === null);
   
-        const isMatchingPoids = !this.filters.poids || 
-    (item.data.poids && item.data.poids.toString().includes(this.filters.poids));
-
+        const isMatchingPoids = !this.filters.conteneurPrix || 
+    ( item.data.movement.conteneur.prix &&  item.data.movement.conteneur.prix.toString().includes(this.filters.conteneurPrix));
+    const isMatchingPrix = !this.filters.poids || 
+    (item.data.movement.conteneur.prix  && item.data.movement.conteneur.prix .toString().includes(this.filters.conteneurPrix));
   
       // Return true if all criteria match
       return isMatchingCode &&
@@ -168,6 +197,7 @@ export class WasteComponent {
         isMatchingDateDeSortie &&
         isMatchingNombreDeConteneur &&
         isMatchingPoids&&
+       isMatchingPrix &&
         isMatchingMovementType;
     });
   }

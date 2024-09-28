@@ -26,4 +26,9 @@ class Dechet extends Model
     {
         return $this->hasMany(Conteneur::class);
     }
+
+    public function code()
+    {
+        return $this->hasMany(Code::class);
+    }
 }

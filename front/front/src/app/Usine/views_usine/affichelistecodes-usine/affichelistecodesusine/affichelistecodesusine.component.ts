@@ -67,8 +67,8 @@ export class AffichelistecodesusineComponent {
     this.codeService.checkCodeinContainer({ code: code }).subscribe(
       (response: any) => {
         console.log(`Checking code ${code}:`, response); // Debugging log
-        if (response.exists) {
-          this.disabledCodes[code] = true; // Disable the button for this code
+        if (response && response.exists !== undefined) { // Check if exists is defined
+          this.disabledCodes[code] = response.exists; // Directly use the exists property
         } else {
           this.disabledCodes[code] = false;
         }
@@ -94,5 +94,7 @@ alert(res.message);
 
     }
   }*/
+
+    
 
     }

@@ -60,6 +60,8 @@ demandeurrecycleur: any;
   IDdemandeur:number;
   IDfournisseur:number;
   poids:number;
+  conteneurPrix: number; // or the appropriate type
+
 
 }
 

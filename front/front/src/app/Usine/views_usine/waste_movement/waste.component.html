@@ -4,11 +4,22 @@
       <tr>
         <th scope="col">
           Code
-          <input type="text" class="form-control" [(ngModel)]="filters.conteneur_code" (ngModelChange)="applyFilters()">
+          <input 
+            type="text" 
+            class="form-control" 
+            [(ngModel)]="filters.conteneur_code" 
+            (ngModelChange)="applyFilters()" 
+            list="codeList">
+          <datalist id="codeList">
+            <option *ngFor="let code of uniqueCodes" [value]="code"></option>
+          </datalist>
         </th>
         <th scope="col">
           Type
-          <input type="text" class="form-control" [(ngModel)]="filters.type" (ngModelChange)="applyFilters()">
+          <input type="text" class="form-control" list="dechetTypesList" [(ngModel)]="filters.type" (ngModelChange)="applyFilters()">
+          <datalist id="dechetTypesList">
+            <option *ngFor="let type of dechetTypes" [value]="type">{{ type }}</option>
+          </datalist>
         </th>
         <th scope="col">
           Destinataire
@@ -16,16 +27,43 @@
         </th>
         <th scope="col">
           Date de sortie
+          <input 
+            type="text" 
+            class="form-control" 
+            [(ngModel)]="filters.dateDeSortie" 
+            (ngModelChange)="applyFilters()" 
+            list="dateList">
+          <datalist id="dateList">
+            <option *ngFor="let date of uniqueDates" [value]="date"></option>
+          </datalist>
+        </th>
+   <!-- <th scope="col">
+          Date de sortie
           <input type="text" class="form-control" [(ngModel)]="filters.dateDeSortie" (ngModelChange)="applyFilters()">
-        </th>
-        <th scope="col">
-          Poids(kg)
-          <input type="text" class="form-control" [(ngModel)]="filters.poids" (ngModelChange)="applyFilters()">
-        </th>
+        </th>-->    
         <th scope="col" class="center">
+          Poids (kg)
+          
+           <input  type ="text" class="form-control" 
+           [(ngModel)]="filters.poids" 
+           (ngModelChange)="applyFilters()"
+           list="poids">
+           <datalist id="poids">
+            <option *ngFor="let poids of uniquePoids" [value]="poids"></option>
+          </datalist>
+          
+         </th>
+         <th scope="col" class="center">
+          Nombre de conteneur
+          <input type="text" class="form-control" [(ngModel)]="filters.nombreDeConteneur" (ngModelChange)="applyFilters()" list="count">
+          <datalist id="count">
+           <option *ngFor="let count of uniquecounts" [value]="count"></option>
+         </datalist>
+</th>
+       <!--<th scope="col" class="center">
           Nombre de conteneur
           <input type="text" class="form-control" [(ngModel)]="filters.nombreDeConteneur" (ngModelChange)="applyFilters()">
-        </th>
+        </th>--> 
       </tr>
     </thead>
     <tbody>

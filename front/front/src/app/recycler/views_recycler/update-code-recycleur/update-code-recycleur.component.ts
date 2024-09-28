@@ -6,7 +6,10 @@ import { CommonModule } from '@angular/common';
 import { CodeService } from '../../../Usine/views_usine/services/code.service';
 import { Code } from '../../../Usine/views_usine/models/code';
 import Swal from 'sweetalert2';
-
+export interface Dechet {
+  id: number;
+  type: string;
+}
 @Component({
   selector: 'app-update-code-recycleur',
   standalone: true,
@@ -15,9 +18,12 @@ import Swal from 'sweetalert2';
   styleUrl: './update-code-recycleur.component.scss'
 })
 export class UpdateCodeRecycleurComponent {
+ 
   code : Code= { 
     id :0,
     code: '' ,
+    dechet_id:0,
+    dechet: { id: 0, type: '' }, // Create an instance of Dechet here
     created_at: new Date(),
     updated_at: new Date(),
     user_id:0

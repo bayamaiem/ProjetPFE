@@ -12,17 +12,18 @@ class CodeController extends Controller
     {
         $validated = $request->validate([
             'code' => 'required|string|max:255',
+            'dechet_id' => 'required|exists:dechets,id', // Validation de dechet_id
         ]);
-
-        
     
         $storecode = Code::create([
             'code' => $validated['code'],
             'user_id' => Auth::id(),
+            'dechet_id' => $validated['dechet_id'], // Ajoutez dechet_id ici
         ]);
     
         return response()->json(['table_code' => $storecode], 201);
     }
+    
 
 
     public function checkCodeinContainer(Request $request)
@@ -99,13 +100,19 @@ class CodeController extends Controller
 }
    
 
-    public function index(Request $request)
-    {
-        $user = Auth::user();
-        $codes = $user->codes()->get();
+public function index(Request $request)
+{
+    $user = Auth::user();
     
-        return response()->json(['Codes' => $codes]);
-    }
+    // Récupérer les codes associés à l'utilisateur authentifié, avec les détails des déchets
+    $codes = $user->codes()->with('dechet')->get();
+
+    // Collecter uniquement les types de déchets associés
+    $types = $codes->pluck('dechet.type')->unique(); // Par exemple, si vous souhaitez récupérer les types uniques
+    
+    return response()->json(['Codes' => $codes, 'types' => $types]);
+}
+
     
 
     public function getCode($id){

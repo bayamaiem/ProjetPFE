@@ -58,8 +58,10 @@ export class ConteneurService {
           const  conteneur_type = curr.movement.conteneur.dechet.type;
           const  conteneur_date = curr.movement.date;
           const conteneur_poids = curr.movement.poids;
+          const conteneur_prix = curr.movement.conteneur.prix;
 
-          const key = `${userId}-${conteneur_poids}-${conteneurcode}-${ conteneur_type}-${conteneur_date}`;
+
+          const key = `${userId}-${conteneur_poids}-${conteneurcode}-${ conteneur_type}-${conteneur_date}-${conteneur_prix}`;
           if (!grouped[key]) {
             grouped[key] = { count: 0, data: curr };
           }

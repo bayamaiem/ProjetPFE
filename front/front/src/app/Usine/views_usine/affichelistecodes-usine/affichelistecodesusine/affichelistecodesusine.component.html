@@ -10,17 +10,21 @@
         Ajouter Un Code
       </button>
     </div>
-  
+   
     <table cTable>
       <thead>
         <tr>
           <th scope="col">Code</th>
+          <th scope="col">Type</th>
+
           <th class="d-grid gap-2 d-md-flex justify-content-md-center">Action</th>      
         </tr>
       </thead>
       <tbody>
         <tr *ngFor="let item of Codes">
           <td>{{ item.code }}</td>
+          <td>{{ item.dechet ? item.dechet.type : 'N/A' }}</td>
+
          
           <td>
             <div

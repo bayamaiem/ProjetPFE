@@ -10,7 +10,15 @@
       Ajouter Un Dépôt
     </button>
   </div>
-
+  <div class="filter-section mb-3">
+    <input
+      type="text"
+      class="form-control"
+      placeholder="Rechercher par nom ou lieu"
+      [(ngModel)]="filterText"
+      (input)="applyFilter()"
+    />
+  </div>
   <table cTable>
     <thead>
       <tr>
@@ -20,7 +28,7 @@
       </tr>
     </thead>
     <tbody>
-      <tr *ngFor="let item of depots">
+      <tr *ngFor="let item of filteredDepots">
         <td>{{ item.nom }}</td>
         <td>{{ item.lieu }}</td>
 

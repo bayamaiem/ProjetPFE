@@ -53,6 +53,8 @@ export class CreateConteneurUsineComponent {
   Codes :Code[]=[];
   errors: any = [];
   userId: any;
+  isCodeValid: boolean = true; // New property to track code validity
+
   constructor(
     private conteneurService: ConteneurService,
     private dechetsService: DechetsService,
@@ -112,24 +114,54 @@ export class CreateConteneurUsineComponent {
         return depot.user.id === this.userId;
       });
     });}
-  saveConteneur(): void {
-    this.userId = this.authService.getUser();
-    if (this.conteneurForm.valid) {
-      const formData: Conteneur = this.conteneurForm.value;
-      formData.user_id = this.userId.userId; // Add the user ID to the form data
-      this.conteneurService.saveConteneur(formData).subscribe(
-        (response: Conteneur) => {
-          console.log('Conteneur créé avec succès :', response);
-          this.conteneurForm.reset();
-          this.router.navigate(['/Usine/liste-conteneur']);
-
-        },
-        (error: any) => {
-          console.error('Erreur lors de la création du conteneur :', error);
+    saveConteneur(): void {
+      this.userId = this.authService.getUser();
+      if (this.conteneurForm.valid && this.isCodeValid) {
+        const formData: Conteneur = this.conteneurForm.value;
+        formData.user_id = this.userId.userId; // Add the user ID to the form data
+        this.conteneurService.saveConteneur(formData).subscribe(
+          (response: Conteneur) => {
+            console.log('Conteneur créé avec succès :', response);
+            this.conteneurForm.reset();
+            this.router.navigate(['/Usine/liste-conteneur']);
+          },
+          (error: any) => {
+            console.error('Erreur lors de la création du conteneur :', error);
+          }
+        );
+      } else {
+        this.conteneurForm.markAllAsTouched();
+        if (!this.isCodeValid) {
+          alert("Le code sélectionné n'est pas valide pour ce type de déchet."); // Alert if invalid
         }
-      );
-    } else {
-      this.conteneurForm.markAllAsTouched();
+      }
     }
-  }
+    
+
+    validateCode(): void {
+      const selectedCodeId = this.conteneurForm.get('code')?.value;
+      const selectedDechetId = this.conteneurForm.get('dechet_id')?.value;
+    
+      // Check if both the code and dechet are selected
+      if (selectedCodeId && selectedDechetId) {
+        // Find the selected code based on the selected code ID
+        const selectedCode = this.Codes.find(code => code.id === selectedCodeId);
+    
+        if (selectedCode) {
+          // Check if the selected code's dechet_id matches the selected dechet_id
+          if (selectedCode.dechet_id !== selectedDechetId) {
+            this.isCodeValid = false;
+            alert("Le code sélectionné n'est pas valide pour ce type de déchet."); // Show alert if not valid
+          } else {
+            this.isCodeValid = true; // Set valid if matches
+          }
+        } else {
+          this.isCodeValid = false; // If no code found, consider it invalid
+        }
+      } else {
+        this.isCodeValid = true; // If either field is not selected, consider it valid (or do nothing)
+      }
+    }
+    
+  
 }

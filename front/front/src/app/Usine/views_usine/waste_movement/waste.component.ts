@@ -9,6 +9,7 @@ import { IconDirective } from '@coreui/icons-angular';
 import { RouterLink, RouterOutlet } from '@angular/router';
 import { WidgetComponent } from '../../widget/widget.component';
 import { FormsModule } from '@angular/forms';
+import { DechetsService } from 'src/app/Usine/views_usine/services/dechets.service';
 
 @Component({
   selector: 'app-waste33',
@@ -46,11 +47,20 @@ export class WasteComponent implements OnInit {
     nombreDeConteneur: '',
     poids:''
   };
+  uniqueCodes: string[] = [];
+  dechetTypes: string[] = [];
+  uniqueDates: string[] = []; // Array to store unique dates
+  uniquePoids: string[] = [];
+  uniquecounts : string[] = [];
 
-  constructor(private mouvementService: MouvementService) {}
+  constructor(private mouvementService: MouvementService ,  private dechetsService:DechetsService) {}
 
   ngOnInit(): void {
     this.getAllMouvements();
+    this.  computeUniqueCodes() ;
+    this.DechetsLists();
+    this.  computeUniqueDates() ;
+    this.computeUniqueDates();
   }
   getAllMouvements() {
     this.mouvementService.getGroupedMouvements().subscribe((res: any) => {
@@ -58,9 +68,44 @@ export class WasteComponent implements OnInit {
       console.log(this.groupedMouvements);
       console.log(res);
       this.filteredMouvements = res; // Initialize filteredMouvements with all data
+      this.  computeUniqueCodes() ;
+      this.  computeUniqueDates() ;
+      this. computeUniquePoids();
+      this.computeUniqueNumber();
     });
   }
+  computeUniqueDates() {
+    if (this.groupedMouvements && this.groupedMouvements.length > 0) {
+      // Extract unique dates from groupedMouvements
+      const dates = this.groupedMouvements.map(item => `en ${item.data.movement.date} `);
+      this.uniqueDates = [...new Set(dates)]; // Remove duplicates
+      console.log(this.uniqueDates); // Debug: Check the unique dates
+    } else {
+      this.uniqueDates = [];
+    }
+  }
 
+  computeUniqueNumber() {
+    if (this.groupedMouvements && this.groupedMouvements.length > 0) {
+        // Extract unique counts from groupedMouvements
+        const counts = this.groupedMouvements.map(item => item.count?.toString().trim());
+        this.uniquecounts = [...new Set(counts)]; // Remove duplicates
+        console.log(this.uniquecounts); // Debug: Check the unique counts
+    } else {
+        this.uniquecounts = [];
+    }
+}
+
+  computeUniquePoids() {
+    if (this.groupedMouvements && this.groupedMouvements.length > 0) {
+      // Extract unique weights from groupedMouvements
+      const poids = this.groupedMouvements.map(item => item.data.poids?.toString().trim());
+      this.uniquePoids = [...new Set(poids)]; // Remove duplicates
+      console.log(this.uniquePoids); // Debug: Check the unique weights
+    } else {
+      this.uniquePoids = [];
+    }
+  }
   applyFilters() {
     this.filteredMouvements = this.groupedMouvements.filter(item => {
       return (
@@ -81,7 +126,34 @@ export class WasteComponent implements OnInit {
     });
   }
   
+  computeUniqueCodes() {
+    if (this.groupedMouvements && this.groupedMouvements.length > 0) {
+      // Extract unique container codes from groupedMouvements
+      const codes = this.groupedMouvements.map(item => item.data.conteneur_code);
+      this.uniqueCodes = [...new Set(codes)]; // Remove duplicates
+      console.log(this.uniqueCodes); // Debug: Check the unique codes
+    } else {
+      this.uniqueCodes = [];
+    }
+  }
   
+
+  DechetsLists() {
+    this.dechetsService.getDechets().subscribe((response: any) => {
+      console.log('Réponse API complète:', response);  // Affiche la réponse complète pour le debug
+      
+      // Vérifie si la réponse contient un tableau de déchets
+      if (response && Array.isArray(response.dechets)) {
+        // Map pour obtenir uniquement les types
+        this.dechetTypes = response.dechets.map((dechet: any) => dechet.type.trim());
+      } else {
+        console.error('La réponse de l\'API ne contient pas de tableau de déchets:', response);
+        this.dechetTypes = [];
+      }
+    }, (error) => {
+      console.error('Erreur lors de la récupération des types de déchets:', error);
+    });
+  }
   
 }
 

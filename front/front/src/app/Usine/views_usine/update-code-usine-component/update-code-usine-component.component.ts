@@ -18,6 +18,9 @@ export class UpdateCodeUsineComponentComponent {
   code : Code= { 
     id :0,
     code: '' ,
+    dechet_id:0,
+    dechet: { id: 0, type: '' }, // Create an instance of Dechet here
+
     created_at: new Date(),
     updated_at: new Date(),
     user_id:0

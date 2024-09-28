@@ -8,11 +8,13 @@ import { IconDirective } from '@coreui/icons-angular';
 import { WidgetComponent } from '../../widget/widget.component';
 import { Depot } from '../models/depot';
 import { AuthService } from 'src/app/service/auth.service';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-afficheliste-depot-usine',
   standalone: true,
-  imports: [RowComponent,CommonModule, RouterLink, RouterLinkActive, RouterModule, IconDirective,WidgetComponent, ColComponent, TextColorDirective, CardComponent, CardHeaderComponent, CardBodyComponent, ChartjsComponent,GridModule, CardModule, TableModule, GridModule, UtilitiesModule, ColComponent, TextColorDirective, CardComponent, CardHeaderComponent, CardBodyComponent, ModalComponent, ModalHeaderComponent, ModalTitleDirective, ThemeDirective, ButtonCloseDirective, ModalBodyComponent, ModalFooterComponent, ButtonDirective, NgTemplateOutlet, ModalToggleDirective, PopoverDirective, TooltipDirective,WidgetStatAComponent,TemplateIdDirective,RouterOutlet ,WidgetComponent,IconDirective,DropdownComponent,DropdownToggleDirective,DropdownMenuDirective,DropdownItemDirective,RouterLink],
+  imports: [RowComponent,CommonModule, RouterLink,    FormsModule,
+    RouterLinkActive, RouterModule, IconDirective,WidgetComponent, ColComponent, TextColorDirective, CardComponent, CardHeaderComponent, CardBodyComponent, ChartjsComponent,GridModule, CardModule, TableModule, GridModule, UtilitiesModule, ColComponent, TextColorDirective, CardComponent, CardHeaderComponent, CardBodyComponent, ModalComponent, ModalHeaderComponent, ModalTitleDirective, ThemeDirective, ButtonCloseDirective, ModalBodyComponent, ModalFooterComponent, ButtonDirective, NgTemplateOutlet, ModalToggleDirective, PopoverDirective, TooltipDirective,WidgetStatAComponent,TemplateIdDirective,RouterOutlet ,WidgetComponent,IconDirective,DropdownComponent,DropdownToggleDirective,DropdownMenuDirective,DropdownItemDirective,RouterLink],
   templateUrl: './afficheliste-depot-usine.component.html',
   styleUrl: './afficheliste-depot-usine.component.scss'
 })
@@ -20,16 +22,22 @@ export class AffichelisteDepotUsineComponent {
 
   constructor(private depotService: DepotService ,private authService: AuthService ){}
 
-  depots: any;
+  /*depots: any;*/
   userId?: Number;
   roleBasedDepot: any;
   roleee: string = '';
   disabledDepots: { [key: number]: boolean } = {}; // Object to track disabled state for each depot
+  depots: Depot[] = [];
+  filterText: string = ''; // New property for filtering
 
+  filteredDepots: Depot[] = [];
 
   ngOnInit() {
     this.DePotLists();
+
   }
+
+
   DePotLists() {
     const currentUser = this.authService.getUser();
     this.depotService.getDepots(currentUser.id).subscribe((res: any) => {
@@ -42,6 +50,8 @@ export class AffichelisteDepotUsineComponent {
         console.log('rererere', depot.user.id);
         return depot.user.id === this.userId;
       });
+      this.filteredDepots = [...this.depots]; // Initialize filtered depots with all depots
+
 
       // Check each depot to see if it exists in a container
       this.depots.forEach((depot: Depot) => {
@@ -50,6 +60,27 @@ export class AffichelisteDepotUsineComponent {
       });
     });
   }
+ /* DePotLists() {
+    const currentUser = this.authService.getUser();
+    this.depotService.getDepots(currentUser.id).subscribe((res: any) => {
+      console.log(res.depots);
+
+      const user = this.authService.getUser();
+      this.userId = user.userId;
+      console.log('getUser', this.userId);
+      this.depots = res.depots.filter((depot: any) => {
+        console.log('rererere', depot.user.id);
+        return depot.user.id === this.userId;
+      });
+      this.filteredDepots = [...this.depots]; // Initialize filtered depots with all depots
+
+      // Check each depot to see if it exists in a container
+      this.depots.forEach((depot: Depot) => {
+        this.checkIfDepotExistsInContainer(depot);
+        console.log(depot);
+      });
+    });
+  }*/
 
   checkIfDepotExistsInContainer(depot: any): void {
     const nom = depot.nom;
@@ -77,5 +108,11 @@ export class AffichelisteDepotUsineComponent {
         alert(res.message);
       });
     }
+  }
+  applyFilter(): void {
+    this.filteredDepots = this.depots.filter(depot =>
+      depot.nom?.toLowerCase().includes(this.filterText.toLowerCase()) ||
+      depot.lieu?.toLowerCase().includes(this.filterText.toLowerCase())
+    );
   }
 }

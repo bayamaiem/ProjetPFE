@@ -12,7 +12,9 @@ class Code extends Model
 
     protected $fillable = [
         'code',
-        'user_id'
+        'user_id',
+        'dechet_id', // Ajoutez 'dechet_id' ici
+
         
 
     ];
@@ -28,5 +30,9 @@ class Code extends Model
         return $this->hasMany(Conteneur::class );
     }
 
-   
+    public function dechet()
+    {
+        return $this->belongsTo(Dechet::class, 'dechet_id');
+    }
+
 }

@@ -13,8 +13,8 @@ export class CodeService {
   constructor(private httpClient: HttpClient) { }
 
 
-  saveCode(inputData: any): Observable<any> {
-    return this.httpClient.post(AUTH_API + '/storecode', inputData);
+  saveCode(inputData: Code): Observable<Code> {
+    return this.httpClient.post<Code>(AUTH_API + '/storecode', inputData);
   }
   getCodes(userId: number): Observable<{ Codes: Code[] }> {
     return this.httpClient.get<{ Codes: Code[] }>(`${AUTH_API }/getCodes`);
