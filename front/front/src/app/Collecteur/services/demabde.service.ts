@@ -14,8 +14,9 @@ export class DemandeService {
     return this.http.get(`${AUTH_API}/affichedemandecollecteur`);
   }
 
-  postDemande(body: any,conteneurId:number): Observable<any> {
-    return this.http.post(`${AUTH_API}/demande/${conteneurId}`, body);
+  postDemande(body: any,conteneurId:number ,IDdemandeur:number
+  ): Observable<any> {
+    return this.http.post(`${AUTH_API}/demande/${conteneurId}/${IDdemandeur}`, body);
   }
   updateDemandeEtat(id: any, etat: any): Observable<any> {
     const body = {

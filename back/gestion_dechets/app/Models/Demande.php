@@ -16,6 +16,8 @@ class Demande extends Model
         'etat',
         'user_id',
         'conteneur_id',
+        'collecteur_id',
+
     ];
 
     protected $casts = [

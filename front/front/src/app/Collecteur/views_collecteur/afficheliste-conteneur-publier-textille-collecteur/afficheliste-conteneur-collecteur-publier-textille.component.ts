@@ -166,19 +166,22 @@ export class AffichelisteConteneurCollecteurPublierTextilleComponent implements 
       console.error('DechetType or UserID is missing');
     }
   }
-  openDemandeModal(conteneur: any, conteneurID: number): void {
+  openDemandeModal(conteneur: any, conteneurID: number , IDfournisseur:number
+  ): void {
     this.modalService
       .openModal('Passer une demande', '', this.customContent)
       .then(() => {
-        console.log(conteneurID);
         const currentDate = new Date();
-        this.postDemande({ date: currentDate.toLocaleDateString() }, conteneurID);
+        this.postDemande({ date: currentDate.toLocaleDateString() }, conteneurID,IDfournisseur
+      );
       })
       .catch(() => console.log('Demande cancelled'));
   }
 
-  postDemande(body: any, conteneurID: number): void {
-    this.demandeService.postDemande(body, conteneurID).pipe(
+  postDemande(body: any, conteneurID: number , IDfournisseur:number
+  ): void {
+    this.demandeService.postDemande(body, conteneurID,IDfournisseur).pipe(
+      
       catchError((error) => {
         console.error('Une erreur s\'est produite', error);
         return throwError(error);
@@ -193,8 +196,7 @@ export class AffichelisteConteneurCollecteurPublierTextilleComponent implements 
         console.error('Post failed', error);
       }
     );
-
-
+  
     if (conteneurID) {
       this.estdemandercollecteur(conteneurID);
     } else {

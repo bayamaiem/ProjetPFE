@@ -138,33 +138,38 @@ export class AffichelisteConteneurRecycleurPublierPlastiqueComponent{
 
   
 
-  openDemandeModal(conteneur: any, conteneurID: number): void {
-    this.modalService
-      .openModal('Passer une demande', '', this.customContent)
-      .then(() => {
-        const currentDate = new Date();
-        this.postDemande({ date: currentDate.toLocaleDateString() }, conteneurID);
-      })
-      .catch(() => console.log('Demande cancelled'));
-  }
-
-  postDemande(body: any, conteneurID: number): void {
-    this.demandeService.postDemande(body, conteneurID).pipe(
-      catchError((error) => {
-        console.error('Une erreur s\'est produite', error);
-        return throwError(error);
-      })
-    )
-    .subscribe(
-      (response) => {
-        console.log('Post successful', response);
-        window.location.reload();
-      },
-      (error) => {
-        console.error('Post failed', error);
-      }
+openDemandeModal(conteneur: any, conteneurID: number , IDdemandeur:number
+): void {
+  this.modalService
+    .openModal('Passer une demande', '', this.customContent)
+    .then(() => {
+      const currentDate = new Date();
+      this.postDemande({ date: currentDate.toLocaleDateString() }, conteneurID,IDdemandeur
     );
-  }
+    })
+    .catch(() => console.log('Demande cancelled'));
+}
+
+postDemande(body: any, conteneurID: number , IDdemandeur:number
+): void {
+  this.demandeService.postDemande(body, conteneurID,IDdemandeur).pipe(
+    
+    catchError((error) => {
+      console.error('Une erreur s\'est produite', error);
+      return throwError(error);
+    })
+  )
+  .subscribe(
+    (response) => {
+      console.log('Post successful', response);
+      window.location.reload();
+    },
+    (error) => {
+      console.error('Post failed', error);
+    }
+  );
+}
+
 
   onDateChange(date: string) {
     console.log('Selected date:', date);

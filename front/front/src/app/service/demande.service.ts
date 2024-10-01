@@ -14,7 +14,7 @@ export class DemandeService {
     return this.http.get(`${AUTH_API}/demandes`);
   }
 
-  postDemande(body: any,conteneurId:number): Observable<any> {
-    return this.http.post(`${AUTH_API}/demande/${conteneurId}`, body);
+  postDemande(body: any,conteneurId:number,IDdemandeur:number): Observable<any> {
+    return this.http.post(`${AUTH_API}/demande/${conteneurId}/${IDdemandeur}`, body);
   }
 }

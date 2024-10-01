@@ -136,20 +136,23 @@ export class AffichelisteConteneurRecycleurPublierCartonComponent {
     }
 }
 
-  
 
-  openDemandeModal(conteneur: any, conteneurID: number): void {
+  openDemandeModal(conteneur: any, conteneurID: number , IDdemandeur:number
+  ): void {
     this.modalService
       .openModal('Passer une demande', '', this.customContent)
       .then(() => {
         const currentDate = new Date();
-        this.postDemande({ date: currentDate.toLocaleDateString() }, conteneurID);
+        this.postDemande({ date: currentDate.toLocaleDateString() }, conteneurID,IDdemandeur
+      );
       })
       .catch(() => console.log('Demande cancelled'));
   }
 
-  postDemande(body: any, conteneurID: number): void {
-    this.demandeService.postDemande(body, conteneurID).pipe(
+  postDemande(body: any, conteneurID: number , IDdemandeur:number
+  ): void {
+    this.demandeService.postDemande(body, conteneurID,IDdemandeur).pipe(
+      
       catchError((error) => {
         console.error('Une erreur s\'est produite', error);
         return throwError(error);

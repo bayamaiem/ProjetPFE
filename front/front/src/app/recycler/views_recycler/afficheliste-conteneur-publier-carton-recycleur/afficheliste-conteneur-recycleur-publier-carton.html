@@ -24,7 +24,9 @@
         <td>
           <button cButton color="danger" style="margin-left: -5px" 
           [disabled]=" item.isProcessing" 
-          (click)="openDemandeModal( item,  item.id)">
+          (click)="openDemandeModal( item,  item.id , item.IDdemandeur
+
+)">
     {{  item.isProcessing ? ' Demande En cours' : 'Passer Demande' }}
   </button>
   

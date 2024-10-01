@@ -47,6 +47,8 @@ public function index()
         ->whereHas('conteneur', function($query) use ($userId) {
             $query->where('user_id', $userId); // Filtrer par l'utilisateur propriétaire du conteneur
         })
+        ->where('collecteur_id', $userId) // Ajouter la condition collecteur_id = $userId
+
         ->get();
 
     // Log les demandes récupérées
@@ -99,6 +101,8 @@ public function affichedemandecollecteur()
         ->where('etat', 0) // Filtrer uniquement les demandes avec état = 0
         ->whereNotIn('conteneur_id', $conteneursAvecEtatUnAutreRecycleur) // Exclure les conteneurs avec état = 1 pour un autre recycleur
         ->where('user_id', '!=', $userId) // Exclure les demandes du collecteur authentifié
+        ->where('collecteur_id', $userId) // Ajouter la condition collecteur_id = $userId
+
         ->get();
 
     // Log des demandes récupérées pour les recycleurs
@@ -151,12 +155,14 @@ public function affichedemandecollecteur()
 
     return response()->json(['demandes' => $demandesMappees]);
 }
-    public function store(Request $request , $conteneurID) 
+    public function store(Request $request , $conteneurID ,$IDdemandeur) 
     {
         
         $validatedData['date'] = Carbon::now()->toDateString(); // Ajoute la date actuelle
         $validatedData['user_id'] = auth()->id();
         $validatedData['conteneur_id'] = $conteneurID;
+        $validatedData['collecteur_id'] = $IDdemandeur;
+
         $demande = Demande::create($validatedData);
 
         return response()->json(['demande' => $demande], 201);

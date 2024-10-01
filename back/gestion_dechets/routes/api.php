@@ -119,7 +119,7 @@ Route::get('/getPublishedConteneurByTypetotal/{dechetType}', [ConteneurControlle
     Route::get('/depot/{depot}/edit', [DepotController::class, 'edit']);
     Route::put('/depot/{id}/edit', [DepotController::class, 'update']);
     Route::delete('/depot/{id}/delete', [DepotController::class, 'destroy']);
-    Route::post('/demande/{conteneurID}', [DemandeController::class, 'store']);
+    Route::post('/demande/{conteneurID}/{IDdemandeur}', [DemandeController::class, 'store']);
     Route::get('/demande/{id}', [DemandeController::class, 'show']);
     Route::get('/affichedemandecollecteur', [DemandeController ::class, 'affichedemandecollecteur']);
     Route::get('/demande/{demande}/edit', [DemandeController::class, 'edit']);
