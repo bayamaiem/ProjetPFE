@@ -27,6 +27,7 @@ export interface Conteneur {
   updated_at: string;
   is_transformed: number;
   prix: number;
+  poids:number;
   dechet: Dechet;
 }
 export interface Movement {
@@ -61,7 +62,8 @@ demandeurrecycleur: any;
   IDfournisseur:number;
   poids:number;
   conteneurPrix: number; // or the appropriate type
-
+ prix:number;
+ 
 
 }
 

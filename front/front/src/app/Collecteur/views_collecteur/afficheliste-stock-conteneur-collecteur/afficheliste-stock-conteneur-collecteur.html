@@ -117,8 +117,11 @@
        <!--<td>{{ movement.date }} {{ movement.hour }}</td>
         <td>{{ movement.count }}</td>-->
 
-        <td>{{ movement.depot ? movement.depot.nom : 'Depot non défini' }}à {{ movement.depot ? movement.depot.lieu :''}}</td> <!-- Valeur par défaut -->
-
+        <td>
+          {{ movement.depot ? movement.depot.nom : '___' }}
+          <span *ngIf="movement.depot && movement.depot.nom"> à {{ movement.depot.lieu }}</span>
+        </td>
+        
       <!-- <td>{{ movement.conteneurPrix }}</td>--> 
 <td>{{ movement.
   conteneurPrix

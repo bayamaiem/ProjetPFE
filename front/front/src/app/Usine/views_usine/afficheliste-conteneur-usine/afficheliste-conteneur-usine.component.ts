@@ -116,14 +116,13 @@ export class AffichelisteConteneurUsineComponent {
   publishedConteneurs: { [key: number]: boolean } = {};
 
   ngOnInit() {
-    this. ListPagination(this.currentPage);
     this.ConteneursLists();
     this.loadPublishedConteneursFromStorage();
 
     
   }
   ListPagination(page: number): void {
-    this.conteneurService.getConteneurs(page, this.itemsPerPage).subscribe((res: any) => {
+    this.conteneurService.getConteneurs().subscribe((res: any) => {
       console.log('Response from API:', res);
 
       if (res && Array.isArray(res.conteneurs)) {
@@ -163,7 +162,7 @@ export class AffichelisteConteneurUsineComponent {
   }
 
   ConteneursLists() {
-    this.conteneurService.getConteneurs().subscribe((res: any) => {
+    this.conteneurService.getConteneurs2().subscribe((res: any) => {
       console.log(res.conteneurs);
       this.conteneurs = res.conteneurs;
     });

@@ -45,14 +45,15 @@ export class WasteComponent implements OnInit {
     destinataire: '',
     dateDeSortie: '',
     nombreDeConteneur: '',
-    poids:''
+    poids:'',
+    prix:''
   };
   uniqueCodes: string[] = [];
   dechetTypes: string[] = [];
   uniqueDates: string[] = []; // Array to store unique dates
   uniquePoids: string[] = [];
   uniquecounts : string[] = [];
-
+  uniquePrix: string[] = [];
   constructor(private mouvementService: MouvementService ,  private dechetsService:DechetsService) {}
 
   ngOnInit(): void {
@@ -61,6 +62,7 @@ export class WasteComponent implements OnInit {
     this.DechetsLists();
     this.  computeUniqueDates() ;
     this.computeUniqueDates();
+    this.computeUniquePrix();
   }
   getAllMouvements() {
     this.mouvementService.getGroupedMouvements().subscribe((res: any) => {
@@ -72,6 +74,7 @@ export class WasteComponent implements OnInit {
       this.  computeUniqueDates() ;
       this. computeUniquePoids();
       this.computeUniqueNumber();
+      this.computeUniquePrix();
     });
   }
   computeUniqueDates() {
@@ -106,6 +109,19 @@ export class WasteComponent implements OnInit {
       this.uniquePoids = [];
     }
   }
+
+  
+  computeUniquePrix() {
+    if (this.groupedMouvements && this.groupedMouvements.length > 0) {
+        // Extract unique prices from groupedMouvements
+        const prix = this.groupedMouvements.map(item => item.data.prix?.toString().trim());
+        this.uniquePrix = [...new Set(prix)]; // Remove duplicates
+        console.log(this.uniquePrix); // Debug: Check the unique prices
+    } else {
+        this.uniquePrix = [];
+    }
+}
+
   applyFilters() {
     this.filteredMouvements = this.groupedMouvements.filter(item => {
       return (
@@ -119,9 +135,9 @@ export class WasteComponent implements OnInit {
           (`en ${item.data.movement.date} à ${item.data.movement.hour}`)
           .toLowerCase()
           .includes(this.filters.dateDeSortie.toLowerCase())) &&
-        (!this.filters.nombreDeConteneur || item.count.toString().includes(this.filters.nombreDeConteneur))&&
-        (!this.filters.poids || item.data.poids.toString().includes(this.filters.poids))
-
+        (!this.filters.nombreDeConteneur || item.count.toString().includes(this.filters.nombreDeConteneur)) &&
+        (!this.filters.poids || item.data.poids.toString().includes(this.filters.poids)) &&
+        (!this.filters.prix || item.data.prix.toString().includes(this.filters.prix))
       );
     });
   }

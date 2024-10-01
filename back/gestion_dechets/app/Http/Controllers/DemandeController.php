@@ -6,6 +6,8 @@ use App\Mail\DemandeEtatChange;
 use App\Models\Demande;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
+use App\Models\Conteneur;
+use App\Models\Movement;
 use Carbon\Carbon;
 
 
@@ -90,7 +92,7 @@ public function affichedemandecollecteur()
     \Log::info("Conteneurs avec état = 1 pour un autre recycleur : " . json_encode($conteneursAvecEtatUnAutreRecycleur));
 
     // Récupérer les demandes des recycleurs avec état = 0 pour les conteneurs qui n'ont pas l'état = 1 pour un autre recycleur
-    $demandesRecycleur = Demande::with(['user', 'conteneur.dechet','conteneur','conteneur.depot'])
+    $demandesRecycleur = Demande::with(['user'])
         ->whereHas('user', function($query) {
             $query->where('role', 'recycleur'); // Filtrer uniquement les utilisateurs ayant le rôle "recycleur"
         })
@@ -102,23 +104,53 @@ public function affichedemandecollecteur()
     // Log des demandes récupérées pour les recycleurs
     \Log::info("Demandes récupérées pour les recycleurs : " . $demandesRecycleur->toJson());
 
-    // Mapper les demandes pour inclure le nom d'utilisateur (recycleur)
-    $demandesMappees = $demandesRecycleur->map(function ($demande) {
+    // Mapper les demandes pour inclure le nom d'utilisateur (recycleur), les détails du conteneur, newdepot et prixcollecteur
+    $demandesMappees = $demandesRecycleur->map(function ($demande) use ($userId) {
+        $conteneur = Conteneur::find($demande->conteneur_id);
+        \Log::info("Conteneur récupéré pour la demande {$demande->id}: " . json_encode($conteneur));
+
+        // Rechercher tous les mouvements
+        $mouvements = Movement::where('IDdemandeur', $userId)
+            ->whereNull('IDdemandeurrecycleur') // Commenté pour test
+            ->where('conteneur_id', $demande->conteneur_id)
+            ->get();
+
+        \Log::info("Mouvements pour la demande {$demande->id}: " . $mouvements->toJson());
+
+        $newdepot = null;
+        $prixcollecteur = null;
+
+        if ($mouvements->isNotEmpty()) {
+            foreach ($mouvements as $movement) {
+                \Log::info("Mouvement trouvé: newdepot = {$movement->newdepot}, prixcollecteur = {$movement->prixcollecteur}");
+
+                if (!is_null($movement->newdepot)) {
+                    $newdepot = Depot::find($movement->newdepot);
+                    if ($newdepot) {
+                        \Log::info("Depot trouvé pour newdepot = {$movement->newdepot}: " . json_encode($newdepot));
+                    } else {
+                        \Log::info("Depot non trouvé pour newdepot = {$movement->newdepot}");
+                    }
+                }
+                if (!is_null($movement->prixcollecteur)) {
+                    $prixcollecteur = $movement->prixcollecteur;
+                }
+            }
+        }
+
         return [
             'demande' => $demande,
             'user_name' => $demande->user ? $demande->user->username : null,
-            
+            'conteneur' => $conteneur,
+            'newdepot' => $newdepot,
+            'prixcollecteur' => $prixcollecteur,
         ];
     });
 
-    // Log des demandes mappées
     \Log::info("Demandes mappées : " . json_encode($demandesMappees));
 
-    // Retourner la réponse sous forme de JSON
     return response()->json(['demandes' => $demandesMappees]);
 }
-
-
     public function store(Request $request , $conteneurID) 
     {
         

@@ -50,5 +50,9 @@ class Demande extends Model
         return $this->belongsTo(Conteneur::class, 'conteneur_id');
     }
 
-
+    public function movements()
+    {
+        return $this->hasMany(Movement::class, 'IDdemandeur', 'user_id');
+    }
+    
 }

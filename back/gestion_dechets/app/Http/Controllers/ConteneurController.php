@@ -25,7 +25,6 @@ class ConteneurController extends Controller
     
         // Fetch containers related to the authenticated user
         $conteneurs = Conteneur::where('is_transformed', false)
-            ->where('est_vendu_usine', null)
             ->where('user_id', $userId) 
             ->with('codeModel') // Eager load the related Code model
             // Filter by the authenticated user's ID
@@ -274,10 +273,32 @@ public function addMovement2(Request $request, $conteneurID)
         // Si IDdemandeurrecycleur n'est pas null, définir datecollecteur et hourcollecteur
         $mouvement->datecollecteur = $mouvement->date;
         $mouvement->hourcollecteur = $mouvement->hour;
+
+        // Recherche du mouvement existant avec le même IDdemandeurrecycleur et conteneur_id
+        $existingMovement = Movement::
+            where('conteneur_id', $conteneurID)
+            ->first();
+
+        // Si un mouvement existant est trouvé, récupérer son prixcollecteur
+        if ($existingMovement) {
+            $mouvement->prixcollecteur = $existingMovement->prixcollecteur;
+        } else {
+            // Sinon, recherche de la demande confirmée avec etat = 1, user_id = IDdemandeurrecycleur, et conteneur_id correspondant
+            $demandeConfirmee = Demande::where('conteneur_id', $conteneurID)
+                ->where('etat', 1)
+                ->where('user_id', $mouvement->IDdemandeurrecycleur)
+                ->first();
+
+            // Si une demande confirmée est trouvée avec les conditions, ajouter prixcollecteur au mouvement
+            if ($demandeConfirmee) {
+                $mouvement->prixcollecteur = $demandeConfirmee->prixcollecteur;
+            }
+        }
     } else {
-        // Sinon, ces champs restent nuls
+        // Si IDdemandeurrecycleur est null, ces champs restent nuls
         $mouvement->datecollecteur = null;
         $mouvement->hourcollecteur = null;
+        $mouvement->prixcollecteur = null;
     }
 
     // Sauvegarde du mouvement

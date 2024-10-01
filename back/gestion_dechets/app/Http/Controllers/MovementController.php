@@ -37,6 +37,8 @@ class MovementController extends Controller
             $conteneurType = $movement->conteneur->dechet->type ?? null;
             $conteneurCode = $movement->conteneur->codeModel->code ?? null;
             $poids = $movement->conteneur->poids ?? null;
+            $prix = $movement->conteneur->prix ?? null;
+
 
             return [
                 'movement' => $movement,
@@ -47,6 +49,8 @@ class MovementController extends Controller
                 'collecteur_phone_number' => $movement->fournisseur2->phone_number,
                 'conteneur_code' => $conteneurCode,
                 'poids'=> $poids,
+                'prix'=> $prix,
+
 
 
 
@@ -389,6 +393,8 @@ public function getMovementsByDemandeurstocker()
         $addressusine=$movement->fournisseur->address?? null;
         $datecollecteur=$movement->datecollecteur?? null;
         $hourcollecteur=$movement->hourcollecteur?? null;
+        $prixcollecteur=$movement->prixcollecteur?? null;
+
          $date=$movement->date??null;
          $hour=$movement->hour??null;
 
@@ -409,6 +415,7 @@ public function getMovementsByDemandeurstocker()
             'adressusine'=>$addressusine,
             'hourcollecteur'=>$hourcollecteur,
             'datecollecteur'=>$datecollecteur,
+            'prixcollecteur'=>$prixcollecteur,
             'poids'=>  $poids,
             'date'=>$date,
             'hour'=>$hour,

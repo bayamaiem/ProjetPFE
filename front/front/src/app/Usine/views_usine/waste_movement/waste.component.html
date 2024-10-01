@@ -53,6 +53,16 @@
           </datalist>
           
          </th>
+
+         <th scope="col" class="center">
+          Prix
+          <input type="text" class="form-control" [(ngModel)]="filters.prix" (ngModelChange)="applyFilters()" list="prix">
+       <datalist id="prix">
+           <option *ngFor="let count of uniquePrix" [value]="count"></option>
+         </datalist>
+         </th>
+
+
          <th scope="col" class="center">
           Nombre de conteneur
           <input type="text" class="form-control" [(ngModel)]="filters.nombreDeConteneur" (ngModelChange)="applyFilters()" list="count">
@@ -73,8 +83,8 @@
         <td>le Collecteur {{ item.data.movement.fournisseur2.firstName }} {{ item.data.movement.fournisseur2.lastName }} située à {{ item.data.movement.fournisseur2.address }}</td>
         <td>en {{ item.data.movement.date }} </td>
         <td>{{ item.data.poids }} kg </td>
-
-        <td>{{ item.count }}</td>
+     <td>{{ item.data.prix}} dt </td>
+      <td>{{ item.count }}</td>
       </tr>
     </tbody>
   </table>

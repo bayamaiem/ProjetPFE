@@ -181,7 +181,7 @@ conteneur_code: any; count: number; data: MovementWrapper[]
     } } = {};
   
     this.movements.forEach(item => {
-      const key = `${item.movement.conteneur_type}${item.movement.IDdemandeurrecycleur}${item.movement.date}${item.movement.hour}${item.movement.IDdemandeur}${item.movement.IDfournisseur}${item.movement.hourcollecteur}${item.movement.datecollecteur}`;
+      const key = `${item.movement.conteneur_type}${item.movement.IDdemandeurrecycleur}${item.movement.date}${item.movement.IDdemandeur}${item.movement.IDfournisseur}${item.movement.datecollecteur}${item.prixcollecteur}${item.poids}`;
       if (!grouped[key]) {
         grouped[key] = {
           movement: [], 

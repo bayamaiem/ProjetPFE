@@ -8,4 +8,5 @@ export interface Conteneur {
   user_id: number;
   created_at: Date;
   updated_at: Date;
+  poids: number; // Add this line to include the 'poids' property
 }
