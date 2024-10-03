@@ -26,15 +26,19 @@
           Date de l'acquisition de leurs déchets
           <input type="text" class="form-control" [(ngModel)]="filters.dateAcquisition" (input)="filterMovements()">
         </th>
-        <th scope="col" class="center">
-          Nombre de conteneur
-          <input type="text" class="form-control" [(ngModel)]="filters.nombreDeConteneur" (input)="filterMovements()">
-        </th>
+       
         <th scope="col" class="center">
           Poids(kg)
           <input type="text" class="form-control" [(ngModel)]="filters.poids" (input)="filterMovements()">
         </th>
-        
+        <th scope="col" class="center">
+        Prix d'achat d'un conteneur
+          <input type="text" class="form-control" [(ngModel)]="filters.prix" (input)="filterMovements()">
+        </th>
+        <th scope="col" class="center">
+          Nombre de conteneur
+          <input type="text" class="form-control" [(ngModel)]="filters.nombreDeConteneur" (input)="filterMovements()">
+        </th>
       </tr>
     </thead>
 
@@ -48,8 +52,9 @@
         <td> en {{item.datecollecteur
         }} <!--à  {{item.hourcollecteur}}--></td>
         <td> en {{item.date}} <!-- {{item.hour}}--></td>
-        <td>{{item.count}}</td>
         <td>{{item.poids}} kg </td>
+       <td>{{item.prixcollecteur}}</td>
+        <td>{{item.count}}</td>
 
       </tr>
     </tbody>

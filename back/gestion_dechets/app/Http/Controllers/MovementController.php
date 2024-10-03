@@ -321,53 +321,55 @@ public function getMovementsByDemandeurstocker()
 }
 
 
-    public function getMovementsByDemandeurRecycleur($page)
-    {
-        // Récupérer l'utilisateur authentifié
-        $authenticatedUser = auth()->user();
-        $page = $page;
+public function getMovementsByDemandeurRecycleur()
+{
+    // Récupérer l'utilisateur authentifié
+    $authenticatedUser = auth()->user();
 
-        $itemsPerPage = 2;
-        // Récupérer les mouvements où IDdemandeurrecycleur est l'utilisateur authentifié
-        $movements = Movement::with(['conteneur.dechet', 'fournisseur2','depot'])
-                             ->where('IDdemandeurrecycleur', $authenticatedUser->id)
+    // Récupérer les mouvements où IDdemandeurrecycleur est l'utilisateur authentifié
+    $movements = Movement::with(['conteneur.dechet', 'fournisseur2', 'depot'])
+    ->whereNotNull('IDdemandeurrecycleur')
+    ->where('IDdemandeurrecycleur', $authenticatedUser->id)
+    ->whereNull('prixcollecteur')
+    ->get(); // Exécuter la requête pour récupérer les mouvements
 
-                             ->paginate($itemsPerPage, ['*'], 'page', $page);
-    
-        // Transformer les mouvements pour inclure les informations supplémentaires
-        $mappedMovements = $movements->map(function ($movement) {
-            // Récupérer le type de conteneur basé sur le modèle Dechet
-            $conteneurType = $movement->conteneur->dechet->type ?? null;
-            $conteneurCode = $movement->conteneur->codeModel->code ?? null;
-            $is_transformed = $movement->conteneur->is_transformed ?? null;
-            $poids = $movement->conteneur->poids ?? null;
+    // Transformer les mouvements pour inclure les informations supplémentaires
+    $mappedMovements = $movements->map(function ($movement) {
+        // Récupérer le type de conteneur basé sur le modèle Dechet
+        $conteneurType = $movement->conteneur->dechet->type ?? null;
+        $conteneurCode = $movement->conteneur->codeModel->code ?? null;
+        $is_transformed = $movement->conteneur->is_transformed ?? null;
+        $poids = $movement->conteneur->poids ?? null;
 
-            // Récupérer le nom du fournisseur (identifié par IDdemandeur dans la table users)
-            $fournisseurName = $movement->fournisseur->name ?? null;
-            $depot = $movement->depot; // Assurez-vous que le dépôt est correctement lié à votre modèle
+        // Récupérer le nom du fournisseur (identifié par IDdemandeur dans la table users)
+        $fournisseurName = $movement->fournisseur2->name ?? null;
+        $depot = $movement->depot ? [
+            'id' => $movement->depot->id,
+            'nom' => $movement->depot->nom,
+            'lieu' => $movement->depot->lieu
+        ] : null;
+        // Check if depot exists to avoid null access
+   /*     $depotnom = $movement->depot->nom;
+        $depotlieu = $movement->depot->lieu;
+*/
+        $poids = $movement->conteneur->poids ?? null;
 
-            return [
-                'movement' => $movement,
-                'conteneur_type' => $conteneurType,
-                'fournisseur_name' => $fournisseurName,
-                'conteneur_code' => $conteneurCode,
-                  'is_transformed'=>$is_transformed,
-                  'poids' =>  $poids,
-                'depot' => $depot ? [
-                'id' => $depot->id,
-                'nom' => $depot->nom,
-                'lieu' => $depot->lieu,
+        return [
+            'movement' => $movement,
+            'conteneur_type' => $conteneurType,
+            'fournisseur_name' => $fournisseurName,
+            'conteneur_code' => $conteneurCode,
+            'is_transformed' => $is_transformed,
+            'poids'=>$poids ,
+      
+            'depot' => $depot,
+        ];
+    });
 
-            ] : null, // Inclure le nom du fournisseur
-            ];
-        });
-    
-        // Retourner les mouvements transformés en réponse JSON
-        return response()->json(['movements' => $mappedMovements, 'current_page' => $movements->currentPage(),
-        'total_pages' => $movements->lastPage(),
-        'total_items' => $movements->total(),]);
-    }
-    
+    // Retourner les mouvements transformés en réponse JSON
+    return response()->json(['movements' => $mappedMovements]);
+}
+ 
     public function getAllMovementsByDemandeurRecycleur()
 {
     // Récupérer l'utilisateur authentifié

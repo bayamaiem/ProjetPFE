@@ -121,6 +121,7 @@ usine_name: any;
 lastNameCollecteur: any;
 conteneur_type: any;
 poids:number;
+prixcollecteur: number; 
 conteneur_code: any; count: number; data: MovementWrapper[] 
 }[] = [];
   movements: any[] = [];
@@ -138,6 +139,7 @@ conteneur_code: any; count: number; data: MovementWrapper[]
     dateAcquisition: '',
     nombreDeConteneur: '',
     poids:'',
+    prix:''
   };
   constructor(private mouvementService: MouvementService ,private conteneurdechetsaquisService: ConteneurdechetsaquisService,
   ) {}
@@ -175,9 +177,9 @@ conteneur_code: any; count: number; data: MovementWrapper[]
       estStoker: any; is_published: any; movement: any[]; code: string; id: number;
       conteneur_type: string; place: string; date: string; hour: string; count: number;
       fournisseur: Fournisseur; depot: Depot; depotId: number; id_conteneur: number;
-      prixcollecteur: number; usine_name: string; firstNameCollecteur: string; lastNameCollecteur: string;
+     usine_name: string; firstNameCollecteur: string; lastNameCollecteur: string;
       datecollecteur: string; conteneur_code: string; conteneurPrix: any; data: MovementWrapper[]; 
-      addresscollecteur: string; hourcollecteur: string; adressusine:string;poids:number;
+      addresscollecteur: string; hourcollecteur: string; adressusine:string;poids:number; prixcollecteur: number; 
     } } = {};
   
     this.movements.forEach(item => {
@@ -243,7 +245,8 @@ conteneur_code: any; count: number; data: MovementWrapper[]
       const matchesNombreDeConteneur = !this.filters.nombreDeConteneur || group.count === +this.filters.nombreDeConteneur;
       const isMatchingPoids = !this.filters.poids ||
       (group.poids&& group.poids.toString().includes(this.filters.poids));
-
+      const isMatchingPPrix = !this.filters.poids ||
+      (group.prixcollecteur&& group.prixcollecteur.toString().includes(this.filters.prix));
       return matchesCode && matchesType  &&isMatchingPoids&& matchesUsine && matchesCollecteur && matchesDateEntree && matchesDateAcquisition && matchesNombreDeConteneur;
     });
     

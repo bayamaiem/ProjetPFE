@@ -43,8 +43,8 @@ export class ConteneurdechetsaquisService {
     );
   }*/
   
-    getMovementsByDemandeurRecycleur(page: number): Observable<MouvementResponse2> {
-      return this.http.get<MouvementResponse2>(`${this.apiUrl}/movements/by-demandeur-recycleur/${page}`);
+    getMovementsByDemandeurRecycleur(): Observable<MouvementResponse2> {
+      return this.http.get<MouvementResponse2>(`${this.apiUrl}/movements/by-demandeur-recycleur/getMovementsByDemandeurRecycleur`);
     }
 
     getAllMovementsByDemandeurRecycleur(): Observable<MouvementResponse2> {

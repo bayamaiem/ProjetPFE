@@ -47,9 +47,7 @@
               {{ depot.nom }}
             </option>
           </select>
-          
-          <label for="prixcollecteur">Prix:</label><br>
-          <input formControlName="prixcollecteur" class="form-control" id="prixcollecteur" name="prixcollecteur">
+       
         </div>
       </form>
     </div>
@@ -69,27 +67,35 @@
       <tr *ngFor="let movement of filteredMouvements">
         <td class="col-sm">{{ movement.conteneur_code }}</td>
         <td class="col-sm">{{ movement.conteneur_type }}</td>
-        <td class="col-sm">Le collecteur {{ movement.fournisseur2.firstName }} {{ movement.fournisseur2.lastName }} 
-        <!--{{ movement.fournisseur2.username }} --> 
-           <br>située à {{ movement.fournisseur2.address }}</td>
-        <td class="col-sm" style="margin-left: -1px">{{ movement.depot.lieu }} {{ movement.depot.nom }}</td>
-        <td class="col-sm"> {{ movement.poids}}kg </td>
-
-      <!--<td class="col-sm justify-content-md-center" style="margin-left: -10px">{{ movement.count }}</td>-->  
+        <td class="col-sm">
+          Le collecteur 
+          {{ movement?.fournisseur2?.firstName || 'N/A' }} 
+          {{ movement?.fournisseur2?.lastName || 'N/A' }}
+          <br>
+          située à {{movement?.fournisseur2?.address || 'N/A' }}
+        </td>
+          <td>
+          {{ movement.depot ? movement.depot.nom : '_______' }}
+          <span *ngIf="movement.depot && movement.depot.nom"> à {{ movement.depot.lieu }}</span>
+        </td>
+                <td class="col-sm"> {{ movement.poids }}kg </td>
         <td class="col-sm">
           <div class="d-grid gap-2 d-md-flex justify-content-md-center" style="margin-top: 10px">
-
-            <button cButton color="warning" style="margin-left: -1px"   class="col-sm justify-content-md-center "  (click)="openStockerConteneurModal(movement)"
-            [disabled]="movement.estStoker === 1">
-
-
+            <button 
+              cButton 
+              color="warning" 
+              class="col-sm justify-content-md-center" 
+              (click)="openStockerConteneurModal(movement)"
+              [disabled]="movement.estStoker === 1">
+       
+    
             Stocker
             </button>
               <button
                 cButton
                 color="warning"
                 style="margin-left: -5px"
-                (click)="openTransformModal(movement.id_conteneur)"
+                (click)="openTransformModal(movement.conteneur ,movement.estStoker)"
                 [disabled]="movement.is_transformed === 1">
               
                 Transformer
@@ -104,22 +110,3 @@
     <p>Aucun Dechets</p>
   </div>
 </c-row>
-<!-- Pagination Controls -->
-<c-pagination aria-label="Page navigation example">
-  <!-- Previous Button -->
-  <!-- Previous Button -->
-<li cPageItem [class.disabled]="currentPage === 1">
-  <a cPageLink (click)="onPageChange(currentPage - 1)" [attr.aria-disabled]="currentPage === 1 ? 'true' : null">Previous</a>
-</li>
-
-<!-- Page Numbers -->
-<li *ngFor="let page of totalPagesArray" cPageItem [class.active]="currentPage === page">
-  <a cPageLink (click)="onPageChange(page)" [attr.aria-current]="currentPage === page ? 'page' : null">{{ currentPage }}</a>
-</li>
-
-<!-- Next Button -->
-<li cPageItem [class.disabled]="currentPage === totalPages">
-  <a cPageLink (click)="onPageChange(currentPage + 1)" [attr.aria-disabled]="currentPage === totalPages ? 'true' : null">Next</a>
-</li>
-
-</c-pagination>

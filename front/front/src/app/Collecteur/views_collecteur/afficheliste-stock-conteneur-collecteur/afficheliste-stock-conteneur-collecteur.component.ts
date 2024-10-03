@@ -46,6 +46,7 @@ import { DepotService } from 'src/app/Usine/views_usine/services/depot.service';
 import { DemandeService } from 'src/app/recycler/views_recycler/services/demande.service';
 import { ConteneurService } from '../../services/conteneur.service';
 import { DechetsService } from 'src/app/Usine/views_usine/services/dechets.service';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-afficheliste-stock-conteneur-collecteur',
@@ -224,36 +225,61 @@ this.computeUniquedepot();
     localStorage.setItem('publishedConteneurs', JSON.stringify(this.publishedConteneurs));
   }
 
- 
-
   PublierConteneurMouvement(mouvement: any) {
-    this.conteneurService.PublierConteneurMouvement(mouvement.id).subscribe(
-      (response: any) => {
-        console.log(`Conteneur publié : ${mouvement.code}`);
-        // Mark as published
-        this.publishedConteneurs[mouvement.id] = true;
-        console.log('Published Conteneurs:', this.publishedConteneurs);
-        this.savePublishedConteneursToStorage();
-        this.modalService.openModal(
-          'Publication Réussie',
-          `Le conteneur ${mouvement.code} a été publié avec succès.`
-        ).then(() => {
-          console.log('Publication confirmée');
-        }).catch(() => {
-          console.log('Erreur lors de la confirmation');
-          // Undo the publication in case of error
-          this.publishedConteneurs[mouvement.id] = false;
-          this.savePublishedConteneursToStorage();
-        });
-      },
-      (error) => {
-        console.error('Erreur lors de la publication du conteneur :', error);
+    // Vérification si le mouvement est stocké
+    if ((mouvement.eststocker===null)) {
+      // Ce code sera exécuté si eststocker est 0, null, undefined, etc.
+      console.log('Le conteneur n\'est pas stocké, ouverture de l\'alerte');
+      Swal.fire({
+        icon: 'error',
+        title: 'Impossible de publier',
+        text: `Le conteneur n'est pas encore stocké. Veuillez le stocker avant de le publier.`,
+        confirmButtonText: 'OK'
+      }).then(() => {
+        console.log('Alerte confirmée');
+      }).catch(() => {
+        console.log('Erreur lors de la confirmation de l\'alerte');
+      });
+      return;
+    }
+    
+    
+    // Si le conteneur est stocké, demander confirmation avant de publier
+    Swal.fire({
+      title: 'Confirmer la publication',
+      text: `Êtes-vous sûr de vouloir publier le conteneur ${mouvement.conteneur_code
+      } ?`,
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Oui, publier',
+      cancelButtonText: 'Annuler'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        // Si la confirmation est donnée, procéder à la publication
+        this.conteneurService.PublierConteneurMouvement(mouvement.id).subscribe(
+          (response: any) => {
+            console.log(`Conteneur publié : ${mouvement.code}`);
+            // Marquer comme publié
+            this.publishedConteneurs[mouvement.id] = true;
+            this.savePublishedConteneursToStorage();
+            Swal.fire(
+              'Publication Réussie',
+              `Le conteneur  ${mouvement.conteneur_code
+      }  a été publié avec succès.`,
+              'success'
+            );
+            window.location.reload();
+          },
+          (error) => {
+            console.error('Erreur lors de la publication du conteneur :', error);
+          }
+        );
+      } else {
+        console.log('Publication annulée par l\'utilisateur');
       }
-    );
-  }
-  
-  
-  
+    });
+}
+
   getDepotNameById(depotId: number): string {
     const depot = this.depots.find(d => d.id === depotId);
     

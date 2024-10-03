@@ -5,6 +5,7 @@ import { Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { ChartjsComponent } from '@coreui/angular-chartjs';
 import { AuthService } from '../../../../app/service/auth.service';
 import { DepotService } from '../../../Usine/views_usine/services/depot.service';
+import Swal from 'sweetalert2';
 
 import {
   RowComponent,
@@ -189,16 +190,14 @@ export class AffichelisteConteneurRecycleurAcquisComponent implements OnInit {
     this. paginateMovements();  
   }
   getAllMouvements(page: any ): void {
-    this.conteneurdechetsaquisService.getMovementsByDemandeurRecycleur(page).subscribe(
+    this.conteneurdechetsaquisService.getMovementsByDemandeurRecycleur().subscribe(
       (response: MouvementResponse2) => {
         if (response && response.movements) {
           // Assign response data to component properties
           this.movements = response.movements;
           this.filteredMouvements =this.movements;
-          this.currentPage = response.current_page;
-          this.totalItems = response.total_items;
-          this.totalPages = response.total_pages;
-          this.totalPagesArray = Array.from({ length: this.totalPages }, (_, i) => i + 1);
+          console.log('Movements:', this.movements);
+
   
           // Debugging: log the movements to the console
           console.log('Movements:', this.movements);
@@ -238,6 +237,7 @@ export class AffichelisteConteneurRecycleurAcquisComponent implements OnInit {
         estStoker: number; 
         is_transformed:number;
         poids:number;
+        conteneur:Conteneur;
 conteneur_code:string;// Store the stocking status
       }
     } = {};
@@ -256,6 +256,8 @@ conteneur_code:string;// Store the stocking status
           code: item.movement.conteneur.code,
           id :item.movement.id,
           id_conteneur: item.movement.conteneur.id,
+         conteneur: item.movement.conteneur,
+
           depot: item.depot, 
           conteneur_type: item.conteneur_type,
           place: item.movement.place,
@@ -263,8 +265,9 @@ conteneur_code:string;// Store the stocking status
           hour: item.movement.hour,
           poids:item.poids,
           count: 0,
+          
           fournisseur2: item.movement.fournisseur2, // Assign fournisseur2
-          fournisseur_name: item.movement.fournisseur.username,
+          fournisseur_name: item.movement.fournisseur2.username,
           updated_at: item.movement.updated_at,
           depotId: item.movement.newdepot ?? null,
 
@@ -301,7 +304,7 @@ conteneur_code:string;// Store the stocking status
   
       // Filter by collecteur (fournisseur2)
       const matchesCollecteur = !this.filters.collecteur || (
-        (group.fournisseur2?.firstName + ' ' + group.fournisseur2?.lastName).toLowerCase().includes(this.filters.collecteur.toLowerCase())
+        (group.fournisseur2?.firstName  || 'N/A'  + ' ' + group.fournisseur2?.lastName || 'N/A' ).toLowerCase().includes(this.filters.collecteur.toLowerCase())
       );
 
       const matchesPoids = !this.filters.poids || (
@@ -401,42 +404,53 @@ conteneur_code:string;// Store the stocking status
   }
   
   
-  openTransformModal(id_conteneur: Number): void {
-    console.log('iddd', id_conteneur);
-  
+  openTransformModal(conteneur: Conteneur, is_stocked: any): void {
+    console.log('iddd',conteneur.id);
+    console.log('is_stocked ?',is_stocked);
+
     // Activer l'état de traitement (désactiver le bouton "Transformer")
     localStorage.setItem('isProcessingTransformer', 'true');  // Sauvegarder l'état dans localStorage
-  
+    if (is_stocked === 1) {
     this.modalService
       .openModal(
         'Confirm Transformation',
         'Are you sure you want to transform this container'
       )
-      .then(() => this.TransforConteneur(id_conteneur))
+      .then(() => this.TransforConteneur(conteneur , is_stocked))
       .then(() => this.router.navigate(['/recycleur/liste-conteneur-acquis']))
       .catch(() => {
         console.log('cancelled');
         // En cas d'annulation, réinitialiser l'état si nécessaire
         localStorage.setItem('isProcessingTransformer', 'false');
+      });}
+      else {
+        // Affichez l'alerte si le conteneur n'est pas stocké ou si `is_stocked` est null
+        Swal.fire({
+          icon: 'warning',
+          title: 'Transformation Impossible',
+          text: 'Le conteneur doit être stocké avant de pouvoir être transformé.',
+          confirmButtonText: 'OK',
+        });
+      }
+  }
+  TransforConteneur(conteneur: Conteneur, is_stocked: any) {
+    console.log('is_stocked value:', is_stocked); // Log pour débugger
+    
+   
+      this.conteneurService.transformContainer(conteneur.id).subscribe({
+        next: (response) => {
+          console.log('Transformation successful', response);
+          window.location.reload(); // Optionnellement recharger la page après le succès
+        },
+        error: (error) => {
+          console.error('Error during transformation', error);
+          localStorage.setItem('isProcessingTransformer', 'false');
+        },
       });
+    
   }
   
-  TransforConteneur(id_conteneur: Number) {
-    this.conteneurService.transformContainer(id_conteneur).subscribe({
-      next: (response) => {
-        console.log('Transformation successful', response);
-        // Optionnel : Si vous souhaitez que le bouton reste désactivé même après une transformation réussie, laissez l'état en 'true'
-        window.location.reload();
-      },
-      error: (error) => {
-        console.error('Error during transformation', error);
-        // En cas d'erreur, réactiver le bouton
-       
-        localStorage.setItem('isProcessingTransformer', 'false');
-      },
-    });
-  }
-  computeUniqueCodes() {
+   computeUniqueCodes() {
     if (this.groupedMovements && this.groupedMovements.length > 0) {
       // Extract unique container codes from groupedMouvements
       const codes = this.groupedMovements.map(item => item.conteneur_code);

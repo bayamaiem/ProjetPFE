@@ -135,7 +135,7 @@ class ConteneurController extends Controller
             })
             ->with(['conteneur' => function ($query) {
                 // Eager load related models: user, depot, dechet
-                $query->with('user', 'depot', 'dechet');
+                $query->with('user', 'dechet');
             }, 'fournisseur2']) // Eager load the fournisseur (user who provided the container)
             ->get();
     
@@ -144,7 +144,9 @@ class ConteneurController extends Controller
             return [
                 'movement' => $movement,
                 'user_name' => $movement->fournisseur2->username ?? 'N/A', // Fetch fournisseur's username
-                'depot_name' => $movement->conteneur->depot->nom ?? 'N/A',
+                'depot_name' => $movement->depot->nom ?? 'N/A',
+                'depot_lieu' => $movement->depot->lieu ?? 'N/A',
+
                 'dechet_type' => $movement->conteneur->dechet->type ?? 'N/A',
                 'conteneurCode' => $movement->conteneur->codeModel->code ?? null
 
@@ -171,7 +173,7 @@ class ConteneurController extends Controller
             })
             ->with(['conteneur' => function ($query) {
                 // Eager load related models: user, depot, dechet
-                $query->with('user', 'depot', 'dechet');
+                $query->with('user', 'dechet');
             }, 'fournisseur2']) // Eager load the fournisseur (user who provided the container)
             ->get();
     
@@ -180,7 +182,9 @@ class ConteneurController extends Controller
             return [
                 'movement' => $movement,
                 'user_name' => $movement->fournisseur2->username ?? 'N/A', // Fetch fournisseur's username
-                'depot_name' => $movement->conteneur->depot->nom ?? 'N/A',
+                'depot_name' => $movement->depot->nom ?? 'N/A', // Directly access the depot relationship
+                'depot_lieu' => $movement->depot->lieu ?? 'N/A', // Directly access the depot relationship
+
                 'dechet_type' => $movement->conteneur->dechet->type ?? 'N/A',
                 'conteneurCode' => $movement->conteneur->codeModel->code ?? null
 

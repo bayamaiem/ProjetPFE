@@ -16,9 +16,9 @@
       <tr *ngFor="let item of conteneurs">
         <td>{{ item.conteneur.code_model.code }}</td>
 
-       <td>{{ item.conteneur.prix }}</td>
-        <td>{{ item.fournisseur2.username }}</td>
-        <td>{{  item.conteneur.depot.nom }} {{  item.conteneur.depot.lieu }}</td>
+        <td>{{ item.prixcollecteur}}</td>
+                 <td>{{ item.fournisseur2.username }}</td>
+        <td>{{  item.depot.nom }} {{  item.depot.lieu }}</td>
         <td>{{  item.conteneur.dechet.type }}</td>
         <td>{{  item.conteneur.poids }} kg </td>
 

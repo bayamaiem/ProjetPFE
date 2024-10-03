@@ -155,7 +155,7 @@ Route::get('/getPublishedConteneurByTypetotal/{dechetType}', [ConteneurControlle
     Route::put('/stockerContainer/{id}', [ConteneurController::class, 'stockerContainer']);
     Route::put('StockerConteneurTransformer/{id}', [ConteneurController::class, 'postStockerConteneurTransformer']);
 
-    Route::get('/movements/by-demandeur-recycleur/{page}', [MovementController::class, 'getMovementsByDemandeurRecycleur']);
+   Route::get('/movements/by-demandeur-recycleur/getMovementsByDemandeurRecycleur', [MovementController::class, 'getMovementsByDemandeurRecycleur']);
     Route::get('/movements/by-demandeur-recycleur', [MovementController::class, 'getAllMovementsByDemandeurRecycleur']);
 
     Route::get('/movements/by-demandeur-recycleur/non_transformer', [MovementController::class, 'getMovementsByDemandeurRecycleurnonTransformer']);

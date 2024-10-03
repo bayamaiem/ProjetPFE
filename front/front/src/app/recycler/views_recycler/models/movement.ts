@@ -29,6 +29,7 @@ export interface Conteneur {
   is_transformed: number;
   prix: number;
   dechet: Dechet;
+  poids:number;
 }
 
 export interface Fournisseur {
@@ -75,7 +76,8 @@ export interface Movement {
   IDfournisseur: number;
   conteneur_code: string;
   conteneur_type: string | null;
-
+  movement: Movement;
+poids:number;
   fournisseur2: Fournisseur;
 }
 
@@ -142,6 +144,10 @@ conteneur_code:string;
   count: number;
   fournisseur2: Fournisseur;
   depot: Depot;
+  conteneur:Conteneur;
+  /*depotnom: string;
+  depotlieu:string;
+*/
   updated_at?: string | undefined;
     formatted_updated_at?: string; // Ajoutez cette ligne
     depotId: number;
